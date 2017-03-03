@@ -15,20 +15,20 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LocationRepository")
  */
-class Location extends AbstractEntity
-{
+class Location extends AbstractEntity {
+
     /**
      * @var string
      * @ORM\Column(type="string")
      */
     private $city;
-    
+
     /**
      * @var string
      * @ORM\Column(type="string")
      */
     private $region;
-    
+
     /**
      * @var string
      * @ORM\Column(type="string")
@@ -40,25 +40,22 @@ class Location extends AbstractEntity
      * @ORM\OneToMany(targetEntity="Venue", mappedBy="location")
      */
     private $venues;
-    
+
     /**
      * @var Collection|Organization[]
      * @ORM\OneToMany(targetEntity="Organization", mappedBy="location")
      */
     private $organizations;
-    
 
     public function __construct() {
         parent::__construct();
         $this->artworks = new ArrayCollection();
         $this->projects = new ArrayCollection();
     }
-    
-    
+
     public function __toString() {
         return $this->city;
     }
-
 
     /**
      * Set city
@@ -67,8 +64,7 @@ class Location extends AbstractEntity
      *
      * @return Location
      */
-    public function setCity($city)
-    {
+    public function setCity($city) {
         $this->city = $city;
 
         return $this;
@@ -79,8 +75,7 @@ class Location extends AbstractEntity
      *
      * @return string
      */
-    public function getCity()
-    {
+    public function getCity() {
         return $this->city;
     }
 
@@ -91,8 +86,7 @@ class Location extends AbstractEntity
      *
      * @return Location
      */
-    public function setRegion($region)
-    {
+    public function setRegion($region) {
         $this->region = $region;
 
         return $this;
@@ -103,8 +97,7 @@ class Location extends AbstractEntity
      *
      * @return string
      */
-    public function getRegion()
-    {
+    public function getRegion() {
         return $this->region;
     }
 
@@ -115,8 +108,7 @@ class Location extends AbstractEntity
      *
      * @return Location
      */
-    public function setCountry($country)
-    {
+    public function setCountry($country) {
         $this->country = $country;
 
         return $this;
@@ -127,8 +119,7 @@ class Location extends AbstractEntity
      *
      * @return string
      */
-    public function getCountry()
-    {
+    public function getCountry() {
         return $this->country;
     }
 
@@ -139,8 +130,7 @@ class Location extends AbstractEntity
      *
      * @return Location
      */
-    public function addVenue(Venue $venue)
-    {
+    public function addVenue(Venue $venue) {
         $this->venues[] = $venue;
 
         return $this;
@@ -151,8 +141,7 @@ class Location extends AbstractEntity
      *
      * @param Venue $venue
      */
-    public function removeVenue(Venue $venue)
-    {
+    public function removeVenue(Venue $venue) {
         $this->venues->removeElement($venue);
     }
 
@@ -161,8 +150,7 @@ class Location extends AbstractEntity
      *
      * @return Collection
      */
-    public function getVenues()
-    {
+    public function getVenues() {
         return $this->venues;
     }
 
@@ -173,8 +161,7 @@ class Location extends AbstractEntity
      *
      * @return Location
      */
-    public function addOrganization(Organization $organization)
-    {
+    public function addOrganization(Organization $organization) {
         $this->organizations[] = $organization;
 
         return $this;
@@ -185,8 +172,7 @@ class Location extends AbstractEntity
      *
      * @param Organization $organization
      */
-    public function removeOrganization(Organization $organization)
-    {
+    public function removeOrganization(Organization $organization) {
         $this->organizations->removeElement($organization);
     }
 
@@ -195,8 +181,8 @@ class Location extends AbstractEntity
      *
      * @return Collection
      */
-    public function getOrganizations()
-    {
+    public function getOrganizations() {
         return $this->organizations;
     }
+
 }

@@ -16,50 +16,50 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtworkRepository")
  */
 class Artwork extends AbstractEntity {
-    
+
     /**
      * @var string
      * @ORM\Column(type="string")
      */
     private $title;
-    
+
     /**
      * @var string
      * @ORM\Column(type="text")
      */
     private $description;
-    
+
     /**
      * @var string
      * @ORM\Column(type="text")
      */
     private $materials;
-    
+
     /**
      * @var string
      * @ORM\Column(type="text")
      */
     private $copyright;
-    
+
     /**
      * @var Collection|ArtworkContribution[]
      * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="artwork")
      */
     private $contributions;
-        
+
     /**
      * @var Collection|MediaFile[]
      * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="artworks")
      * @ORM\JoinTable(name="artwork_mediafiles")
      */
     private $mediaFiles;
-    
+
     public function __construct() {
         parent::__construct();
         $this->contributions = new ArrayCollection();
         $this->mediaFiles = new ArrayCollection();
     }
-    
+
     public function __toString() {
         return $this->title;
     }
@@ -71,8 +71,7 @@ class Artwork extends AbstractEntity {
      *
      * @return Artwork
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
 
         return $this;
@@ -83,8 +82,7 @@ class Artwork extends AbstractEntity {
      *
      * @return string
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
@@ -95,8 +93,7 @@ class Artwork extends AbstractEntity {
      *
      * @return Artwork
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -107,8 +104,7 @@ class Artwork extends AbstractEntity {
      *
      * @return string
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
@@ -119,8 +115,7 @@ class Artwork extends AbstractEntity {
      *
      * @return Artwork
      */
-    public function setMaterials($materials)
-    {
+    public function setMaterials($materials) {
         $this->materials = $materials;
 
         return $this;
@@ -131,8 +126,7 @@ class Artwork extends AbstractEntity {
      *
      * @return string
      */
-    public function getMaterials()
-    {
+    public function getMaterials() {
         return $this->materials;
     }
 
@@ -143,8 +137,7 @@ class Artwork extends AbstractEntity {
      *
      * @return Artwork
      */
-    public function setCopyright($copyright)
-    {
+    public function setCopyright($copyright) {
         $this->copyright = $copyright;
 
         return $this;
@@ -155,8 +148,7 @@ class Artwork extends AbstractEntity {
      *
      * @return string
      */
-    public function getCopyright()
-    {
+    public function getCopyright() {
         return $this->copyright;
     }
 
@@ -167,8 +159,7 @@ class Artwork extends AbstractEntity {
      *
      * @return Artwork
      */
-    public function addContribution(ArtworkContribution $contribution)
-    {
+    public function addContribution(ArtworkContribution $contribution) {
         $this->contributions[] = $contribution;
 
         return $this;
@@ -179,8 +170,7 @@ class Artwork extends AbstractEntity {
      *
      * @param ArtworkContribution $contribution
      */
-    public function removeContribution(ArtworkContribution $contribution)
-    {
+    public function removeContribution(ArtworkContribution $contribution) {
         $this->contributions->removeElement($contribution);
     }
 
@@ -189,8 +179,7 @@ class Artwork extends AbstractEntity {
      *
      * @return Collection
      */
-    public function getContributions()
-    {
+    public function getContributions() {
         return $this->contributions;
     }
 
@@ -201,8 +190,7 @@ class Artwork extends AbstractEntity {
      *
      * @return Artwork
      */
-    public function addMediaFile(MediaFile $mediaFile)
-    {
+    public function addMediaFile(MediaFile $mediaFile) {
         $this->mediaFiles[] = $mediaFile;
 
         return $this;
@@ -213,8 +201,7 @@ class Artwork extends AbstractEntity {
      *
      * @param MediaFile $mediaFile
      */
-    public function removeMediaFile(MediaFile $mediaFile)
-    {
+    public function removeMediaFile(MediaFile $mediaFile) {
         $this->mediaFiles->removeElement($mediaFile);
     }
 
@@ -223,8 +210,8 @@ class Artwork extends AbstractEntity {
      *
      * @return Collection
      */
-    public function getMediaFiles()
-    {
+    public function getMediaFiles() {
         return $this->mediaFiles;
     }
+
 }

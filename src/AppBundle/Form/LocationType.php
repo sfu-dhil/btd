@@ -7,26 +7,25 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LocationType extends AbstractType
-{
+class LocationType extends AbstractType {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {    
-        $builder->add('city');     
-        $builder->add('region');     
-        $builder->add('country');         
+    public function buildForm(FormBuilderInterface $builder, array $options) {
+        $builder->add('city');
+        $builder->add('region');
+        $builder->add('country');
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Location'
         ));
     }
+
 }

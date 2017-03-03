@@ -15,18 +15,17 @@ use AppBundle\Form\VenueType;
  *
  * @Route("/venue")
  */
-class VenueController extends Controller
-{
+class VenueController extends Controller {
+
     /**
      * Lists all Venue entities.
      *
      * @Route("/", name="venue_index")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:Venue e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -37,88 +36,88 @@ class VenueController extends Controller
             'venues' => $venues,
         );
     }
+
     /**
      * Search for Venue entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:Venue repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated search.html.twig
-	 * template.
-	 * 
-     //    public function searchQuery($q) {
-     //        $qb = $this->createQueryBuilder('e');
-     //        $qb->where("e.fieldName like '%$q%'");
-     //        return $qb->getQuery();
-     //    }
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:Venue repository. Replace the fieldName with
+     * something appropriate, and adjust the generated search.html.twig
+     * template.
+     * 
+      //    public function searchQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->where("e.fieldName like '%$q%'");
+      //        return $qb->getQuery();
+      //    }
+     *
      *
      * @Route("/search", name="venue_search")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function searchAction(Request $request)
-    {
+    public function searchAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:Venue');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->searchQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$venues = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$venues = array();
-		}
+        $repo = $em->getRepository('AppBundle:Venue');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->searchQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $venues = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $venues = array();
+        }
 
         return array(
             'venues' => $venues,
-			'q' => $q,
+            'q' => $q,
         );
     }
+
     /**
      * Full text search for Venue entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:Venue repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated fulltext.html.twig
-	 * template.
-	 * 
-	//    public function fulltextQuery($q) {
-	//        $qb = $this->createQueryBuilder('e');
-	//        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-	//        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-	//        $qb->orderBy('score', 'desc');
-	//        $qb->setParameter('q', $q);
-	//        return $qb->getQuery();
-	//    }	 
-	 * 
-	 * Requires a MatchAgainst function be added to doctrine, and appropriate
-	 * fulltext indexes on your Venue entity.
-	 *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:Venue repository. Replace the fieldName with
+     * something appropriate, and adjust the generated fulltext.html.twig
+     * template.
+     * 
+      //    public function fulltextQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
+      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
+      //        $qb->orderBy('score', 'desc');
+      //        $qb->setParameter('q', $q);
+      //        return $qb->getQuery();
+      //    }
+     * 
+     * Requires a MatchAgainst function be added to doctrine, and appropriate
+     * fulltext indexes on your Venue entity.
+     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
+     *
      *
      * @Route("/fulltext", name="venue_fulltext")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
-	 * @return array
+     * @param Request $request
+     * @return array
      */
-    public function fulltextAction(Request $request)
-    {
+    public function fulltextAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:Venue');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->fulltextQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$venues = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$venues = array();
-		}
+        $repo = $em->getRepository('AppBundle:Venue');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->fulltextQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $venues = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $venues = array();
+        }
 
         return array(
             'venues' => $venues,
-			'q' => $q,
+            'q' => $q,
         );
     }
 
@@ -128,10 +127,9 @@ class VenueController extends Controller
      * @Route("/new", name="venue_new")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $venue = new Venue();
         $form = $this->createForm('AppBundle\Form\VenueType', $venue);
         $form->handleRequest($request);
@@ -157,10 +155,9 @@ class VenueController extends Controller
      * @Route("/{id}", name="venue_show")
      * @Method("GET")
      * @Template()
-	 * @param Venue $venue
+     * @param Venue $venue
      */
-    public function showAction(Venue $venue)
-    {
+    public function showAction(Venue $venue) {
 
         return array(
             'venue' => $venue,
@@ -173,11 +170,10 @@ class VenueController extends Controller
      * @Route("/{id}/edit", name="venue_edit")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
-	 * @param Venue $venue
+     * @param Request $request
+     * @param Venue $venue
      */
-    public function editAction(Request $request, Venue $venue)
-    {
+    public function editAction(Request $request, Venue $venue) {
         $editForm = $this->createForm('AppBundle\Form\VenueType', $venue);
         $editForm->handleRequest($request);
 
@@ -199,11 +195,10 @@ class VenueController extends Controller
      *
      * @Route("/{id}/delete", name="venue_delete")
      * @Method("GET")
-	 * @param Request $request
-	 * @param Venue $venue
+     * @param Request $request
+     * @param Venue $venue
      */
-    public function deleteAction(Request $request, Venue $venue)
-    {
+    public function deleteAction(Request $request, Venue $venue) {
         $em = $this->getDoctrine()->getManager();
         $em->remove($venue);
         $em->flush();
@@ -211,4 +206,5 @@ class VenueController extends Controller
 
         return $this->redirectToRoute('venue_index');
     }
+
 }

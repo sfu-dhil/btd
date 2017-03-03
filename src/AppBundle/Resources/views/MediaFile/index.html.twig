@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
- {% block pageheader %} 
+{% block pageheader %} 
     <h1>MediaFile List</h1>
     <p class="count">
         Displaying {{ mediaFiles|length }} mediaFiles of {{ mediaFiles.getTotalItemCount }} total.
     </p>
- {% endblock %} 
+{% endblock %} 
 
 {% block body %}
 
-        <div class='btn-toolbar pull-right'>
+    <div class='btn-toolbar pull-right'>
         <div class='btn-group'>
             <a href="{{ path('media_file_new') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus"></span> New
@@ -19,7 +19,7 @@
             </a>
         </div>
     </div>
-        
+
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>
@@ -34,26 +34,26 @@
                 <th>Updated</th>            </tr>
         </thead>
         <tbody>
-        {% for mediaFile in mediaFiles %}
-            <tr>
-                <td>
-                    <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
-                        {{ mediaFile.path }}
-                    </a>
-                </td>
-                <td>{{ mediaFile.size }}</td>
-                <td>{{ mediaFile.mimetype }}</td>
-                <td>{{ mediaFile.creator }}</td>
-                <td>{{ mediaFile.title }}</td>
-                <td>{{ mediaFile.description }}</td>
-                <td>{{ mediaFile.copyright }}</td>
-                <td>{% if mediaFile.created %}{{ mediaFile.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if mediaFile.updated %}{{ mediaFile.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        {% endfor %}
+            {% for mediaFile in mediaFiles %}
+                <tr>
+                    <td>
+                        <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
+                            {{ mediaFile.path }}
+                        </a>
+                    </td>
+                    <td>{{ mediaFile.size }}</td>
+                    <td>{{ mediaFile.mimetype }}</td>
+                    <td>{{ mediaFile.creator }}</td>
+                    <td>{{ mediaFile.title }}</td>
+                    <td>{{ mediaFile.description }}</td>
+                    <td>{{ mediaFile.copyright }}</td>
+                    <td>{% if mediaFile.created %}{{ mediaFile.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if mediaFile.updated %}{{ mediaFile.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
-        
+
     <div class="navigation">
         {{ knp_pagination_render(mediaFiles) }}
     </div>

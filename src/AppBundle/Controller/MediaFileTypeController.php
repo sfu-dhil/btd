@@ -15,18 +15,17 @@ use AppBundle\Form\MediaFileTypeType;
  *
  * @Route("/media_file_type")
  */
-class MediaFileTypeController extends Controller
-{
+class MediaFileTypeController extends Controller {
+
     /**
      * Lists all MediaFileType entities.
      *
      * @Route("/", name="media_file_type_index")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:MediaFileType e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -37,88 +36,88 @@ class MediaFileTypeController extends Controller
             'mediaFileTypes' => $mediaFileTypes,
         );
     }
+
     /**
      * Search for MediaFileType entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:MediaFileType repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated search.html.twig
-	 * template.
-	 * 
-     //    public function searchQuery($q) {
-     //        $qb = $this->createQueryBuilder('e');
-     //        $qb->where("e.fieldName like '%$q%'");
-     //        return $qb->getQuery();
-     //    }
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:MediaFileType repository. Replace the fieldName with
+     * something appropriate, and adjust the generated search.html.twig
+     * template.
+     * 
+      //    public function searchQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->where("e.fieldName like '%$q%'");
+      //        return $qb->getQuery();
+      //    }
+     *
      *
      * @Route("/search", name="media_file_type_search")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function searchAction(Request $request)
-    {
+    public function searchAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:MediaFileType');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->searchQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$mediaFileTypes = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$mediaFileTypes = array();
-		}
+        $repo = $em->getRepository('AppBundle:MediaFileType');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->searchQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $mediaFileTypes = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $mediaFileTypes = array();
+        }
 
         return array(
             'mediaFileTypes' => $mediaFileTypes,
-			'q' => $q,
+            'q' => $q,
         );
     }
+
     /**
      * Full text search for MediaFileType entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:MediaFileType repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated fulltext.html.twig
-	 * template.
-	 * 
-	//    public function fulltextQuery($q) {
-	//        $qb = $this->createQueryBuilder('e');
-	//        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-	//        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-	//        $qb->orderBy('score', 'desc');
-	//        $qb->setParameter('q', $q);
-	//        return $qb->getQuery();
-	//    }	 
-	 * 
-	 * Requires a MatchAgainst function be added to doctrine, and appropriate
-	 * fulltext indexes on your MediaFileType entity.
-	 *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:MediaFileType repository. Replace the fieldName with
+     * something appropriate, and adjust the generated fulltext.html.twig
+     * template.
+     * 
+      //    public function fulltextQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
+      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
+      //        $qb->orderBy('score', 'desc');
+      //        $qb->setParameter('q', $q);
+      //        return $qb->getQuery();
+      //    }
+     * 
+     * Requires a MatchAgainst function be added to doctrine, and appropriate
+     * fulltext indexes on your MediaFileType entity.
+     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
+     *
      *
      * @Route("/fulltext", name="media_file_type_fulltext")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
-	 * @return array
+     * @param Request $request
+     * @return array
      */
-    public function fulltextAction(Request $request)
-    {
+    public function fulltextAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:MediaFileType');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->fulltextQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$mediaFileTypes = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$mediaFileTypes = array();
-		}
+        $repo = $em->getRepository('AppBundle:MediaFileType');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->fulltextQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $mediaFileTypes = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $mediaFileTypes = array();
+        }
 
         return array(
             'mediaFileTypes' => $mediaFileTypes,
-			'q' => $q,
+            'q' => $q,
         );
     }
 
@@ -128,10 +127,9 @@ class MediaFileTypeController extends Controller
      * @Route("/new", name="media_file_type_new")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $mediaFileType = new MediaFileType();
         $form = $this->createForm('AppBundle\Form\MediaFileTypeType', $mediaFileType);
         $form->handleRequest($request);
@@ -157,10 +155,9 @@ class MediaFileTypeController extends Controller
      * @Route("/{id}", name="media_file_type_show")
      * @Method("GET")
      * @Template()
-	 * @param MediaFileType $mediaFileType
+     * @param MediaFileType $mediaFileType
      */
-    public function showAction(MediaFileType $mediaFileType)
-    {
+    public function showAction(MediaFileType $mediaFileType) {
 
         return array(
             'mediaFileType' => $mediaFileType,
@@ -173,11 +170,10 @@ class MediaFileTypeController extends Controller
      * @Route("/{id}/edit", name="media_file_type_edit")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
-	 * @param MediaFileType $mediaFileType
+     * @param Request $request
+     * @param MediaFileType $mediaFileType
      */
-    public function editAction(Request $request, MediaFileType $mediaFileType)
-    {
+    public function editAction(Request $request, MediaFileType $mediaFileType) {
         $editForm = $this->createForm('AppBundle\Form\MediaFileTypeType', $mediaFileType);
         $editForm->handleRequest($request);
 
@@ -199,11 +195,10 @@ class MediaFileTypeController extends Controller
      *
      * @Route("/{id}/delete", name="media_file_type_delete")
      * @Method("GET")
-	 * @param Request $request
-	 * @param MediaFileType $mediaFileType
+     * @param Request $request
+     * @param MediaFileType $mediaFileType
      */
-    public function deleteAction(Request $request, MediaFileType $mediaFileType)
-    {
+    public function deleteAction(Request $request, MediaFileType $mediaFileType) {
         $em = $this->getDoctrine()->getManager();
         $em->remove($mediaFileType);
         $em->flush();
@@ -211,4 +206,5 @@ class MediaFileTypeController extends Controller
 
         return $this->redirectToRoute('media_file_type_index');
     }
+
 }

@@ -7,28 +7,27 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ArtworkType extends AbstractType
-{
+class ArtworkType extends AbstractType {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {    
-        $builder->add('title');     
-        $builder->add('description');     
-        $builder->add('materials');     
-        $builder->add('copyright');     
-        $builder->add('mediaFiles');         
+    public function buildForm(FormBuilderInterface $builder, array $options) {
+        $builder->add('title');
+        $builder->add('description');
+        $builder->add('materials');
+        $builder->add('copyright');
+        $builder->add('mediaFiles');
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Artwork'
         ));
     }
+
 }

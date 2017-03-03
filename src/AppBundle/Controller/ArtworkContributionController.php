@@ -15,18 +15,17 @@ use AppBundle\Form\ArtworkContributionType;
  *
  * @Route("/artwork_contribution")
  */
-class ArtworkContributionController extends Controller
-{
+class ArtworkContributionController extends Controller {
+
     /**
      * Lists all ArtworkContribution entities.
      *
      * @Route("/", name="artwork_contribution_index")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:ArtworkContribution e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -37,88 +36,88 @@ class ArtworkContributionController extends Controller
             'artworkContributions' => $artworkContributions,
         );
     }
+
     /**
      * Search for ArtworkContribution entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:ArtworkContribution repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated search.html.twig
-	 * template.
-	 * 
-     //    public function searchQuery($q) {
-     //        $qb = $this->createQueryBuilder('e');
-     //        $qb->where("e.fieldName like '%$q%'");
-     //        return $qb->getQuery();
-     //    }
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:ArtworkContribution repository. Replace the fieldName with
+     * something appropriate, and adjust the generated search.html.twig
+     * template.
+     * 
+      //    public function searchQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->where("e.fieldName like '%$q%'");
+      //        return $qb->getQuery();
+      //    }
+     *
      *
      * @Route("/search", name="artwork_contribution_search")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function searchAction(Request $request)
-    {
+    public function searchAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:ArtworkContribution');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->searchQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$artworkContributions = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$artworkContributions = array();
-		}
+        $repo = $em->getRepository('AppBundle:ArtworkContribution');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->searchQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $artworkContributions = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $artworkContributions = array();
+        }
 
         return array(
             'artworkContributions' => $artworkContributions,
-			'q' => $q,
+            'q' => $q,
         );
     }
+
     /**
      * Full text search for ArtworkContribution entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:ArtworkContribution repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated fulltext.html.twig
-	 * template.
-	 * 
-	//    public function fulltextQuery($q) {
-	//        $qb = $this->createQueryBuilder('e');
-	//        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-	//        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-	//        $qb->orderBy('score', 'desc');
-	//        $qb->setParameter('q', $q);
-	//        return $qb->getQuery();
-	//    }	 
-	 * 
-	 * Requires a MatchAgainst function be added to doctrine, and appropriate
-	 * fulltext indexes on your ArtworkContribution entity.
-	 *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:ArtworkContribution repository. Replace the fieldName with
+     * something appropriate, and adjust the generated fulltext.html.twig
+     * template.
+     * 
+      //    public function fulltextQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
+      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
+      //        $qb->orderBy('score', 'desc');
+      //        $qb->setParameter('q', $q);
+      //        return $qb->getQuery();
+      //    }
+     * 
+     * Requires a MatchAgainst function be added to doctrine, and appropriate
+     * fulltext indexes on your ArtworkContribution entity.
+     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
+     *
      *
      * @Route("/fulltext", name="artwork_contribution_fulltext")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
-	 * @return array
+     * @param Request $request
+     * @return array
      */
-    public function fulltextAction(Request $request)
-    {
+    public function fulltextAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:ArtworkContribution');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->fulltextQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$artworkContributions = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$artworkContributions = array();
-		}
+        $repo = $em->getRepository('AppBundle:ArtworkContribution');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->fulltextQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $artworkContributions = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $artworkContributions = array();
+        }
 
         return array(
             'artworkContributions' => $artworkContributions,
-			'q' => $q,
+            'q' => $q,
         );
     }
 
@@ -128,10 +127,9 @@ class ArtworkContributionController extends Controller
      * @Route("/new", name="artwork_contribution_new")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $artworkContribution = new ArtworkContribution();
         $form = $this->createForm('AppBundle\Form\ArtworkContributionType', $artworkContribution);
         $form->handleRequest($request);
@@ -157,10 +155,9 @@ class ArtworkContributionController extends Controller
      * @Route("/{id}", name="artwork_contribution_show")
      * @Method("GET")
      * @Template()
-	 * @param ArtworkContribution $artworkContribution
+     * @param ArtworkContribution $artworkContribution
      */
-    public function showAction(ArtworkContribution $artworkContribution)
-    {
+    public function showAction(ArtworkContribution $artworkContribution) {
 
         return array(
             'artworkContribution' => $artworkContribution,
@@ -173,11 +170,10 @@ class ArtworkContributionController extends Controller
      * @Route("/{id}/edit", name="artwork_contribution_edit")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
-	 * @param ArtworkContribution $artworkContribution
+     * @param Request $request
+     * @param ArtworkContribution $artworkContribution
      */
-    public function editAction(Request $request, ArtworkContribution $artworkContribution)
-    {
+    public function editAction(Request $request, ArtworkContribution $artworkContribution) {
         $editForm = $this->createForm('AppBundle\Form\ArtworkContributionType', $artworkContribution);
         $editForm->handleRequest($request);
 
@@ -199,11 +195,10 @@ class ArtworkContributionController extends Controller
      *
      * @Route("/{id}/delete", name="artwork_contribution_delete")
      * @Method("GET")
-	 * @param Request $request
-	 * @param ArtworkContribution $artworkContribution
+     * @param Request $request
+     * @param ArtworkContribution $artworkContribution
      */
-    public function deleteAction(Request $request, ArtworkContribution $artworkContribution)
-    {
+    public function deleteAction(Request $request, ArtworkContribution $artworkContribution) {
         $em = $this->getDoctrine()->getManager();
         $em->remove($artworkContribution);
         $em->flush();
@@ -211,4 +206,5 @@ class ArtworkContributionController extends Controller
 
         return $this->redirectToRoute('artwork_contribution_index');
     }
+
 }

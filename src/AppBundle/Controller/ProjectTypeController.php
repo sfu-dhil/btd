@@ -15,18 +15,17 @@ use AppBundle\Form\ProjectTypeType;
  *
  * @Route("/project_type")
  */
-class ProjectTypeController extends Controller
-{
+class ProjectTypeController extends Controller {
+
     /**
      * Lists all ProjectType entities.
      *
      * @Route("/", name="project_type_index")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:ProjectType e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -37,88 +36,88 @@ class ProjectTypeController extends Controller
             'projectTypes' => $projectTypes,
         );
     }
+
     /**
      * Search for ProjectType entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:ProjectType repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated search.html.twig
-	 * template.
-	 * 
-     //    public function searchQuery($q) {
-     //        $qb = $this->createQueryBuilder('e');
-     //        $qb->where("e.fieldName like '%$q%'");
-     //        return $qb->getQuery();
-     //    }
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:ProjectType repository. Replace the fieldName with
+     * something appropriate, and adjust the generated search.html.twig
+     * template.
+     * 
+      //    public function searchQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->where("e.fieldName like '%$q%'");
+      //        return $qb->getQuery();
+      //    }
+     *
      *
      * @Route("/search", name="project_type_search")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function searchAction(Request $request)
-    {
+    public function searchAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:ProjectType');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->searchQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$projectTypes = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$projectTypes = array();
-		}
+        $repo = $em->getRepository('AppBundle:ProjectType');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->searchQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $projectTypes = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $projectTypes = array();
+        }
 
         return array(
             'projectTypes' => $projectTypes,
-			'q' => $q,
+            'q' => $q,
         );
     }
+
     /**
      * Full text search for ProjectType entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:ProjectType repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated fulltext.html.twig
-	 * template.
-	 * 
-	//    public function fulltextQuery($q) {
-	//        $qb = $this->createQueryBuilder('e');
-	//        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-	//        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-	//        $qb->orderBy('score', 'desc');
-	//        $qb->setParameter('q', $q);
-	//        return $qb->getQuery();
-	//    }	 
-	 * 
-	 * Requires a MatchAgainst function be added to doctrine, and appropriate
-	 * fulltext indexes on your ProjectType entity.
-	 *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:ProjectType repository. Replace the fieldName with
+     * something appropriate, and adjust the generated fulltext.html.twig
+     * template.
+     * 
+      //    public function fulltextQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
+      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
+      //        $qb->orderBy('score', 'desc');
+      //        $qb->setParameter('q', $q);
+      //        return $qb->getQuery();
+      //    }
+     * 
+     * Requires a MatchAgainst function be added to doctrine, and appropriate
+     * fulltext indexes on your ProjectType entity.
+     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
+     *
      *
      * @Route("/fulltext", name="project_type_fulltext")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
-	 * @return array
+     * @param Request $request
+     * @return array
      */
-    public function fulltextAction(Request $request)
-    {
+    public function fulltextAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:ProjectType');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->fulltextQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$projectTypes = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$projectTypes = array();
-		}
+        $repo = $em->getRepository('AppBundle:ProjectType');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->fulltextQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $projectTypes = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $projectTypes = array();
+        }
 
         return array(
             'projectTypes' => $projectTypes,
-			'q' => $q,
+            'q' => $q,
         );
     }
 
@@ -128,10 +127,9 @@ class ProjectTypeController extends Controller
      * @Route("/new", name="project_type_new")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $projectType = new ProjectType();
         $form = $this->createForm('AppBundle\Form\ProjectTypeType', $projectType);
         $form->handleRequest($request);
@@ -157,10 +155,9 @@ class ProjectTypeController extends Controller
      * @Route("/{id}", name="project_type_show")
      * @Method("GET")
      * @Template()
-	 * @param ProjectType $projectType
+     * @param ProjectType $projectType
      */
-    public function showAction(ProjectType $projectType)
-    {
+    public function showAction(ProjectType $projectType) {
 
         return array(
             'projectType' => $projectType,
@@ -173,11 +170,10 @@ class ProjectTypeController extends Controller
      * @Route("/{id}/edit", name="project_type_edit")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
-	 * @param ProjectType $projectType
+     * @param Request $request
+     * @param ProjectType $projectType
      */
-    public function editAction(Request $request, ProjectType $projectType)
-    {
+    public function editAction(Request $request, ProjectType $projectType) {
         $editForm = $this->createForm('AppBundle\Form\ProjectTypeType', $projectType);
         $editForm->handleRequest($request);
 
@@ -199,11 +195,10 @@ class ProjectTypeController extends Controller
      *
      * @Route("/{id}/delete", name="project_type_delete")
      * @Method("GET")
-	 * @param Request $request
-	 * @param ProjectType $projectType
+     * @param Request $request
+     * @param ProjectType $projectType
      */
-    public function deleteAction(Request $request, ProjectType $projectType)
-    {
+    public function deleteAction(Request $request, ProjectType $projectType) {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectType);
         $em->flush();
@@ -211,4 +206,5 @@ class ProjectTypeController extends Controller
 
         return $this->redirectToRoute('project_type_index');
     }
+
 }

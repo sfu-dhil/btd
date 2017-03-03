@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
- {% block pageheader %} 
+{% block pageheader %} 
     <h1>Organization List</h1>
     <p class="count">
         Displaying {{ organizations|length }} organizations of {{ organizations.getTotalItemCount }} total.
     </p>
- {% endblock %} 
+{% endblock %} 
 
 {% block body %}
 
-        <div class='btn-toolbar pull-right'>
+    <div class='btn-toolbar pull-right'>
         <div class='btn-group'>
             <a href="{{ path('organization_new') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus"></span> New
@@ -19,7 +19,7 @@
             </a>
         </div>
     </div>
-        
+
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>
@@ -32,24 +32,24 @@
                 <th>Updated</th>            </tr>
         </thead>
         <tbody>
-        {% for organization in organizations %}
-            <tr>
-                <td>
-                    <a href="{{ path('organization_show', { 'id': organization.id }) }}">
-                        {{ organization.name }}
-                    </a>
-                </td>
-                <td>{{ organization.address }}</td>
-                <td>{{ organization.description }}</td>
-                <td>{{ organization.url }}</td>
-                <td>{{ organization.contact }}</td>
-                <td>{% if organization.created %}{{ organization.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if organization.updated %}{{ organization.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        {% endfor %}
+            {% for organization in organizations %}
+                <tr>
+                    <td>
+                        <a href="{{ path('organization_show', { 'id': organization.id }) }}">
+                            {{ organization.name }}
+                        </a>
+                    </td>
+                    <td>{{ organization.address }}</td>
+                    <td>{{ organization.description }}</td>
+                    <td>{{ organization.url }}</td>
+                    <td>{{ organization.contact }}</td>
+                    <td>{% if organization.created %}{{ organization.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if organization.updated %}{{ organization.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
-        
+
     <div class="navigation">
         {{ knp_pagination_render(organizations) }}
     </div>

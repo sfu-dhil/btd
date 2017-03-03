@@ -13,8 +13,8 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * @ORM\Table(name="venue_type")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VenueTypeRepository")
  */
-class VenueType extends AbstractTerm
-{
+class VenueType extends AbstractTerm {
+
     /**
      * @var Collection|Venue[]
      * @ORM\OneToMany(targetEntity="Venue", mappedBy="venueType")
@@ -23,9 +23,9 @@ class VenueType extends AbstractTerm
 
     public function __construct() {
         parent::__construct();
-        $this->venues= new ArrayCollection();
+        $this->venues = new ArrayCollection();
     }
-    
+
     /**
      * Add venue
      *
@@ -33,8 +33,7 @@ class VenueType extends AbstractTerm
      *
      * @return VenueType
      */
-    public function addVenue(Venue $venue)
-    {
+    public function addVenue(Venue $venue) {
         $this->venues[] = $venue;
 
         return $this;
@@ -45,8 +44,7 @@ class VenueType extends AbstractTerm
      *
      * @param Venue $venue
      */
-    public function removeVenue(Venue $venue)
-    {
+    public function removeVenue(Venue $venue) {
         $this->venues->removeElement($venue);
     }
 
@@ -55,8 +53,8 @@ class VenueType extends AbstractTerm
      *
      * @return Collection
      */
-    public function getVenues()
-    {
+    public function getVenues() {
         return $this->venues;
     }
+
 }

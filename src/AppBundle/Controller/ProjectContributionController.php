@@ -15,18 +15,17 @@ use AppBundle\Form\ProjectContributionType;
  *
  * @Route("/project_contribution")
  */
-class ProjectContributionController extends Controller
-{
+class ProjectContributionController extends Controller {
+
     /**
      * Lists all ProjectContribution entities.
      *
      * @Route("/", name="project_contribution_index")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:ProjectContribution e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -37,88 +36,88 @@ class ProjectContributionController extends Controller
             'projectContributions' => $projectContributions,
         );
     }
+
     /**
      * Search for ProjectContribution entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:ProjectContribution repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated search.html.twig
-	 * template.
-	 * 
-     //    public function searchQuery($q) {
-     //        $qb = $this->createQueryBuilder('e');
-     //        $qb->where("e.fieldName like '%$q%'");
-     //        return $qb->getQuery();
-     //    }
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:ProjectContribution repository. Replace the fieldName with
+     * something appropriate, and adjust the generated search.html.twig
+     * template.
+     * 
+      //    public function searchQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->where("e.fieldName like '%$q%'");
+      //        return $qb->getQuery();
+      //    }
+     *
      *
      * @Route("/search", name="project_contribution_search")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function searchAction(Request $request)
-    {
+    public function searchAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:ProjectContribution');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->searchQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$projectContributions = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$projectContributions = array();
-		}
+        $repo = $em->getRepository('AppBundle:ProjectContribution');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->searchQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $projectContributions = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $projectContributions = array();
+        }
 
         return array(
             'projectContributions' => $projectContributions,
-			'q' => $q,
+            'q' => $q,
         );
     }
+
     /**
      * Full text search for ProjectContribution entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:ProjectContribution repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated fulltext.html.twig
-	 * template.
-	 * 
-	//    public function fulltextQuery($q) {
-	//        $qb = $this->createQueryBuilder('e');
-	//        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-	//        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-	//        $qb->orderBy('score', 'desc');
-	//        $qb->setParameter('q', $q);
-	//        return $qb->getQuery();
-	//    }	 
-	 * 
-	 * Requires a MatchAgainst function be added to doctrine, and appropriate
-	 * fulltext indexes on your ProjectContribution entity.
-	 *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
-	 *
+     *
+     * To make this work, add a method like this one to the 
+     * AppBundle:ProjectContribution repository. Replace the fieldName with
+     * something appropriate, and adjust the generated fulltext.html.twig
+     * template.
+     * 
+      //    public function fulltextQuery($q) {
+      //        $qb = $this->createQueryBuilder('e');
+      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
+      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
+      //        $qb->orderBy('score', 'desc');
+      //        $qb->setParameter('q', $q);
+      //        return $qb->getQuery();
+      //    }
+     * 
+     * Requires a MatchAgainst function be added to doctrine, and appropriate
+     * fulltext indexes on your ProjectContribution entity.
+     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
+     *
      *
      * @Route("/fulltext", name="project_contribution_fulltext")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
-	 * @return array
+     * @param Request $request
+     * @return array
      */
-    public function fulltextAction(Request $request)
-    {
+    public function fulltextAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:ProjectContribution');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->fulltextQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$projectContributions = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$projectContributions = array();
-		}
+        $repo = $em->getRepository('AppBundle:ProjectContribution');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->fulltextQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $projectContributions = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $projectContributions = array();
+        }
 
         return array(
             'projectContributions' => $projectContributions,
-			'q' => $q,
+            'q' => $q,
         );
     }
 
@@ -128,10 +127,9 @@ class ProjectContributionController extends Controller
      * @Route("/new", name="project_contribution_new")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $projectContribution = new ProjectContribution();
         $form = $this->createForm('AppBundle\Form\ProjectContributionType', $projectContribution);
         $form->handleRequest($request);
@@ -157,10 +155,9 @@ class ProjectContributionController extends Controller
      * @Route("/{id}", name="project_contribution_show")
      * @Method("GET")
      * @Template()
-	 * @param ProjectContribution $projectContribution
+     * @param ProjectContribution $projectContribution
      */
-    public function showAction(ProjectContribution $projectContribution)
-    {
+    public function showAction(ProjectContribution $projectContribution) {
 
         return array(
             'projectContribution' => $projectContribution,
@@ -173,11 +170,10 @@ class ProjectContributionController extends Controller
      * @Route("/{id}/edit", name="project_contribution_edit")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
-	 * @param ProjectContribution $projectContribution
+     * @param Request $request
+     * @param ProjectContribution $projectContribution
      */
-    public function editAction(Request $request, ProjectContribution $projectContribution)
-    {
+    public function editAction(Request $request, ProjectContribution $projectContribution) {
         $editForm = $this->createForm('AppBundle\Form\ProjectContributionType', $projectContribution);
         $editForm->handleRequest($request);
 
@@ -199,11 +195,10 @@ class ProjectContributionController extends Controller
      *
      * @Route("/{id}/delete", name="project_contribution_delete")
      * @Method("GET")
-	 * @param Request $request
-	 * @param ProjectContribution $projectContribution
+     * @param Request $request
+     * @param ProjectContribution $projectContribution
      */
-    public function deleteAction(Request $request, ProjectContribution $projectContribution)
-    {
+    public function deleteAction(Request $request, ProjectContribution $projectContribution) {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectContribution);
         $em->flush();
@@ -211,4 +206,5 @@ class ProjectContributionController extends Controller
 
         return $this->redirectToRoute('project_contribution_index');
     }
+
 }

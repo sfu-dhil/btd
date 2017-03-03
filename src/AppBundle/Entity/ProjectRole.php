@@ -13,20 +13,19 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * @ORM\Table(name="project_role")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRoleRepository")
  */
-class ProjectRole extends AbstractTerm
-{
+class ProjectRole extends AbstractTerm {
+
     /**
      * @var Collection|ProjectContribution[]
      * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="projectRole")
      */
     private $contributions;
 
-
     public function __construct() {
         parent::__construct();
         $this->contributions = new ArrayCollection();
     }
-    
+
     /**
      * Add contribution
      *
@@ -34,8 +33,7 @@ class ProjectRole extends AbstractTerm
      *
      * @return ProjectRole
      */
-    public function addContribution(ProjectContribution $contribution)
-    {
+    public function addContribution(ProjectContribution $contribution) {
         $this->contributions[] = $contribution;
 
         return $this;
@@ -46,8 +44,7 @@ class ProjectRole extends AbstractTerm
      *
      * @param ProjectContribution $contribution
      */
-    public function removeContribution(ProjectContribution $contribution)
-    {
+    public function removeContribution(ProjectContribution $contribution) {
         $this->contributions->removeElement($contribution);
     }
 
@@ -56,8 +53,8 @@ class ProjectRole extends AbstractTerm
      *
      * @return Collection
      */
-    public function getContributions()
-    {
+    public function getContributions() {
         return $this->contributions;
     }
+
 }

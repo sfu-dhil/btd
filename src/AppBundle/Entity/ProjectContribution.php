@@ -12,36 +12,35 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="project_contribution")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectContributionRepository")
  */
-class ProjectContribution extends AbstractEntity
-{
+class ProjectContribution extends AbstractEntity {
+
     /**
      * @var Project
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="contributions")
      */
     private $project;
-    
+
     /**
      * @var Person
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="projectContributions")
      */
     private $person;
-    
+
     /**
      * @var Person
      * @ORM\ManyToOne(targetEntity="Organization", inversedBy="projectContributions")
      */
     private $organization;
-    
+
     /**
      * @var ProjectRole
      * @ORM\ManyToOne(targetEntity="ProjectRole", inversedBy="contributions")
      */
     private $projectRole;
-    
+
     public function __toString() {
         
     }
-
 
     /**
      * Set project
@@ -50,8 +49,7 @@ class ProjectContribution extends AbstractEntity
      *
      * @return ProjectContribution
      */
-    public function setProject(Project $project = null)
-    {
+    public function setProject(Project $project = null) {
         $this->project = $project;
 
         return $this;
@@ -62,8 +60,7 @@ class ProjectContribution extends AbstractEntity
      *
      * @return Project
      */
-    public function getProject()
-    {
+    public function getProject() {
         return $this->project;
     }
 
@@ -74,8 +71,7 @@ class ProjectContribution extends AbstractEntity
      *
      * @return ProjectContribution
      */
-    public function setPerson(Person $person = null)
-    {
+    public function setPerson(Person $person = null) {
         $this->person = $person;
 
         return $this;
@@ -86,8 +82,7 @@ class ProjectContribution extends AbstractEntity
      *
      * @return Person
      */
-    public function getPerson()
-    {
+    public function getPerson() {
         return $this->person;
     }
 
@@ -98,8 +93,7 @@ class ProjectContribution extends AbstractEntity
      *
      * @return ProjectContribution
      */
-    public function setOrganization(Organization $organization = null)
-    {
+    public function setOrganization(Organization $organization = null) {
         $this->organization = $organization;
 
         return $this;
@@ -110,8 +104,7 @@ class ProjectContribution extends AbstractEntity
      *
      * @return Organization
      */
-    public function getOrganization()
-    {
+    public function getOrganization() {
         return $this->organization;
     }
 
@@ -122,8 +115,7 @@ class ProjectContribution extends AbstractEntity
      *
      * @return ProjectContribution
      */
-    public function setProjectRole(ProjectRole $projectRole = null)
-    {
+    public function setProjectRole(ProjectRole $projectRole = null) {
         $this->projectRole = $projectRole;
 
         return $this;
@@ -134,8 +126,8 @@ class ProjectContribution extends AbstractEntity
      *
      * @return ProjectRole
      */
-    public function getProjectRole()
-    {
+    public function getProjectRole() {
         return $this->projectRole;
     }
+
 }

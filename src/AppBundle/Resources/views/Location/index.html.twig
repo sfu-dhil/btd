@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
- {% block pageheader %} 
+{% block pageheader %} 
     <h1>Location List</h1>
     <p class="count">
         Displaying {{ locations|length }} locations of {{ locations.getTotalItemCount }} total.
     </p>
- {% endblock %} 
+{% endblock %} 
 
 {% block body %}
 
-        <div class='btn-toolbar pull-right'>
+    <div class='btn-toolbar pull-right'>
         <div class='btn-group'>
             <a href="{{ path('location_new') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus"></span> New
@@ -19,7 +19,7 @@
             </a>
         </div>
     </div>
-        
+
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>
@@ -30,22 +30,22 @@
                 <th>Updated</th>            </tr>
         </thead>
         <tbody>
-        {% for location in locations %}
-            <tr>
-                <td>
-                    <a href="{{ path('location_show', { 'id': location.id }) }}">
-                        {{ location.city }}
-                    </a>
-                </td>
-                <td>{{ location.region }}</td>
-                <td>{{ location.country }}</td>
-                <td>{% if location.created %}{{ location.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if location.updated %}{{ location.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        {% endfor %}
+            {% for location in locations %}
+                <tr>
+                    <td>
+                        <a href="{{ path('location_show', { 'id': location.id }) }}">
+                            {{ location.city }}
+                        </a>
+                    </td>
+                    <td>{{ location.region }}</td>
+                    <td>{{ location.country }}</td>
+                    <td>{% if location.created %}{{ location.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if location.updated %}{{ location.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
-        
+
     <div class="navigation">
         {{ knp_pagination_render(locations) }}
     </div>
