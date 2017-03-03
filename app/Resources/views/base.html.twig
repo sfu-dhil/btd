@@ -45,15 +45,16 @@
                         </li>
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                Browse <span class="caret"></span>
-                            </a>
-                            {{ knp_menu_render('AppBundle:Builder:navMenu') }}
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 Announcements <span class="caret"></span>
                             </a>
                             {{ knp_menu_render('NinesBlogBundle:Builder:postNavMenu') }}
                         </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Browse <span class="caret"></span>
+                            </a>
+                            {{ knp_menu_render('AppBundle:Builder:navMenu') }}
+                        </li>                            
                     </ul>
                     {{ knp_menu_render("NinesUserBundle:Builder:userNavMenu") }}
                 </div><!--/.nav-collapse -->
