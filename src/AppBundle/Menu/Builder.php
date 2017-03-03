@@ -40,7 +40,7 @@ class Builder implements ContainerAwareInterface {
         ));
         $menu->addChild('mediafile', array(
             'label' => 'Media Files',
-            'route' => 'mediafile_index',
+            'route' => 'media_file_index',
         ));
         $menu->addChild('person', array(
             'label' => 'People',
@@ -63,7 +63,26 @@ class Builder implements ContainerAwareInterface {
                 'role' => 'separator',
                 'class' => 'divider',
             ));
-            
+            $menu->addChild('artwork_role', array(
+                'label' => 'Artwork Roles',
+                'route' => 'artwork_role_index',
+            ));
+            $menu->addChild('mediafile_type', array(
+                'label' => 'Media File Types',
+                'route' => 'media_file_type_index',
+            ));
+            $menu->addChild('project_role', array(
+                'label' => 'Project Roles',
+                'route' => 'project_role_index',
+            ));
+            $menu->addChild('project_type', array(
+                'label' => 'Project Types',
+                'route' => 'project_type_index',
+            ));
+            $menu->addChild('venue_type', array(
+                'label' => 'Venue Types',
+                'route' => 'venue_type_index',
+            ));
         }
 
         return $menu;

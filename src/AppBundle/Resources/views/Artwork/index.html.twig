@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+ {% block pageheader %} 
+    <h1>Artwork List</h1>
+    <p class="count">
+        Displaying {{ artworks|length }} artworks of {{ artworks.getTotalItemCount }} total.
+    </p>
+ {% endblock %} 
+
+{% block body %}
+
+        <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            <a href="{{ path('artwork_new') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> New
+            </a>
+            <a href="{{ path('artwork_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </a>
+        </div>
+    </div>
+        
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Materials</th>
+                <th>Copyright</th>
+                <th>Created</th>
+                <th>Updated</th>            </tr>
+        </thead>
+        <tbody>
+        {% for artwork in artworks %}
+            <tr>
+                <td>
+                    <a href="{{ path('artwork_show', { 'id': artwork.id }) }}">
+                        {{ artwork.title }}
+                    </a>
+                </td>
+                <td>{{ artwork.description }}</td>
+                <td>{{ artwork.materials }}</td>
+                <td>{{ artwork.copyright }}</td>
+                <td>{% if artwork.created %}{{ artwork.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if artwork.updated %}{{ artwork.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    <div class="navigation">
+        {{ knp_pagination_render(artworks) }}
+    </div>
+
+{% endblock %}

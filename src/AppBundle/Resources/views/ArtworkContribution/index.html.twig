@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+ {% block pageheader %} 
+    <h1>ArtworkContribution List</h1>
+    <p class="count">
+        Displaying {{ artworkContributions|length }} artworkContributions of {{ artworkContributions.getTotalItemCount }} total.
+    </p>
+ {% endblock %} 
+
+{% block body %}
+
+        <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            <a href="{{ path('artwork_contribution_new') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> New
+            </a>
+            <a href="{{ path('artwork_contribution_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </a>
+        </div>
+    </div>
+        
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Created</th>
+                <th>Updated</th>            </tr>
+        </thead>
+        <tbody>
+        {% for artworkContribution in artworkContributions %}
+            <tr>
+                <td>
+                    <a href="{{ path('artwork_contribution_show', { 'id': artworkContribution.id }) }}">
+                        {{ artworkContribution.created }}
+                    </a>
+                </td>
+                <td>{% if artworkContribution.updated %}{{ artworkContribution.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    <div class="navigation">
+        {{ knp_pagination_render(artworkContributions) }}
+    </div>
+
+{% endblock %}
