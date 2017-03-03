@@ -33,7 +33,7 @@
             {% for venueType in venueTypes %}
                 <tr>
                     <td>
-                        <a href="{{ path('artwork_role_show', { 'id': venueType.id }) }}">
+                        <a href="{{ path('venue_type_show', { 'id': venueType.id }) }}">
                             {{ venueType.name }}
                         </a>
                     </td>
