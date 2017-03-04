@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block pageheader %} 
-    <h1>Person</h1>
+    <h1>{{ person.fullname }}</h1>
 {% endblock %} 
 
 {% block body %}
@@ -19,33 +19,10 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <tbody>
-            <tr>
-                <th>Fullname</th>
-                <td>{{ person.fullname }}</td>
-            </tr>
-            <tr>
-                <th>Sortablename</th>
-                <td>{{ person.sortableName }}</td>
-            </tr>
-            <tr>
-                <th>Biography</th>
-                <td>{{ person.biography }}</td>
-            </tr>
-            <tr>
-                <th>Url</th>
-                <td>{{ person.url }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{% if person.created %}{{ person.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{% if person.updated %}{{ person.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+        {{ person.biography|raw }}
+        <p>
+            <a href="{{ person.url }}">{{person.url}}</a><br/>
+            Created {{ person.created|date }}. Most recently updated {{ person.updated|date }}
+        </p>
 
 {% endblock %}

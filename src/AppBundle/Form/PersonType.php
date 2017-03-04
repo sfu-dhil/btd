@@ -2,9 +2,9 @@
 
 namespace AppBundle\Form;
 
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PersonType extends AbstractType {
@@ -16,7 +16,7 @@ class PersonType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('fullname');
         $builder->add('sortableName');
-        $builder->add('biography');
+        $builder->add('biography', CKEditorType::class);
         $builder->add('url');
     }
 
