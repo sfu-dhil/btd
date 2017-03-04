@@ -135,6 +135,10 @@ class ProjectController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $text = $this->get('nines.util.text');
+            if( ! $project->getExcerpt()) {
+                $project->setExcerpt($text->trim($project->getDescription(), $this->getParameter('nines_blog.excerpt_length')));
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($project);
             $em->flush();
@@ -178,6 +182,10 @@ class ProjectController extends Controller {
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $text = $this->get('nines.util.text');
+            if( ! $project->getExcerpt()) {
+                $project->setExcerpt($text->trim($project->getDescription(), $this->getParameter('nines_blog.excerpt_length')));
+            }
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The project has been updated.');

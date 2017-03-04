@@ -24,10 +24,11 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Description</th>
-                <th>Url</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>Created</th>
-                <th>Updated</th>            </tr>
+                <th>Updated</th>
+            </tr>
         </thead>
         <tbody>
             {% for project in projects %}
@@ -37,8 +38,8 @@
                             {{ project.title }}
                         </a>
                     </td>
-                    <td>{{ project.description }}</td>
-                    <td>{{ project.url }}</td>
+                    <td>{% if project.startDate %}{{ project.startDate|date }}{% endif %}</td>
+                    <td>{% if project.endDate %}{{ project.endDate|date }}{% endif %}</td>
                     <td>{% if project.created %}{{ project.created|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{% if project.updated %}{{ project.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
                 </tr>

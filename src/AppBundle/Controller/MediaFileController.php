@@ -2,13 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\MediaFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\MediaFile;
-use AppBundle\Form\MediaFileType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * MediaFile controller.
@@ -120,6 +122,26 @@ class MediaFileController extends Controller {
             'q' => $q,
         );
     }
+    
+    /**
+     * @param MediaFile $mediaFile
+     */
+    private function processUpload(MediaFile $mediaFile) {
+        // $file stores the uploaded file
+        /** @var UploadedFile $file */            
+        $file = $mediaFile->getPath();
+        $mediaFile->setSize($file->getSize());
+        $mediaFile->setMimetype($file->getMimeType());
+        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+        $uploadPath = $this->container->getParameter('btd.media_upload_path');
+        $uploadDir = $this->container->get('kernel')->getRootDir() . '/' . $uploadPath;
+        $fs = new Filesystem();
+        if(  ! $fs->exists($uploadDir)) {
+            $fs->mkdir($uploadDir);
+        }
+        $file->move($uploadDir, $fileName);
+        $mediaFile->setPath($fileName);
+    }
 
     /**
      * Creates a new MediaFile entity.
@@ -131,15 +153,18 @@ class MediaFileController extends Controller {
      */
     public function newAction(Request $request) {
         $mediaFile = new MediaFile();
-        $form = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile);
+        $form = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile, array(
+            'max_file_upload' => UploadedFile::getMaxFilesize()
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $this->processUpload($mediaFile);            
             $em->persist($mediaFile);
             $em->flush();
 
-            $this->addFlash('success', 'The new mediaFile was created.');
+            $this->addFlash('success', 'The new mediaFile was created');
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
         }
 
@@ -162,6 +187,20 @@ class MediaFileController extends Controller {
         return array(
             'mediaFile' => $mediaFile,
         );
+    }
+    
+    /**
+     * Finds and displays a media file.
+     *
+     * @Route("/{id}/raw", name="media_file_raw")
+     * @Method("GET")
+     * @param MediaFile $mediaFile
+     */
+    public function mediaAction(MediaFile $mediaFile) {
+        $uploadPath = $this->container->getParameter('btd.media_upload_path');
+        $uploadDir = $this->container->get('kernel')->getRootDir() . '/' . $uploadPath;
+        $filePath = $uploadDir . '/' . $mediaFile->getPath();
+        return new BinaryFileResponse($filePath);
     }
 
     /**

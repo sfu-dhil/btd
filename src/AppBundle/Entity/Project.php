@@ -22,7 +22,25 @@ class Project extends AbstractEntity {
      * @ORM\Column(type="string")
      */
     private $title;
+    
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetimetz")
+     */
+    private $startDate;
+    
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetimetz")
+     */
+    private $endDate;
 
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
+    private $excerpt;
+    
     /**
      * @var string
      * @ORM\Column(type="text")
@@ -254,4 +272,76 @@ class Project extends AbstractEntity {
         return $this->mediaFiles;
     }
 
+
+    /**
+     * Set startDate
+     *
+     * @param \DateTime $startDate
+     *
+     * @return Project
+     */
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * Get startDate
+     *
+     * @return \DateTime
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * Set endDate
+     *
+     * @param \DateTime $endDate
+     *
+     * @return Project
+     */
+    public function setEndDate($endDate)
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * Get endDate
+     *
+     * @return \DateTime
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * Set excerpt
+     *
+     * @param string $excerpt
+     *
+     * @return Project
+     */
+    public function setExcerpt($excerpt)
+    {
+        $this->excerpt = $excerpt;
+
+        return $this;
+    }
+
+    /**
+     * Get excerpt
+     *
+     * @return string
+     */
+    public function getExcerpt()
+    {
+        return $this->excerpt;
+    }
 }

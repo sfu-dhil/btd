@@ -19,45 +19,14 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <tbody>
-            <tr>
-                <th>Path</th>
-                <td>{{ mediaFile.path }}</td>
-            </tr>
-            <tr>
-                <th>Size</th>
-                <td>{{ mediaFile.size }}</td>
-            </tr>
-            <tr>
-                <th>Mimetype</th>
-                <td>{{ mediaFile.mimetype }}</td>
-            </tr>
-            <tr>
-                <th>Creator</th>
-                <td>{{ mediaFile.creator }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ mediaFile.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ mediaFile.description }}</td>
-            </tr>
-            <tr>
-                <th>Copyright</th>
-                <td>{{ mediaFile.copyright }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{% if mediaFile.created %}{{ mediaFile.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{% if mediaFile.updated %}{{ mediaFile.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+
+    <figure>
+        <img src="{{ path('media_file_raw', {'id': mediaFile.id}) }}" style="max-width:100%;">
+        <figCaption>
+            {{ mediaFile.title }}<br/>
+            {{ mediaFile.description }}<br/>
+            {{ mediaFile.copyright }}
+        </figcaption>
+    </figure>
 
 {% endblock %}

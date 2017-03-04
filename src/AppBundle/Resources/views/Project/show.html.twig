@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block pageheader %} 
-    <h1>Project</h1>
+    <h1>{{ project.title }}</h1>
+    <p>{{ project.startDate|date }} to {{ project.endDate|date }}.</p>
 {% endblock %} 
 
 {% block body %}
@@ -19,29 +20,25 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <tbody>
-            <tr>
-                <th>Title</th>
-                <td>{{ project.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ project.description }}</td>
-            </tr>
-            <tr>
-                <th>Url</th>
-                <td>{{ project.url }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{% if project.created %}{{ project.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{% if project.updated %}{{ project.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+           
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    Excerpt
+                </h2>
+            </div>
+            <div class="panel-body">
+                {{ project.excerpt|raw }}
+            </div>
+        </div>
+    {% endif %}
+
+    
+    {{ project.description|raw }}
+
+    <div class="text-right">
+        Created {{ project.created|date('Y-m-d H:i:s') }}. Most recent update {{ project.updated|date }}.
+    </div>
 
 {% endblock %}
