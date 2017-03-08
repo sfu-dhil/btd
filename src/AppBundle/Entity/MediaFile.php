@@ -18,12 +18,26 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 class MediaFile extends AbstractEntity {
 
     /**
+     * Path to the image file inside the upload directory.
      * @var string
      * @ORM\Column(type="string")
      */
     private $path;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $originalName;
 
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $thumbnails;
+    
+    /**
+     * File size in bytes.
      * @var int
      * @ORM\Column(type="integer")
      */
@@ -80,6 +94,7 @@ class MediaFile extends AbstractEntity {
 
     public function __construct() {
         parent::__construct();
+        $this->thumbnails = false;
         $this->artworks = new ArrayCollection();
         $this->projects = new ArrayCollection();
     }
@@ -326,4 +341,52 @@ class MediaFile extends AbstractEntity {
         return $this->projects;
     }
 
+
+    /**
+     * Set originalName
+     *
+     * @param string $originalName
+     *
+     * @return MediaFile
+     */
+    public function setOriginalName($originalName)
+    {
+        $this->originalName = $originalName;
+
+        return $this;
+    }
+
+    /**
+     * Get originalName
+     *
+     * @return string
+     */
+    public function getOriginalName()
+    {
+        return $this->originalName;
+    }
+
+    /**
+     * Set thumbnails
+     *
+     * @param boolean $thumbnails
+     *
+     * @return MediaFile
+     */
+    public function setThumbnails($thumbnails)
+    {
+        $this->thumbnails = $thumbnails;
+
+        return $this;
+    }
+
+    /**
+     * Get thumbnails
+     *
+     * @return boolean
+     */
+    public function getThumbnails()
+    {
+        return $this->thumbnails;
+    }
 }

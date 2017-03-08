@@ -7,8 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -124,26 +124,6 @@ class MediaFileController extends Controller {
     }
     
     /**
-     * @param MediaFile $mediaFile
-     */
-    private function processUpload(MediaFile $mediaFile) {
-        // $file stores the uploaded file
-        /** @var UploadedFile $file */            
-        $file = $mediaFile->getPath();
-        $mediaFile->setSize($file->getSize());
-        $mediaFile->setMimetype($file->getMimeType());
-        $fileName = md5(uniqid()).'.'.$file->guessExtension();
-        $uploadPath = $this->container->getParameter('btd.media_upload_path');
-        $uploadDir = $this->container->get('kernel')->getRootDir() . '/' . $uploadPath;
-        $fs = new Filesystem();
-        if(  ! $fs->exists($uploadDir)) {
-            $fs->mkdir($uploadDir);
-        }
-        $file->move($uploadDir, $fileName);
-        $mediaFile->setPath($fileName);
-    }
-
-    /**
      * Creates a new MediaFile entity.
      *
      * @Route("/new", name="media_file_new")
@@ -160,7 +140,14 @@ class MediaFileController extends Controller {
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $this->processUpload($mediaFile);            
+            
+            $upload = $mediaFile->getPath();
+            $mediaFile->setMimetype($upload->getMimeType());
+            $mediaFile->setSize($upload->getSize());
+            $mediaFile->setOriginalName($upload->getClientOriginalName());
+            $fileName = $this->get('app.file_uploader')->upload($upload);
+            $mediaFile->setPath($fileName);
+            
             $em->persist($mediaFile);
             $em->flush();
 
@@ -192,14 +179,13 @@ class MediaFileController extends Controller {
     /**
      * Finds and displays a media file.
      *
-     * @Route("/{id}/raw", name="media_file_raw")
+     * @Route("/{id}/view", name="media_file_raw")
      * @Method("GET")
      * @param MediaFile $mediaFile
      */
     public function mediaAction(MediaFile $mediaFile) {
         $uploadPath = $this->container->getParameter('btd.media_upload_path');
-        $uploadDir = $this->container->get('kernel')->getRootDir() . '/' . $uploadPath;
-        $filePath = $uploadDir . '/' . $mediaFile->getPath();
+        $filePath = $uploadPath . '/' . $mediaFile->getPath();
         return new BinaryFileResponse($filePath);
     }
 
@@ -213,7 +199,14 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function editAction(Request $request, MediaFile $mediaFile) {
-        $editForm = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile);
+        $uploadPath = $this->container->getParameter('btd.media_upload_path');
+        $uploadDir = $this->container->get('kernel')->getRootDir() . '/' . $uploadPath;
+        $filePath = $uploadDir . '/' . $mediaFile->getPath();
+        
+        $mediaFile->setPath(new File($filePath));
+        $editForm = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile, array(
+            'max_file_upload' => UploadedFile::getMaxFilesize()
+        ));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -239,6 +232,7 @@ class MediaFileController extends Controller {
      */
     public function deleteAction(Request $request, MediaFile $mediaFile) {
         $em = $this->getDoctrine()->getManager();
+        $this->get('app.file_uploader')->delete($mediaFile->getPath());
         $em->remove($mediaFile);
         $em->flush();
         $this->addFlash('success', 'The mediaFile was deleted.');

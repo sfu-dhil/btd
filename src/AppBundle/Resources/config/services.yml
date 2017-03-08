@@ -1,0 +1,4 @@
+services:
+    app.file_uploader:
+        class: AppBundle\Services\FileUploader
+        arguments: ['%btd.media_upload_path%']

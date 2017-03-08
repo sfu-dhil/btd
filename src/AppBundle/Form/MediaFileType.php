@@ -17,7 +17,7 @@ class MediaFileType extends AbstractType {
         $builder->add('path', FileType::class, array(
             'label' => 'Media file',
             'attr' => array(
-                'help_block' => "Max file upload size is {$options['max_file_upload']} bytes",
+                'help_block' => "Max file upload size is {$options['max_file_upload']} bytes.",
             )
         ));
         $builder->add('mediaFileType');

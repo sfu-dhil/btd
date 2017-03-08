@@ -20,13 +20,30 @@
         </div>
     </div>
 
-    <figure>
-        <img src="{{ path('media_file_raw', {'id': mediaFile.id}) }}" style="max-width:100%;">
-        <figCaption>
-            {{ mediaFile.title }}<br/>
-            {{ mediaFile.description }}<br/>
-            {{ mediaFile.copyright }}
-        </figcaption>
-    </figure>
+    {% if mediaFile.mimetype starts with 'image/' %}
+        {% include 'AppBundle:MediaFile:image.html.twig' %}
+    {% elseif mediaFile.mimetype starts with 'video/' %}
+        {% include 'AppBundle:MediaFile:video.html.twig' %}
+    {% elseif mediaFile.mimetype starts with 'audio/' %}
+        {% include 'AppBundle:MediaFile:audio.html.twig' %}
+    {% elseif mediaFile.mimetype == 'application/pdf' %}
+        {% include 'AppBundle:MediaFile:pdf.html.twig' %}
+    {% else %}
+        {% include 'AppBundle:MediaFile:unknown.html.twig' %}
+    {% endif %}    
 
+    <h2>Meta data</h2>
+    <dl class="dl-horizontal">
+        <dt>Title</dt>
+        <dd>{{ mediaFile.title }}</dd>
+        <dt>Description</dt>
+        <dd>{{ mediaFile.description }}</dd>
+        <dt>Copyright</dt>
+        <dd>{{ mediaFile.copyright }}</dd>
+        <dt>File size</dt>
+        <dd>{{ mediaFile.size }}</dd>
+        <dt>Original file name</dt>
+        <dd>{{ mediaFile.originalName }}
+    </dl>
+    
 {% endblock %}

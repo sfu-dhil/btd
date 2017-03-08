@@ -1,0 +1,17 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.0.201604172/pdfobject.min.js" 
+        integrity="sha256-dUe7c2jPkbycNGu4OSy/3FbLKU5FK1aM62Vc5Ni7sgs=" 
+        crossorigin="anonymous">
+</script>
+
+<script defer="defer">
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var div = document.getElementById("pdfView");
+        console.log(div);
+        PDFObject.embed("{{ path('media_file_raw', {'id': mediaFile.id}) }}", div, {
+            'width': '100%',
+            'height': '640px',
+        });
+    });
+</script>
+
+<div id="pdfView"></div>        
