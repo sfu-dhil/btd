@@ -18,6 +18,7 @@ class AppGenerateThumbnailsCommand extends ContainerAwareCommand
     }
     
     protected function generateThumbnail(MediaFile $mediaFile) {
+        
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

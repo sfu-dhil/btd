@@ -46,4 +46,6 @@
         <dd>{{ mediaFile.originalName }}
     </dl>
     
+        <p><a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">Direct link to file</a></p>
+    
 {% endblock %}
