@@ -17,6 +17,18 @@ class AppGenerateThumbnailsCommand extends ContainerAwareCommand
         ;
     }
     
+    protected function thumbnailImage($path) {
+        
+    }
+    
+    protected function thumbnailPdf($path) {
+        
+    }
+    
+    protected function thumbnailVideo($path) {
+        
+    }
+    
     protected function generateThumbnail(MediaFile $mediaFile) {
         
     }
