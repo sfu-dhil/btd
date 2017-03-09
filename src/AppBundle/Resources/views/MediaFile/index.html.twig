@@ -23,30 +23,19 @@
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>
-                <th>Path</th>
-                <th>Size</th>
-                <th>Mimetype</th>
-                <th>Creator</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Copyright</th>
+                <th>Id</th>
                 <th>Created</th>
-                <th>Updated</th>            </tr>
+                <th>Updated</th>            
+            </tr>
         </thead>
         <tbody>
             {% for mediaFile in mediaFiles %}
                 <tr>
                     <td>
                         <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
-                            {{ mediaFile.path }}
+                            {{ mediaFile.id }}
                         </a>
                     </td>
-                    <td>{{ mediaFile.size }}</td>
-                    <td>{{ mediaFile.mimetype }}</td>
-                    <td>{{ mediaFile.creator }}</td>
-                    <td>{{ mediaFile.title }}</td>
-                    <td>{{ mediaFile.description }}</td>
-                    <td>{{ mediaFile.copyright }}</td>
                     <td>{% if mediaFile.created %}{{ mediaFile.created|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{% if mediaFile.updated %}{{ mediaFile.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
                 </tr>

@@ -2,3 +2,13 @@ services:
     app.file_uploader:
         class: AppBundle\Services\FileUploader
         arguments: ['%btd.media_upload_path%']
+
+    app.upload_listener:
+        class: AppBundle\EventListener\FileUploadListener
+        arguments: ['@app.file_uploader']
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
+            
+    

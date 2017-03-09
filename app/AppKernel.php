@@ -25,10 +25,10 @@ class AppKernel extends Kernel
             new Bmatzner\JQueryUIBundle\BmatznerJQueryUIBundle(),
             
             new Nines\UserBundle\NinesUserBundle(),
+            new Nines\DublinCoreBundle\NinesDublinCoreBundle(),
             new Nines\FeedbackBundle\NinesFeedbackBundle(),
             new Nines\BlogBundle\NinesBlogBundle(),
             new Nines\UtilBundle\NinesUtilBundle(),
-            
             
         ];
 

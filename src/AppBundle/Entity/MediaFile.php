@@ -6,341 +6,71 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * MediaFile
  *
  * @ORM\Table(name="media_file", indexes={
- *  @ORM\Index(columns={"title", "description", "copyright"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MediaFileRepository")
  */
 class MediaFile extends AbstractEntity {
 
     /**
-     * Path to the image file inside the upload directory.
-     * @var string
+     * In the database, this is the path to the file. Outside the database,
+     * a Doctrine event listener will turn the path into a file object.
+     * 
      * @ORM\Column(type="string")
+     * @Assert\File()
      */
-    private $path;
+    private $file;
     
     /**
-     * @var string
      * @ORM\Column(type="string")
      */
     private $originalName;
-
-    /**
-     * @var boolean
-     * @ORM\Column(type="boolean")
-     */
-    private $thumbnails;
     
     /**
-     * File size in bytes.
-     * @var int
-     * @ORM\Column(type="integer")
+     * @var Collection|MediaFileField[]
+     * @ORM\OneToMany(targetEntity="MediaFileField", mappedBy="mediaFile")
      */
-    private $size;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $mimetype;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $creator;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $title;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $description;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $copyright;
-
-    /**
-     * @var MediaFileType
-     * @ORM\ManyToOne(targetEntity="MediaFileType", inversedBy="mediaFiles")
-     * @ORM\JoinColumn(name="mediafiletype_id")
-     */
-    private $mediaFileType;
-
-    /**
-     * @var Collection|Artwork[]
-     * @ORM\ManyToMany(targetEntity="Artwork", mappedBy="mediaFiles")
-     */
-    private $artworks;
-
-    /**
-     * @var Collection|Project[]
-     * @ORM\ManyToMany(targetEntity="Project", mappedBy="mediaFiles")
-     */
-    private $projects;
-
+    private $metadataFields;
+        
     public function __construct() {
         parent::__construct();
-        $this->thumbnails = false;
-        $this->artworks = new ArrayCollection();
-        $this->projects = new ArrayCollection();
+        $this->$metadataFields = new ArrayCollection();
     }
 
     public function __toString() {
-        return $this->title;
+        return $this->getId();
     }
 
-    /**
-     * Set path
-     *
-     * @param string $path
-     *
-     * @return MediaFile
-     */
-    public function setPath($path) {
-        $this->path = $path;
-
+    public function getFile() {
+        return $this->file;
+    }
+    
+    public function setFile($file) {
+        $this->file = $file;
         return $this;
     }
-
-    /**
-     * Get path
-     *
-     * @return string
-     */
+    
+    public function getMimeType() {
+        return $this->file->getMimeType();
+    }
+    
     public function getPath() {
-        return $this->path;
+        return $this->file->getPath();
     }
-
-    /**
-     * Set size
-     *
-     * @param integer $size
-     *
-     * @return MediaFile
-     */
-    public function setSize($size) {
-        $this->size = $size;
-
-        return $this;
+    
+    public function getFilename() {
+        return $this->file->getFilename();
     }
-
-    /**
-     * Get size
-     *
-     * @return integer
-     */
+    
     public function getSize() {
-        return $this->size;
+        return $this->file->getSize();
     }
-
-    /**
-     * Set mimetype
-     *
-     * @param string $mimetype
-     *
-     * @return MediaFile
-     */
-    public function setMimetype($mimetype) {
-        $this->mimetype = $mimetype;
-
-        return $this;
-    }
-
-    /**
-     * Get mimetype
-     *
-     * @return string
-     */
-    public function getMimetype() {
-        return $this->mimetype;
-    }
-
-    /**
-     * Set creator
-     *
-     * @param string $creator
-     *
-     * @return MediaFile
-     */
-    public function setCreator($creator) {
-        $this->creator = $creator;
-
-        return $this;
-    }
-
-    /**
-     * Get creator
-     *
-     * @return string
-     */
-    public function getCreator() {
-        return $this->creator;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return MediaFile
-     */
-    public function setTitle($title) {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle() {
-        return $this->title;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return MediaFile
-     */
-    public function setDescription($description) {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription() {
-        return $this->description;
-    }
-
-    /**
-     * Set copyright
-     *
-     * @param string $copyright
-     *
-     * @return MediaFile
-     */
-    public function setCopyright($copyright) {
-        $this->copyright = $copyright;
-
-        return $this;
-    }
-
-    /**
-     * Get copyright
-     *
-     * @return string
-     */
-    public function getCopyright() {
-        return $this->copyright;
-    }
-
-    /**
-     * Set mediaFileType
-     *
-     * @param MediaFileType $mediaFileType
-     *
-     * @return MediaFile
-     */
-    public function setMediaFileType(MediaFileType $mediaFileType = null) {
-        $this->mediaFileType = $mediaFileType;
-
-        return $this;
-    }
-
-    /**
-     * Get mediaFileType
-     *
-     * @return MediaFileType
-     */
-    public function getMediaFileType() {
-        return $this->mediaFileType;
-    }
-
-    /**
-     * Add artwork
-     *
-     * @param Artwork $artwork
-     *
-     * @return MediaFile
-     */
-    public function addArtwork(Artwork $artwork) {
-        $this->artworks[] = $artwork;
-
-        return $this;
-    }
-
-    /**
-     * Remove artwork
-     *
-     * @param Artwork $artwork
-     */
-    public function removeArtwork(Artwork $artwork) {
-        $this->artworks->removeElement($artwork);
-    }
-
-    /**
-     * Get artworks
-     *
-     * @return Collection
-     */
-    public function getArtworks() {
-        return $this->artworks;
-    }
-
-    /**
-     * Add project
-     *
-     * @param Project $project
-     *
-     * @return MediaFile
-     */
-    public function addProject(Project $project) {
-        $this->projects[] = $project;
-
-        return $this;
-    }
-
-    /**
-     * Remove project
-     *
-     * @param Project $project
-     */
-    public function removeProject(Project $project) {
-        $this->projects->removeElement($project);
-    }
-
-    /**
-     * Get projects
-     *
-     * @return Collection
-     */
-    public function getProjects() {
-        return $this->projects;
-    }
-
+    
 
     /**
      * Set originalName
@@ -366,27 +96,38 @@ class MediaFile extends AbstractEntity {
         return $this->originalName;
     }
 
+
     /**
-     * Set thumbnails
+     * Add metadataField
      *
-     * @param boolean $thumbnails
+     * @param MediaFileField $metadataField
      *
      * @return MediaFile
      */
-    public function setThumbnails($thumbnails)
+    public function addMetadataField(MediaFileField $metadataField)
     {
-        $this->thumbnails = $thumbnails;
+        $this->metadataFields[] = $metadataField;
 
         return $this;
     }
+    
+    /**
+     * Remove metadataField
+     *
+     * @param MediaFileField $metadataField
+     */
+    public function removeMetadataField(MediaFileField $metadataField)
+    {
+        $this->metadataFields->removeElement($metadataField);
+    }
 
     /**
-     * Get thumbnails
+     * Get metadataFields
      *
-     * @return boolean
+     * @return Collection
      */
-    public function getThumbnails()
+    public function getMetadataFields()
     {
-        return $this->thumbnails;
+        return $this->metadataFields;
     }
 }

@@ -14,17 +14,12 @@ class MediaFileType extends AbstractType {
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('path', FileType::class, array(
+        $builder->add('file', FileType::class, array(
             'label' => 'Media file',
             'attr' => array(
                 'help_block' => "Max file upload size is {$options['max_file_upload']} bytes.",
             )
         ));
-        $builder->add('mediaFileType');
-        $builder->add('creator');
-        $builder->add('title');
-        $builder->add('description');
-        $builder->add('copyright');
     }
 
     /**

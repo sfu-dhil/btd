@@ -139,15 +139,8 @@ class MediaFileController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            
-            $upload = $mediaFile->getPath();
-            $mediaFile->setMimetype($upload->getMimeType());
-            $mediaFile->setSize($upload->getSize());
-            $mediaFile->setOriginalName($upload->getClientOriginalName());
-            $fileName = $this->get('app.file_uploader')->upload($upload);
-            $mediaFile->setPath($fileName);
-            
+            $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
+            $em = $this->getDoctrine()->getManager();            
             $em->persist($mediaFile);
             $em->flush();
 
@@ -184,9 +177,7 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function mediaAction(MediaFile $mediaFile) {
-        $uploadPath = $this->container->getParameter('btd.media_upload_path');
-        $filePath = $uploadPath . '/' . $mediaFile->getPath();
-        return new BinaryFileResponse($filePath);
+        return new BinaryFileResponse($mediaFile->getFile());
     }
 
     /**
@@ -199,11 +190,6 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function editAction(Request $request, MediaFile $mediaFile) {
-        $uploadPath = $this->container->getParameter('btd.media_upload_path');
-        $uploadDir = $this->container->get('kernel')->getRootDir() . '/' . $uploadPath;
-        $filePath = $uploadDir . '/' . $mediaFile->getPath();
-        
-        $mediaFile->setPath(new File($filePath));
         $editForm = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile, array(
             'max_file_upload' => UploadedFile::getMaxFilesize()
         ));
@@ -232,7 +218,7 @@ class MediaFileController extends Controller {
      */
     public function deleteAction(Request $request, MediaFile $mediaFile) {
         $em = $this->getDoctrine()->getManager();
-        $this->get('app.file_uploader')->delete($mediaFile->getPath());
+        $this->get('app.file_uploader')->delete($mediaFile->getFile());
         $em->remove($mediaFile);
         $em->flush();
         $this->addFlash('success', 'The mediaFile was deleted.');

@@ -4,6 +4,7 @@ namespace AppBundle\Services;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 class FileUploader {
     
@@ -25,18 +26,15 @@ class FileUploader {
         return $fileName[0] . '/' . $fileName;
     }
     
-    public function delete($filepath) {
-        $path = $this->uploadDir . '/' . $filepath;
+    public function delete(File $file) {
         $fs = new Filesystem();
-        if($fs->exists($path)) {
-            $fs->remove($path);
+        if($fs->exists($file)) {
+            $fs->remove($file);
         }
     }
     
     public function getUploadDir() {
         return $this->uploadDir;
     }
-    
-    
     
 }
