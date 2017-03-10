@@ -33,8 +33,12 @@ class FileUploadListener {
         if(! $entity instanceof MediaFile) {
             return;
         }
+        $directory = $this->uploader->getUploadDir();
         if(($filename = $entity->getFile())) {
-            $entity->setFile(new File($this->uploader->getUploadDir() . '/' . $filename));
+            if(substr($filename, 0, strlen($directory)) === $directory) {
+                $filename = substr($filename, strlen($directory));
+            }
+            $entity->setFile(new File($directory . '/' . $filename));
         }
     }
     

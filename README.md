@@ -26,3 +26,9 @@ Video.js is used to play audio and video files, if the browser supports
 the file type. 
 
 PDFObject.js is used to embed PDFs.
+
+Requirements
+============
+
+imagick PHP PECL extension
+gs to read PDF files.

@@ -15,7 +15,7 @@ class MediaFileField extends AbstractField
 {
     /**
      * @var MediaFile
-     * @ORM\ManyToOne(targetEntity="MediaFile", inversedBy="fields")
+     * @ORM\ManyToOne(targetEntity="MediaFile", inversedBy="metadataFields")
      * @ORM\JoinColumn(nullable=false)
      */
     private $mediaFile;

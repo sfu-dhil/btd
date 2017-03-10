@@ -18,24 +18,61 @@
                 <span class='glyphicon glyphicon-remove'></span> Delete
             </a>
         </div>
+    </div>    
+    
+                <div class='clear-fix'></div>
+
+    <div class='row'>
+        <div class='col-sm-4'>
+            <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
+                <img src="{{ path('media_file_tn', {'id': mediaFile.id}) }}" class="img-thumbnail">
+            </a>
+        </div>
+        <div class='col-sm-8'>
+            <dl class="dl-horizontal">
+                <dt>Id</dt>
+                <dd>{{ mediaFile.id }}</dd>
+                <dt>File type</dt>
+                <dd>{{ mediaFile.mimeType }}</dd>
+                <dt>File size</dt>
+                <dd>{{ mediaFile.size }}</dd>
+                <dt>File name</dt>
+                <dd>{{ mediaFile.filename }}</dd>
+                <dt>File path</dt>
+                <dd>{{ mediaFile.path }}</dd>
+                <dt>Original name</dt>
+                <dd>{{ mediaFile.originalName }}</dd>
+                <dt>Uploaded</dt>
+                <dd>{{ mediaFile.updated|date }}</dd>
+                <dt>URL</dt>
+                <dd>
+                    <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
+                        {{ url('media_file_raw', {'id': mediaFile.id}) }}
+                    </a>
+                </dd>
+            </dl>
+        </div>
     </div>
 
-    <h2>File info</h2>
-    <dl class="dl-horizontal">
-        <dt>Id</dt>
-        <dd>{{ mediaFile.id }}</dd>
-        <dt>File type</dt>
-        <dd>{{ mediaFile.mimeType }}</dd>
-        <dt>File size</dt>
-        <dd>{{ mediaFile.size }}</dd>
-        <dt>File name</dt>
-        <dd>{{ mediaFile.filename }}</dd>
-        <dt>File path</dt>
-        <dd>{{ mediaFile.path }}</dd>
-        <dt>Original name</dt>
-        <dd>{{ mediaFile.originalName }}</dd>
+    <h2>Metadata</h2>
+    <div class="btn-toolbar">
+        <div class="btn-group pull-right">
+            <a href="{{ path('media_file_metadata', { 'id': mediaFile.id }) }}" class="btn btn-default">
+                <span class='glyphicon glyphicon-edit'></span> Edit
+            </a>
+        </div>
+    </div>    
+                
+    <dl class='dl-horizontal'>
+        {% for element in elements %}
+            {% set fields = mediaFile.getMetadataFields(element.name) %}
+            {% if fields|length > 0 %}
+                <dt>{{ element.label }}</dt>
+                {% for field in fields %}
+                    <dd>{{ field.value }}</dd>
+                {% endfor %}
+            {% endif %}        
+        {% endfor %}
     </dl>
-
-    <p><a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">Direct link to file</a></p>
 
 {% endblock %}

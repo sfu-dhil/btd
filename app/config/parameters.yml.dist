@@ -34,3 +34,6 @@ parameters:
 
     # path to the uploaded files, relative to the app directory.
     btd.media_upload_path: '%kernel.root_dir%/data/uploads'
+
+    # maximum dimensions of an image thumbnail.
+    btd.media_thumbnail_size: 200

@@ -3,14 +3,17 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\MediaFile;
+use AppBundle\Entity\MediaFileField;
+use AppBundle\Form\MediaFileMetadataType;
+use Nines\DublinCoreBundle\Entity\Element;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * MediaFile controller.
@@ -163,8 +166,10 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function showAction(MediaFile $mediaFile) {
-
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Element::class);
         return array(
+            'elements' => $repo->findAll(),
             'mediaFile' => $mediaFile,
         );
     }
@@ -179,6 +184,22 @@ class MediaFileController extends Controller {
     public function mediaAction(MediaFile $mediaFile) {
         return new BinaryFileResponse($mediaFile->getFile());
     }
+    
+    /**
+     * Finds and displays a media file.
+     *
+     * @Route("/{id}/tn", name="media_file_tn")
+     * @Method("GET")
+     * @param MediaFile $mediaFile
+     */
+    public function thumbnailAction(MediaFile $mediaFile) {
+        $tn = $mediaFile->getThumbnail();
+        if($tn) {
+            return new BinaryFileResponse($tn);
+        }
+        dump($tn);
+        throw new NotFoundHttpException("Cannot find thumbnail.");
+    }
 
     /**
      * Displays a form to edit an existing MediaFile entity.
@@ -190,12 +211,17 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function editAction(Request $request, MediaFile $mediaFile) {
+        $oldFile = $mediaFile->getFile();
+        $tnFile = $mediaFile->getThumbnail();
         $editForm = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile, array(
             'max_file_upload' => UploadedFile::getMaxFilesize()
         ));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->get('app.file_uploader')->delete($oldFile);
+            $this->get('app.file_uploader')->delete($tnFile);
+            $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The mediaFile has been updated.');
@@ -219,11 +245,54 @@ class MediaFileController extends Controller {
     public function deleteAction(Request $request, MediaFile $mediaFile) {
         $em = $this->getDoctrine()->getManager();
         $this->get('app.file_uploader')->delete($mediaFile->getFile());
+        $this->get('app.file_uploader')->delete($mediaFile->getThumbnail());
         $em->remove($mediaFile);
         $em->flush();
         $this->addFlash('success', 'The mediaFile was deleted.');
 
         return $this->redirectToRoute('media_file_index');
     }
-
+    
+    /**
+     * Edit metadata for a media file.
+     *
+     * @Route("/{id}/metadata", name="media_file_metadata")
+     * @Method({"GET","POST"})
+     * @Template()
+     * @param Request $request
+     * @param MediaFile $mediaFile
+     */
+    public function metadataAction(Request $request, MediaFile $mediaFile) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(MediaFileMetadataType::class, null, array(
+            'mediaFile' => $mediaFile, 
+            'entityManager' => $em
+        ));
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $repo = $em->getRepository(Element::class);
+            foreach($mediaFile->getMetadataFields() as $field) {
+                $em->remove($field);
+            }
+            foreach($form->getData() as $name => $values) {
+                $element = $repo->findOneBy(array('name' => $name));
+                foreach($values as $value) {
+                    $field = new MediaFileField();
+                    $field->setElement($element);
+                    $field->setMediaFile($mediaFile);
+                    $field->setValue($value);
+                    $em->persist($field);
+                }
+            }
+            $em->flush();
+            $this->addFlash('success', 'The metadata has been updated.');
+            return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
+        }
+        
+        return array(
+            'edit_form' => $form->createView(),
+            'mediaFile' => $mediaFile,            
+        );
+    }
+    
 }

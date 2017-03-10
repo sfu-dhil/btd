@@ -90,6 +90,9 @@
     {% javascripts '@jquery' '@bootstrap_js' 'bundles/app/js/*' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    
+    {% javascripts '@AppBundle/Resources/public/js/*' %}	
+    {% endjavascripts %}    
 
 {% block javascripts %}{% endblock %}
 </body>
