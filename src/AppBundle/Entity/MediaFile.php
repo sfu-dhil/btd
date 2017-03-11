@@ -33,12 +33,30 @@ class MediaFile extends AbstractEntity {
      * @ORM\Column(type="string")
      */
     private $originalName;
+    
+    /**
+     * @var MediaFileType
+     * @ORM\ManyToOne(targetEntity="MediaFileType", inversedBy="mediaFiles")
+     */
+    private $mediaFileType;
 
     /**
      * @var Collection|MediaFileField[]
      * @ORM\OneToMany(targetEntity="MediaFileField", mappedBy="mediaFile")
      */
     private $metadataFields;
+
+    /**
+     * @var Collection|MediaFileField[]
+     * @ORM\ManyToMany(targetEntity="Artwork", mappedBy="mediaFiles")
+     */
+    private $artworks;
+
+    /**
+     * @var Collection|MediaFileField[]
+     * @ORM\ManyToMany(targetEntity="Project", mappedBy="mediaFiles")
+     */
+    private $projects;
 
     public function __construct() {
         parent::__construct();
@@ -151,4 +169,96 @@ class MediaFile extends AbstractEntity {
         return $matches->first();
     }
 
+
+    /**
+     * Set mediaFileType
+     *
+     * @param MediaFileType $mediaFileType
+     *
+     * @return MediaFile
+     */
+    public function setMediaFileType(MediaFileType $mediaFileType = null)
+    {
+        $this->mediaFileType = $mediaFileType;
+
+        return $this;
+    }
+
+    /**
+     * Get mediaFileType
+     *
+     * @return MediaFileType
+     */
+    public function getMediaFileType()
+    {
+        return $this->mediaFileType;
+    }
+
+    /**
+     * Add artwork
+     *
+     * @param Artwork $artwork
+     *
+     * @return MediaFile
+     */
+    public function addArtwork(Artwork $artwork)
+    {
+        $this->artworks[] = $artwork;
+
+        return $this;
+    }
+
+    /**
+     * Remove artwork
+     *
+     * @param Artwork $artwork
+     */
+    public function removeArtwork(Artwork $artwork)
+    {
+        $this->artworks->removeElement($artwork);
+    }
+
+    /**
+     * Get artworks
+     *
+     * @return Collection
+     */
+    public function getArtworks()
+    {
+        return $this->artworks;
+    }
+
+    /**
+     * Add project
+     *
+     * @param Project $project
+     *
+     * @return MediaFile
+     */
+    public function addProject(Project $project)
+    {
+        $this->projects[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param Project $project
+     */
+    public function removeProject(Project $project)
+    {
+        $this->projects->removeElement($project);
+    }
+
+    /**
+     * Get projects
+     *
+     * @return Collection
+     */
+    public function getProjects()
+    {
+        return $this->projects;
+    }
 }
