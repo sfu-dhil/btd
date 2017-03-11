@@ -35,8 +35,6 @@ class ProjectType extends AbstractType {
         $builder->add('description', CKEditorType::class);
         $builder->add('url');
         $builder->add('projectType');
-        $builder->add('venues');
-        $builder->add('mediaFiles');
     }
 
     /**

@@ -25,7 +25,6 @@
             <tr>
                 <th>Fullname</th>
                 <th>Sortablename</th>
-                <th>Biography</th>
                 <th>Url</th>
                 <th>Created</th>
                 <th>Updated</th>            </tr>
@@ -39,7 +38,6 @@
                         </a>
                     </td>
                     <td>{{ person.sortableName }}</td>
-                    <td>{{ person.biography }}</td>
                     <td>{{ person.url }}</td>
                     <td>{% if person.created %}{{ person.created|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{% if person.updated %}{{ person.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
