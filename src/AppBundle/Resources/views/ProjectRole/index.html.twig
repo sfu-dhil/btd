@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %} 
+    <h1>ProjectRole List</h1>
+    <p class="count">
+        Displaying {{ projectRoles|length }} projectRoles of {{ projectRoles.getTotalItemCount }} total.
+    </p>
+{% endblock %} 
+
+{% block body %}
+
+    <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            <a href="{{ path('project_role_new') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> New
+            </a>
+            <a href="{{ path('project_role_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Label</th>                
+                <th>Created</th>
+                <th>Updated</th>            
+            </tr>
+        </thead>
+        <tbody>
+            {% for projectRole in projectRoles %}
+                <tr>
+                    <td>
+                        <a href="{{ path('project_role_show', { 'id': projectRole.id }) }}">
+                            {{ projectRole.name }}
+                        </a>
+                    </td>
+                    <td>{{ projectRole.label }}</td>
+                    <td>{% if projectRole.created %}{{ projectRole.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if projectRole.updated %}{{ projectRole.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(projectRoles) }}
+    </div>
+
+{% endblock %}
