@@ -40,18 +40,6 @@ class PersonController extends Controller {
     /**
      * Search for Person entities.
      *
-     * To make this work, add a method like this one to the 
-     * AppBundle:Person repository. Replace the fieldName with
-     * something appropriate, and adjust the generated search.html.twig
-     * template.
-     * 
-      //    public function searchQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->where("e.fieldName like '%$q%'");
-      //        return $qb->getQuery();
-      //    }
-     *
-     *
      * @Route("/search", name="person_search")
      * @Method("GET")
      * @Template()

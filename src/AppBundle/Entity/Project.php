@@ -242,7 +242,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Check if a media file is associated with this person.
+     * Check if a media file is associated with this project.
      * 
      * @param \AppBundle\Entity\MediaFile $mediaFile
      * @return type

@@ -24,6 +24,7 @@ class ProjectType extends AbstractType {
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
         ));
+        $builder->add('venues');
         $builder->add('excerpt', CKEditorType::class, array(
             'attr' => array(
                 'help_block' => 'Excerpts will be shown on the home page and in '
@@ -31,7 +32,6 @@ class ProjectType extends AbstractType {
                 . 'generated automatically.'
             ),
         ));
-
         $builder->add('description', CKEditorType::class);
         $builder->add('url');
         $builder->add('projectType');

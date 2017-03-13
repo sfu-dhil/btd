@@ -47,6 +47,7 @@ twig:
     exception_controller:  NinesUtilBundle:Error:showException
     globals:
         comment_service: "@feedback.comment"
+        text_service: "@nines.util.text"
 
 # Doctrine Configuration
 doctrine:

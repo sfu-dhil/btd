@@ -14,27 +14,45 @@
             <a href="{{ path('project_contribution_new') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus"></span> New
             </a>
-            <a href="{{ path('project_contribution_search') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search
-            </a>
         </div>
     </div>
 
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>
-                <th>Created</th>
-                <th>Updated</th>            </tr>
+                <th>Project</th>
+                <th>Person</th>
+                <th>Organization</th>
+                <th>Role</th>
         </thead>
         <tbody>
             {% for projectContribution in projectContributions %}
                 <tr>
                     <td>
-                        <a href="{{ path('project_contribution_show', { 'id': projectContribution.id }) }}">
-                            {{ projectContribution.created }}
+                        <a href="{{ path('project_show', { 'id': projectContribution.project.id }) }}">
+                            {{ projectContribution.project }}
                         </a>
                     </td>
-                    <td>{% if projectContribution.updated %}{{ projectContribution.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>
+                        {% if projectContribution.person %}
+                        <a href="{{ path('person_show', { 'id': projectContribution.person.id }) }}">
+                            {{ projectContribution.person }}
+                        </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if projectContribution.organization %}
+                        <a href="{{ path('organization_show', { 'id': projectContribution.organization.id }) }}">
+                            {{ projectContribution.organization }}
+                        </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('project_role_show', { 'id': projectContribution.projectRole.id }) }}">
+                            {{ projectContribution.projectRole }}
+                        </a>
+                    </td>
+                        
                 </tr>
             {% endfor %}
         </tbody>

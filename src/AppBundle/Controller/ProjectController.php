@@ -292,5 +292,4 @@ class ProjectController extends Controller {
             'results' => $results,
         );
     }
-
 }

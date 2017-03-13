@@ -2,7 +2,11 @@
 
 {% block pageheader %} 
     <h1>{{ project.title }}</h1>
-    <p>{{ project.startDate|date }} to {{ project.endDate|date }}.</p>
+    {{ project.startDate|date }} to {{ project.endDate|date }}. <br/>
+    {% for venue in project.venues %}
+        <a href='{{ path('venue_show', {'id': venue.id}) }}'>{{ venue.name}}</a>, 
+        <a href='{{ path('location_show', {'id': venue.location.id}) }}'>{{venue.location}}</a><br/> 
+    {% endfor %}
 {% endblock %} 
 
 {% block body %}
@@ -33,7 +37,6 @@
             </div>
         </div>
     {% endif %}
-
 
     {{ project.description|raw }}
 
@@ -75,5 +78,19 @@
         </div>
     {% endfor %}
 
+    <h2>Contributors</h2>
+
+    {% for contribution in project.contributions %}
+        {% set person = contribution.person %}
+        <h3>
+            {{ contribution.projectRole }}: 
+            <a href="{{ path('person_show', { 'id': person.id }) }}">
+                {{ person.fullname }}
+            </a>
+        </h3>
+        <p>
+            {{ text_service.trim(person.biography, 100) }}            
+        </p>
+    {% endfor %}
 
 {% endblock %}

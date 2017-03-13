@@ -20,34 +20,22 @@
         </div>
     </div>
 
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Fullname</th>
-                <th>Sortablename</th>
-                <th>Url</th>
-                <th>Created</th>
-                <th>Updated</th>            </tr>
-        </thead>
-        <tbody>
-            {% for person in people %}
-                <tr>
-                    <td>
-                        <a href="{{ path('person_show', { 'id': person.id }) }}">
-                            {{ person.fullname }}
-                        </a>
-                    </td>
-                    <td>{{ person.sortableName }}</td>
-                    <td>
-                        <a href="{{ person.url }}">{{ person.url }}</a>
-                        {% if person.urls|length > 1 %}<br>And {{ (person.urls|length) - 1 }} more.{% endif %}
-                    </td>
-                    <td>{% if person.created %}{{ person.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if person.updated %}{{ person.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class='clearfix'></div>
+
+    {% for person in people %}
+        <h2>
+            <a href="{{ path('person_show', { 'id': person.id }) }}">
+                {{ person.fullname }}
+            </a>
+        </h2>
+        <p>
+            {{ text_service.trim(person.biography, 100) }}            
+        </p>
+        <p class='text-right'>
+            Created {{ person.created|date }}. Most recently updated {{ person.updated|date }}
+        </p>
+
+    {% endfor %}
 
     <div class="navigation">
         {{ knp_pagination_render(people) }}
