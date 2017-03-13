@@ -8,7 +8,9 @@ use Nines\DublinCoreBundle\Entity\AbstractField;
 /**
  * MediaFileField
  *
- * @ORM\Table(name="media_file_field")
+ * @ORM\Table(name="media_file_field", indexes={
+ *   @ORM\Index(columns={"value"}, flags={"fulltext"})
+ * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MediaFileFieldRepository")
  */
 class MediaFileField extends AbstractField
@@ -20,7 +22,6 @@ class MediaFileField extends AbstractField
      */
     private $mediaFile;
     
-
     /**
      * Set mediaFile
      *

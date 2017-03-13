@@ -69,13 +69,13 @@ class MediaFileController extends Controller {
         if ($q) {
             $query = $repo->searchQuery($q);
             $paginator = $this->get('knp_paginator');
-            $mediaFiles = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+            $results = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $mediaFiles = array();
+            $results = array();
         }
 
         return array(
-            'mediaFiles' => $mediaFiles,
+            'results' => $results,
             'q' => $q,
         );
     }
@@ -142,8 +142,13 @@ class MediaFileController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();                    
             $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
-            $em = $this->getDoctrine()->getManager();            
+            
+            $mediaFileField = new MediaFileField();
+            $mediaFileField->setElement($em->getRepository(Element::class)->findOneBy(array('name' => 'dc_identifier')));
+            $mediaFileField->setValue($mediaFile->getOriginalName());
+            $em->persist($mediaFileField);
             $em->persist($mediaFile);
             $em->flush();
 

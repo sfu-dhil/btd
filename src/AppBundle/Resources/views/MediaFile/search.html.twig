@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %} 
+    <h1>MediaFile Search</h1>
+    {% if results|length %}
+        <p class="count">
+            Displaying {{ results|length }} search results.
+        </p>
+    {% endif %}
+{% endblock %} 
+
+{% block body %}
+
+    <form method="get" action="{{ path('media_file_search') }}" class="form-horizontal">
+        <fieldset>
+            <legend>Search</legend>
+            <div class='form-group'>
+                <label class='col-sm-2 control-label' for='q'>Search term</label>
+                <div class='col-sm-10'>
+                    <div class='input-group'>
+                        <input type='text' name='q' id='q' class='form-control' value='{{ q }}'>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">
+                                <span class='glyphicon glyphicon-search'></span>
+                                Search
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <p class="help-block col-sm-offset-2">Boolean, full text, search any metadata field for the term.</p>
+            </div>
+        </fieldset>
+    </form>
+
+    {% if results|length %}
+        {% for result in results %}
+            {% set mediaFile = result %}
+            <div class='row'>
+                <div class='col-sm-4'>
+                    <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
+                        <img src="{{ path('media_file_tn', {'id': mediaFile.id}) }}" class="img-thumbnail">
+                    </a>
+                </div>
+                <div class='col-sm-8'>
+                    <a href="{{ path('media_file_show', {'id': mediaFile.id}) }}">
+                        <h2 class=''>{{ mediaFile.getMetadataFields('dc_title', false) }}</h2>
+                    </a>
+                    <dl class="dl-horizontal">
+                        <dt>Id</dt>
+                        <dd>{{ mediaFile.id }}</dd>
+                        <dt>File type</dt>
+                        <dd>{{ mediaFile.mimeType }}</dd>
+                        <dt>Original name</dt>
+                        <dd>{{ mediaFile.originalName }}</dd>
+                        <dt>Uploaded</dt>
+                        <dd>{{ mediaFile.updated|date }}</dd>
+                        <dt>URL</dt>
+                        <dd>
+                            <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
+                                {{ url('media_file_raw', {'id': mediaFile.id}) }}
+                            </a>
+                        </dd>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="navigation">
+            {{ knp_pagination_render(results) }}
+        </div>
+    {% endif %}
+
+
+{% endblock %}

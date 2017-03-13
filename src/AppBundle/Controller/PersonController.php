@@ -206,5 +206,24 @@ class PersonController extends Controller {
 
         return $this->redirectToRoute('person_index');
     }
+    
+    /**
+     * @Route("/{id}/add_media", name="person_add_media")
+     * @Method("GET")
+     * @param Request $request
+     * @param Person $person
+     */
+    public function addMedia(Request $request, Person $person) {
+        
+    }
 
+    /**
+     * @Route("/{id}/remove_media", name="person_remove_media")
+     * @Method("GET")
+     * @param Request $request
+     * @param Person $person
+     */
+    public function removeMedia(Request $request, Person $person) {
+        
+    }
 }

@@ -77,7 +77,7 @@ doctrine:
                 DATE: DoctrineExtensions\Query\Mysql\Date
                 STRTODATE: DoctrineExtensions\Query\Mysql\StrToDate                
             string_functions:
-                MATCH_AGAINST: Nines\NinesUtilBundle\Extensions\Doctrine\MatchAgainstFunction
+                MATCH_AGAINST: DoctrineExtensions\Query\Mysql\MatchAgainst
             numeric_functions:
                 INT: Nines\NinesUtilBundle\Extensions\Doctrine\CastAsIntegerFunction
                 RAND: Nines\NinesUtilBundle\Extensions\Doctrine\RandFunction
