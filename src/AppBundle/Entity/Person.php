@@ -11,7 +11,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * Person
  *
  * @ORM\Table(name="person", indexes={
- *  @ORM\Index(columns={"fullname", "biography", "url"}, flags={"fulltext"}),
+ *  @ORM\Index(columns={"fullname", "biography"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PersonRepository")
  */
@@ -37,9 +37,9 @@ class Person extends AbstractEntity {
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="array")
      */
-    private $url;
+    private $urls;
 
     /**
      * @var Collection|ArtworkContribution[]
@@ -57,6 +57,7 @@ class Person extends AbstractEntity {
         parent::__construct();
         $this->artworkContributions = new ArrayCollection();
         $this->projectContributions = new ArrayCollection();
+        $this->urls = array();
     }
 
     public function __toString() {
@@ -130,28 +131,6 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Set url
-     *
-     * @param string $url
-     *
-     * @return Person
-     */
-    public function setUrl($url) {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return string
-     */
-    public function getUrl() {
-        return $this->url;
-    }
-
-    /**
      * Add artworkContribution
      *
      * @param ArtworkContribution $artworkContribution
@@ -213,4 +192,39 @@ class Person extends AbstractEntity {
         return $this->projectContributions;
     }
 
+    /**
+     * Get the first URL. There may be more.
+     * 
+     * @return string|null
+     */
+    public function getUrl() {
+        if(count($this->urls) > 0) {
+            return $this->urls[0];
+        }
+        return null;
+    }
+
+    /**
+     * Set urls
+     *
+     * @param array $urls
+     *
+     * @return Person
+     */
+    public function setUrls($urls)
+    {
+        $this->urls = $urls;
+
+        return $this;
+    }
+
+    /**
+     * Get urls
+     *
+     * @return array
+     */
+    public function getUrls()
+    {
+        return $this->urls;
+    }
 }

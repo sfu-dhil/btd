@@ -19,10 +19,16 @@
             </a>
         </div>
     </div>
-        {{ person.biography|raw }}
-        <p>
-            <a href="{{ person.url }}">{{person.url}}</a><br/>
-            Created {{ person.created|date }}. Most recently updated {{ person.updated|date }}
-        </p>
+    {{ person.biography|raw }}
+    {% if person.urls|length > 0 %}
+        <ul>
+            {% for url in person.urls %}
+                <li><a href="{{ url }}">{{ url }}</a></li>
+                {% endfor %}
+        </ul>
+    {% endif %}
+    <p>
+        Created {{ person.created|date }}. Most recently updated {{ person.updated|date }}
+    </p>
 
 {% endblock %}

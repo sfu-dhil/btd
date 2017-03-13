@@ -19,40 +19,37 @@
             </a>
         </div>
     </div>
+    <div class='clearfix'></div>
 
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Path</th>
-                <th>Size</th>
-                <th>Mimetype</th>
-                <th>Creator</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Copyright</th>
-                <th>Created</th>
-                <th>Updated</th>            </tr>
-        </thead>
-        <tbody>
             {% for mediaFile in mediaFiles %}
-                <tr>
-                    <td>
+        <div class='row'>
+            <div class='col-sm-4'>
                         <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
-                            {{ mediaFile.path }}
+                    <img src="{{ path('media_file_tn', {'id': mediaFile.id}) }}" class="img-thumbnail">
                         </a>
-                    </td>
-                    <td>{{ mediaFile.size }}</td>
-                    <td>{{ mediaFile.mimetype }}</td>
-                    <td>{{ mediaFile.creator }}</td>
-                    <td>{{ mediaFile.title }}</td>
-                    <td>{{ mediaFile.description }}</td>
-                    <td>{{ mediaFile.copyright }}</td>
-                    <td>{% if mediaFile.created %}{{ mediaFile.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if mediaFile.updated %}{{ mediaFile.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                </tr>
+            </div>
+            <div class='col-sm-8'>
+                <a href="{{ path('media_file_show', {'id': mediaFile.id}) }}">
+                    <h2 class=''>{{ mediaFile.getMetadataFields('dc_title', false) }}</h2>
+                </a>
+                <dl class="dl-horizontal">
+                    <dt>Id</dt>
+                    <dd>{{ mediaFile.id }}</dd>
+                    <dt>File type</dt>
+                    <dd>{{ mediaFile.mimeType }}</dd>
+                    <dt>Original name</dt>
+                    <dd>{{ mediaFile.originalName }}</dd>
+                    <dt>Uploaded</dt>
+                    <dd>{{ mediaFile.updated|date }}</dd>
+                    <dt>URL</dt>
+                    <dd>
+                        <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
+                            {{ url('media_file_raw', {'id': mediaFile.id}) }}
+                        </a>
+                    </dd>
+            </div>
+        </div>
             {% endfor %}
-        </tbody>
-    </table>
 
     <div class="navigation">
         {{ knp_pagination_render(mediaFiles) }}

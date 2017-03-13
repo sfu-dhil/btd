@@ -1,6 +1,13 @@
 (function ($, window) {
 
     $(document).ready(function () {
+        
+        var hostname = window.location.hostname.replace('www.', '');
+        $('a').each(function (index, value) {
+            if (value.hostname !== hostname) {
+                $(this).attr('target', '_blank');
+            }
+        });
 
         $(window).bind('beforeunload', function (e) {
             var clean = true;

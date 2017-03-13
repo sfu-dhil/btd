@@ -38,7 +38,10 @@
                         </a>
                     </td>
                     <td>{{ person.sortableName }}</td>
-                    <td>{{ person.url }}</td>
+                    <td>
+                        <a href="{{ person.url }}">{{ person.url }}</a>
+                        {% if person.urls|length > 1 %}<br>And {{ (person.urls|length) - 1 }} more.{% endif %}
+                    </td>
                     <td>{% if person.created %}{{ person.created|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{% if person.updated %}{{ person.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
                 </tr>
