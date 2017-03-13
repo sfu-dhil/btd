@@ -50,6 +50,10 @@ class Builder implements ContainerAwareInterface {
             'label' => 'Projects',
             'route' => 'project_index',
         ));
+        $menu->addChild('organization', array(
+            'label' => 'Organizations',
+            'route' => 'organization_index',
+        ));        
         $menu->addChild('venue', array(
             'label' => 'Venues',
             'route' => 'venue_index',

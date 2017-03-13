@@ -2,9 +2,9 @@
 
 namespace AppBundle\Form;
 
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VenueType extends AbstractType {
@@ -16,7 +16,7 @@ class VenueType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('name');
         $builder->add('address');
-        $builder->add('description');
+        $builder->add('description', CKEditorType::class);
         $builder->add('url');
         $builder->add('location');
         $builder->add('venueType');

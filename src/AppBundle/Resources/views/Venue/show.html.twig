@@ -19,33 +19,15 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ venue.name }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ venue.address }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ venue.description }}</td>
-            </tr>
-            <tr>
-                <th>Url</th>
-                <td>{{ venue.url }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{% if venue.created %}{{ venue.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{% if venue.updated %}{{ venue.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+
+    <div class='clearfix'></div>
+
+    <h2>{{ venue.name }}</h2>
+    <p>{{ venue.address }}</p>
+    {{ venue.description|raw }}
+    <p><a href='{{ venue.url }}'>{{ venue.url }}</a></p>
+    <p class='text-right'>
+        Created {{ venue.created|date }}. Most recently updated {{ venue.updated|date }}
+    </p>
 
 {% endblock %}

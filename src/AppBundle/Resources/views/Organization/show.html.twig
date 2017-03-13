@@ -19,37 +19,22 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ organization.name }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ organization.address }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ organization.description }}</td>
-            </tr>
-            <tr>
-                <th>Url</th>
-                <td>{{ organization.url }}</td>
-            </tr>
-            <tr>
-                <th>Contact</th>
-                <td>{{ organization.contact }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{% if organization.created %}{{ organization.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{% if organization.updated %}{{ organization.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class='clearfix'></div>
+    <h2>{{ organization.name }}</h2>
+    <address>
+        {{ organization.address|nl2br }}
+    </address>
+    {{ organization.description|raw }}
+    <p>
+        <a href='{{ organization.url }}'>
+            {{ organization.url }}
+        </a>
+    </p>
+    <h3>Contact</h3>
+    {{ organization.contact }}
+    
+    <p class='text-right'>
+        Created {{ organization.created|date }}. Most recently updated {{ organization.updated|date }}
+    </p>
 
 {% endblock %}

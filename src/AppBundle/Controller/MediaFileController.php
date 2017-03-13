@@ -144,12 +144,14 @@ class MediaFileController extends Controller {
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();                    
             $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
+            $em->persist($mediaFile);
             
             $mediaFileField = new MediaFileField();
             $mediaFileField->setElement($em->getRepository(Element::class)->findOneBy(array('name' => 'dc_identifier')));
             $mediaFileField->setValue($mediaFile->getOriginalName());
+            $mediaFileField->setMediaFile($mediaFile);            
             $em->persist($mediaFileField);
-            $em->persist($mediaFile);
+            
             $em->flush();
 
             $this->addFlash('success', 'The new mediaFile was created');

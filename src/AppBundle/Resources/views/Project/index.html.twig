@@ -20,32 +20,19 @@
         </div>
     </div>
 
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Created</th>
-                <th>Updated</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for project in projects %}
-                <tr>
-                    <td>
-                        <a href="{{ path('project_show', { 'id': project.id }) }}">
-                            {{ project.title }}
-                        </a>
-                    </td>
-                    <td>{% if project.startDate %}{{ project.startDate|date }}{% endif %}</td>
-                    <td>{% if project.endDate %}{{ project.endDate|date }}{% endif %}</td>
-                    <td>{% if project.created %}{{ project.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if project.updated %}{{ project.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class='clearfix'></div>
+
+    {% for project in projects %}
+        <h2>
+            <a href="{{ path('project_show', { 'id': project.id }) }}">
+                {{ project.title }}
+            </a>
+        </h2>
+        {{ project.excerpt|raw }}
+        <p class='text-right'>
+            Created {{ project.created|date }}. Most recently updated {{ project.updated|date }}
+        </p>
+    {% endfor %}
 
     <div class="navigation">
         {{ knp_pagination_render(projects) }}

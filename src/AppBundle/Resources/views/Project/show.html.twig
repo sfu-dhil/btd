@@ -81,16 +81,30 @@
     <h2>Contributors</h2>
 
     {% for contribution in project.contributions %}
-        {% set person = contribution.person %}
-        <h3>
-            {{ contribution.projectRole }}: 
-            <a href="{{ path('person_show', { 'id': person.id }) }}">
-                {{ person.fullname }}
-            </a>
-        </h3>
-        <p>
-            {{ text_service.trim(person.biography, 100) }}            
-        </p>
+        {% if contribution.person %}
+            {% set person = contribution.person %}
+            <h3>
+                {{ contribution.projectRole }}: 
+                <a href="{{ path('person_show', { 'id': person.id }) }}">
+                    {{ person.fullname }}
+                </a>
+            </h3>
+            <p>
+                {{ text_service.trim(person.biography, 100) }}            
+            </p>
+        {% endif %}
+        {% if contribution.organization %}
+            {% set organization = contribution.organization %}
+            <h3>
+                {{ contribution.projectRole }}: 
+                <a href="{{ path('organization_show', { 'id': organization.id }) }}">
+                    {{ organization.name }}
+                </a>
+            </h3>
+            <p>
+                {{ text_service.trim(organization.description, 100) }}            
+            </p>
+        {% endif %}
     {% endfor %}
 
 {% endblock %}
