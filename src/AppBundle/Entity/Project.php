@@ -242,6 +242,16 @@ class Project extends AbstractEntity {
     }
 
     /**
+     * Check if a media file is associated with this person.
+     * 
+     * @param \AppBundle\Entity\MediaFile $mediaFile
+     * @return type
+     */
+    public function hasMediaFile(MediaFile $mediaFile) {
+        return $this->mediaFiles->contains($mediaFile);
+    }
+    
+    /**
      * Add mediaFile
      *
      * @param MediaFile $mediaFile
@@ -249,7 +259,9 @@ class Project extends AbstractEntity {
      * @return Project
      */
     public function addMediaFile(MediaFile $mediaFile) {
-        $this->mediaFiles[] = $mediaFile;
+        if ( ! $this->mediaFiles->contains($mediaFile)) {
+            $this->mediaFiles[] = $mediaFile;
+        }
 
         return $this;
     }

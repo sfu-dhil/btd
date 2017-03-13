@@ -20,7 +20,7 @@
             </a>
         </div>
     </div>
-           
+
     {% if is_granted('ROLE_ADMIN') %}
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -34,11 +34,46 @@
         </div>
     {% endif %}
 
-    
+
     {{ project.description|raw }}
 
     <div class="text-right">
         Created {{ project.created|date('Y-m-d H:i:s') }}. Most recent update {{ project.updated|date }}.
     </div>
+
+    <h2>Media Files</h2>
+    <p>
+        <a href="{{ path('project_add_media', {'id': project.id}) }}">Add media files</a> | 
+        <a href="{{ path('project_remove_media', {'id': project.id}) }}">Remove media files</a>
+    </p>
+
+    {% for mediaFile in project.mediaFiles %}
+        <div class='row'>
+            <div class='col-sm-4'>
+                <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
+                    <img src="{{ path('media_file_tn', {'id': mediaFile.id}) }}" class="img-thumbnail">
+                </a>
+            </div>
+            <div class='col-sm-8'>
+                {{ mediaFile.getMetadataFields('dc_title', false) }}
+                <dl class="dl-horizontal">
+                    <dt>Id</dt>
+                    <dd>{{ mediaFile.id }}</dd>
+                    <dt>File type</dt>
+                    <dd>{{ mediaFile.mimeType }}</dd>
+                    <dt>Original name</dt>
+                    <dd>{{ mediaFile.originalName }}</dd>
+                    <dt>Uploaded</dt>
+                    <dd>{{ mediaFile.updated|date }}</dd>
+                    <dt>URL</dt>
+                    <dd>
+                        <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
+                            {{ url('media_file_raw', {'id': mediaFile.id}) }}
+                        </a>
+                    </dd>
+            </div>
+        </div>
+    {% endfor %}
+
 
 {% endblock %}

@@ -206,24 +206,83 @@ class PersonController extends Controller {
 
         return $this->redirectToRoute('person_index');
     }
-    
+
     /**
      * @Route("/{id}/add_media", name="person_add_media")
      * @Method("GET")
+     * @Template()
+     * 
      * @param Request $request
      * @param Person $person
      */
-    public function addMedia(Request $request, Person $person) {
-        
+    public function addMediaAction(Request $request, Person $person) {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('AppBundle:MediaFile');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->searchQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $results = $paginator->paginate($query, $request->query->getInt('page', 1), 5);
+        } else {
+            $results = array();
+        }
+
+        $addId = $request->query->get('addId');
+        if ($addId) {
+            $mediaFile = $repo->find($addId);
+            if (!$person->hasMediaFile($mediaFile)) {
+                $person->addMediaFile($mediaFile);
+                $mediaFile->addPerson($person);
+                $em->flush();
+            }
+            $this->addFlash('success', 'The media file is associated with the artowrk.');
+            return $this->redirectToRoute('person_add_media', array(
+                        'id' => $person->getId(),
+                        'q' => $q,
+                        'page' => $request->query->getInt('page', 1)
+            ));
+        }
+
+        return array(
+            'person' => $person,
+            'q' => $q,
+            'results' => $results,
+        );
     }
 
     /**
      * @Route("/{id}/remove_media", name="person_remove_media")
      * @Method("GET")
+     * @Template()
+     * 
      * @param Request $request
      * @param Person $person
      */
-    public function removeMedia(Request $request, Person $person) {
-        
+    public function removeMediaAction(Request $request, Person $person) {
+        $paginator = $this->get('knp_paginator');
+        $results = $paginator->paginate($person->getMediaFiles(), $request->query->getInt('page', 1), 25);
+
+        $removeId = $request->query->get('removeId');
+        if ($removeId) {
+            $em = $this->getDoctrine()->getManager();
+            $repo = $em->getRepository('AppBundle:MediaFile');
+            $mediaFile = $repo->find($removeId);
+            if ($person->hasMediaFile($mediaFile)) {
+                $person->removeMediaFile($mediaFile);
+                $mediaFile->removePerson($person);
+                $em->flush();
+            }
+            $this->addFlash('success', 'The media file is associated with the artowrk.');
+            return $this->redirectToRoute('person_remove_media', array(
+                        'id' => $person->getId(),
+                        'page' => $request->query->getInt('page', 1)
+            ));
+        }
+
+        return array(
+            'person' => $person,
+            'results' => $results,
+        );
     }
+
 }

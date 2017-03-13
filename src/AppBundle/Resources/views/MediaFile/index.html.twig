@@ -21,16 +21,16 @@
     </div>
     <div class='clearfix'></div>
 
-            {% for mediaFile in mediaFiles %}
+    {% for mediaFile in mediaFiles %}
         <div class='row'>
             <div class='col-sm-4'>
-                        <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
+                <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
                     <img src="{{ path('media_file_tn', {'id': mediaFile.id}) }}" class="img-thumbnail">
-                        </a>
+                </a>
             </div>
             <div class='col-sm-8'>
                 <a href="{{ path('media_file_show', {'id': mediaFile.id}) }}">
-                    <h2 class=''>{{ mediaFile.getMetadataFields('dc_title', false) }}</h2>
+                    {{ mediaFile.getMetadataFields('dc_title', false) }}
                 </a>
                 <dl class="dl-horizontal">
                     <dt>Id</dt>
@@ -49,7 +49,7 @@
                     </dd>
             </div>
         </div>
-            {% endfor %}
+    {% endfor %}
 
     <div class="navigation">
         {{ knp_pagination_render(mediaFiles) }}

@@ -58,9 +58,16 @@ class MediaFile extends AbstractEntity {
      */
     private $projects;
 
+    /**
+     * @var Collection|MediaFileField[]
+     * @ORM\ManyToMany(targetEntity="Person", mappedBy="mediaFiles")
+     */
+    private $people;
+    
     public function __construct() {
         parent::__construct();
         $this->metadataFields = new ArrayCollection();
+        $this->people = new ArrayCollection();
     }
 
     public function __toString() {
@@ -260,5 +267,45 @@ class MediaFile extends AbstractEntity {
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    public function hasPerson(Person $person) {
+        return $this->people->contains($person);
+    }
+    
+    /**
+     * Add person
+     *
+     * @param \AppBundle\Entity\Person $person
+     *
+     * @return MediaFile
+     */
+    public function addPerson(\AppBundle\Entity\Person $person)
+    {
+        if( ! $this->people->contains($person)) {
+            $this->people[] = $person;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove person
+     *
+     * @param \AppBundle\Entity\Person $person
+     */
+    public function removePerson(\AppBundle\Entity\Person $person)
+    {
+        $this->people->removeElement($person);
+    }
+
+    /**
+     * Get people
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPeople()
+    {
+        return $this->people;
     }
 }

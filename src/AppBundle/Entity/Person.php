@@ -52,6 +52,13 @@ class Person extends AbstractEntity {
      * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="person")
      */
     private $projectContributions;
+    
+    /**
+     * @var Collection|MediaFile[]
+     * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="projects")
+     * @ORM\JoinTable(name="person_mediafiles")
+     */
+    private $mediaFiles;    
 
     public function __construct() {
         parent::__construct();
@@ -226,5 +233,51 @@ class Person extends AbstractEntity {
     public function getUrls()
     {
         return $this->urls;
+    }
+
+    /**
+     * Check if a media file is associated with this person.
+     * 
+     * @param \AppBundle\Entity\MediaFile $mediaFile
+     * @return type
+     */
+    public function hasMediaFile(MediaFile $mediaFile) {
+        return $this->mediaFiles->contains($mediaFile);
+    }
+    
+    /**
+     * Add mediaFile
+     *
+     * @param \AppBundle\Entity\MediaFile $mediaFile
+     *
+     * @return Person
+     */
+    public function addMediaFile(\AppBundle\Entity\MediaFile $mediaFile)
+    {
+        if ( ! $this->mediaFiles->contains($mediaFile)) {
+            $this->mediaFiles[] = $mediaFile;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove mediaFile
+     *
+     * @param \AppBundle\Entity\MediaFile $mediaFile
+     */
+    public function removeMediaFile(\AppBundle\Entity\MediaFile $mediaFile)
+    {
+        $this->mediaFiles->removeElement($mediaFile);
+    }
+
+    /**
+     * Get mediaFiles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMediaFiles()
+    {
+        return $this->mediaFiles;
     }
 }

@@ -136,7 +136,7 @@ class ProjectController extends Controller {
 
         if ($form->isSubmitted() && $form->isValid()) {
             $text = $this->get('nines.util.text');
-            if( ! $project->getExcerpt()) {
+            if (!$project->getExcerpt()) {
                 $project->setExcerpt($text->trim($project->getDescription(), $this->getParameter('nines_blog.excerpt_length')));
             }
             $em = $this->getDoctrine()->getManager();
@@ -183,7 +183,7 @@ class ProjectController extends Controller {
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $text = $this->get('nines.util.text');
-            if( ! $project->getExcerpt()) {
+            if (!$project->getExcerpt()) {
                 $project->setExcerpt($text->trim($project->getDescription(), $this->getParameter('nines_blog.excerpt_length')));
             }
             $em = $this->getDoctrine()->getManager();
@@ -213,6 +213,84 @@ class ProjectController extends Controller {
         $this->addFlash('success', 'The project was deleted.');
 
         return $this->redirectToRoute('project_index');
+    }
+
+    /**
+     * @Route("/{id}/add_media", name="project_add_media")
+     * @Method("GET")
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Project $project
+     */
+    public function addMediaAction(Request $request, Project $project) {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('AppBundle:MediaFile');
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $repo->searchQuery($q);
+            $paginator = $this->get('knp_paginator');
+            $results = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $results = array();
+        }
+
+        $addId = $request->query->get('addId');
+        if ($addId) {
+            $mediaFile = $repo->find($addId);
+            if (!$project->hasMediaFile($mediaFile)) {
+                $project->addMediaFile($mediaFile);
+                $mediaFile->addProject($project);
+                $em->flush();
+            }
+            $this->addFlash('success', 'The media file is associated with the artowrk.');
+            return $this->redirectToRoute('project_add_media', array(
+                        'id' => $project->getId(),
+                        'q' => $q,
+                        'page' => $request->query->getInt('page', 1)
+            ));
+        }
+
+        return array(
+            'project' => $project,
+            'q' => $q,
+            'results' => $results,
+        );
+    }
+
+    /**
+     * @Route("/{id}/remove_media", name="project_remove_media")
+     * @Method("GET")
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Project $project
+     */
+    public function removeMediaAction(Request $request, Project $project) {
+        $paginator = $this->get('knp_paginator');
+        $results = $paginator->paginate($project->getMediaFiles(), $request->query->getInt('page', 1), 25);
+
+        $removeId = $request->query->get('removeId');
+        if ($removeId) {
+            $em = $this->getDoctrine()->getManager();
+            $repo = $em->getRepository('AppBundle:MediaFile');
+            $mediaFile = $repo->find($removeId);
+            if ($project->hasMediaFile($mediaFile)) {
+                $project->removeMediaFile($mediaFile);
+                $mediaFile->removeProject($project);
+                $em->flush();
+            }
+            $this->addFlash('success', 'The media file is associated with the artowrk.');
+            return $this->redirectToRoute('project_remove_media', array(
+                'id' => $project->getId(),
+                'page' => $request->query->getInt('page', 1)
+            ));
+        }
+
+        return array(
+            'project' => $project,
+            'results' => $results,
+        );
     }
 
 }

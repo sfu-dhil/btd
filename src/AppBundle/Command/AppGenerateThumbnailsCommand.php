@@ -28,30 +28,29 @@ class AppGenerateThumbnailsCommand extends ContainerAwareCommand
         $this->thumbnailSize = $container->getParameter('btd.media_thumbnail_size');
     }
     
+    protected function thumb(Imagick $magick, $path, $basename) {
+        $magick->cropThumbnailImage(256, 171);
+        $magick->setImageFormat('jpg');
+        $handle = fopen(dirname($path) . '/' . $basename . '_tn.jpg', 'wb');
+        fwrite($handle, $magick->getimageblob());
+    }
+    
     protected function thumbnailImage(MediaFile $mediaFile) {
         $path = $mediaFile->getFile()->getRealPath();
         $magick = new Imagick($path);
-        $magick->resizeImage($this->thumbnailSize, $this->thumbnailSize, imagick::FILTER_BOX, 0, true);
-        $handle = fopen(dirname($path) . '/' . $mediaFile->getBasename() . '_tn.jpg', 'wb');
-        fwrite($handle, $magick->getimageblob());
+        $this->thumb($magick, $path, $mediaFile->getBasename());
     }
     
     protected function thumbnailPdf(MediaFile $mediaFile) {
         $path = $mediaFile->getFile()->getRealPath();
-        $magick = new Imagick($path . '[0]');     
-        $magick->resizeImage($this->thumbnailSize, $this->thumbnailSize, imagick::FILTER_BOX, 0, true);
-        $magick->setImageFormat('jpg');
-        $handle = fopen(dirname($path) . '/' . $mediaFile->getBasename() . '_tn.jpg', 'wb');
-        fwrite($handle, $magick->getimageblob());        
+        $magick = new Imagick($path . '[0]');             
+        $this->thumb($magick, $path, $mediaFile->getBasename());
     }
     
     protected function thumbnailVideo(MediaFile $mediaFile) {
         $path = $mediaFile->getFile()->getRealPath();
         $magick = new Imagick($path . '[0]');     
-        $magick->resizeImage($this->thumbnailSize, $this->thumbnailSize, imagick::FILTER_BOX, 0, true);
-        $magick->setImageFormat('jpg');
-        $handle = fopen(dirname($path) . '/' . $mediaFile->getBasename() . '_tn.jpg', 'wb');
-        fwrite($handle, $magick->getimageblob());        
+        $this->thumb($magick, $path, $mediaFile->getBasename());
     }
     
     protected function thumbnailAudio(MediaFile $mediaFile) {

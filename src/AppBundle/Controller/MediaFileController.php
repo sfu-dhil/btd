@@ -227,7 +227,12 @@ class MediaFileController extends Controller {
             $this->get('app.file_uploader')->delete($oldFile);
             $this->get('app.file_uploader')->delete($tnFile);
             $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
-            $em = $this->getDoctrine()->getManager();
+            
+            $em = $this->getDoctrine()->getManager();            
+            $mediaFileField = new MediaFileField();
+            $mediaFileField->setElement($em->getRepository(Element::class)->findOneBy(array('name' => 'dc_identifier')));
+            $mediaFileField->setValue($mediaFile->getOriginalName());
+            
             $em->flush();
             $this->addFlash('success', 'The mediaFile has been updated.');
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
