@@ -258,6 +258,9 @@ class MediaFileController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $this->get('app.file_uploader')->delete($mediaFile->getFile());
         $this->get('app.file_uploader')->delete($mediaFile->getThumbnail());
+        foreach($mediaFile->getMetadataFields() as $field) {
+            $em->remove($field);
+        }
         $em->remove($mediaFile);
         $em->flush();
         $this->addFlash('success', 'The mediaFile was deleted.');

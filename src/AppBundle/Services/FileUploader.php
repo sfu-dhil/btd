@@ -28,7 +28,7 @@ class FileUploader {
     
     public function delete(File $file) {
         $fs = new Filesystem();
-        if($fs->exists($file)) {
+        if($fs->exists($path = $this->uploadDir . '/' . $file)) {
             $fs->remove($file);
         }
     }
