@@ -1,5 +1,0 @@
-[submodule "src/Nines"]
-	path = src/Nines
-	url = git@git.lib.sfu.ca:mjoyce/nines-bundles.git
-        branch = master
-        
