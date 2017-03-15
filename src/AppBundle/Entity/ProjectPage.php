@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ProjectPage
  *
- * @ORM\Table(name="project_page")
+ * @ORM\Table(name="project_page", indexes={
+ *  @ORM\Index(columns={"title", "content"}, flags={"fulltext"}),
+ * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectPageRepository")
  */
 class ProjectPage extends \Nines\UtilBundle\Entity\AbstractEntity
