@@ -152,7 +152,13 @@ ivory_ck_editor:
     default_config: btd_config
     configs:
         btd_config:
-            toolbar: standard
+            toolbar: btd_toolbar
+    toolbars:
+        configs:
+            btd_toolbar: 
+                - [ Source, -, Cut, Copy, Paste, PasteText, PasteFromWord, -, Undo, Redo ]
+                - [ Link, Unlink, Anchor, -, SpecialChar ]
+                - [ Format, Styles, -, Bold, Italic, Strike, -, RemoveFormat, -, NumberedList, BulletedList, -, Indent, Outdent, -, Blockquote, -, JustifyLeft, JustifyCenter, JustifyRight, JustifyBlock ]
 
 knp_menu:
     twig:
