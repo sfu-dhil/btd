@@ -74,6 +74,12 @@ class Project extends AbstractEntity {
     private $contributions;
 
     /**
+     * @var Collection|ProjectPage[]
+     * @ORM\OneToMany(targetEntity="ProjectPage", mappedBy="project")
+     */
+    private $projectPages;
+
+    /**
      * @var Collection|MediaFile[]
      * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="projects")
      * @ORM\JoinTable(name="project_mediafiles")
@@ -355,5 +361,39 @@ class Project extends AbstractEntity {
     public function getExcerpt()
     {
         return $this->excerpt;
+    }
+
+    /**
+     * Add projectPage
+     *
+     * @param \AppBundle\Entity\ProjectPage $projectPage
+     *
+     * @return Project
+     */
+    public function addProjectPage(\AppBundle\Entity\ProjectPage $projectPage)
+    {
+        $this->projectPages[] = $projectPage;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectPage
+     *
+     * @param \AppBundle\Entity\ProjectPage $projectPage
+     */
+    public function removeProjectPage(\AppBundle\Entity\ProjectPage $projectPage)
+    {
+        $this->projectPages->removeElement($projectPage);
+    }
+
+    /**
+     * Get projectPages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjectPages()
+    {
+        return $this->projectPages;
     }
 }
