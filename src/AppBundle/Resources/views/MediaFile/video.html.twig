@@ -6,7 +6,7 @@
     class="video-js"
     controls
     preload="auto"
-    poster=""
+    poster="{{ path('media_file_tn', {'id': mediaFile.id}) }}"
     data-setup='{}'>
   <source src="{{ path('media_file_raw', {'id': mediaFile.id}) }}" type="{{ mediaFile.mimetype }}"></source>
   <p class="vjs-no-js">
