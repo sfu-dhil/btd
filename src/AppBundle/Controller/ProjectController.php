@@ -170,12 +170,13 @@ class ProjectController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:MediaFile');
         $q = $request->query->get('q');
+        $paginator = $this->get('knp_paginator');
         if ($q) {
             $query = $repo->searchQuery($q);
-            $paginator = $this->get('knp_paginator');
             $results = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $results = array();
+            $query = $repo->findAll();
+            $results = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
         }
 
         $addId = $request->query->get('addId');
