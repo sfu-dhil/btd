@@ -29,8 +29,9 @@ class ProjectPageController extends Controller {
      */
     public function indexAction(Request $request, $project) {
         $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT e FROM AppBundle:ProjectPage e ORDER BY e.id';
+        $dql = 'SELECT e FROM AppBundle:ProjectPage e WHERE e.project = :project ORDER BY e.id';
         $query = $em->createQuery($dql);
+        $query->setParameter('project', $project);
         $paginator = $this->get('knp_paginator');
         $projectPages = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
