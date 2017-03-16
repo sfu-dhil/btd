@@ -2,9 +2,9 @@
 
 namespace AppBundle\Form;
 
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArtworkType extends AbstractType {
@@ -15,10 +15,9 @@ class ArtworkType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('title');
-        $builder->add('description');
-        $builder->add('materials');
-        $builder->add('copyright');
-        $builder->add('mediaFiles');
+        $builder->add('description', CKEditorType::class);
+        $builder->add('materials', CKEditorType::class);
+        $builder->add('copyright', CKEditorType::class);
     }
 
     /**

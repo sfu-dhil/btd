@@ -44,4 +44,34 @@
         </tbody>
     </table>
 
+    {% if projectRole.contributions|length > 0 %}
+        <h2>Contributions</h2>
+        <table class="table table-bordered table-condensed table-hover table-striped">
+            <tr>
+                <th>Project</th>
+                <th>Person</th>
+                <th>Organization</th>
+            </tr>            
+            {% for contribution in projectRole.contributions %}
+                <tr>
+                    <td><a href="{{ path('project_show', {'id': contribution.project.id }) }}">{{ contribution.project }}</a></td>
+                    <td>
+                        {% if contribution.person %}
+                            <a href="{{ path('person_show', {'id': contribution.person.id}) }}">
+                                {{ contribution.person }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if contribution.organization %}
+                            <a href="{{ path('organization_show', {'id': contribution.organization.id}) }}">
+                                {{ contribution.organization }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}                
+        </table>
+    {% endif %}
+
 {% endblock %}

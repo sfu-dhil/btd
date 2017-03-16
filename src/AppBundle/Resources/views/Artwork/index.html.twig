@@ -20,33 +20,19 @@
         </div>
     </div>
 
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Materials</th>
-                <th>Copyright</th>
-                <th>Created</th>
-                <th>Updated</th>            </tr>
-        </thead>
-        <tbody>
-            {% for artwork in artworks %}
-                <tr>
-                    <td>
-                        <a href="{{ path('artwork_show', { 'id': artwork.id }) }}">
-                            {{ artwork.title }}
-                        </a>
-                    </td>
-                    <td>{{ artwork.description }}</td>
-                    <td>{{ artwork.materials }}</td>
-                    <td>{{ artwork.copyright }}</td>
-                    <td>{% if artwork.created %}{{ artwork.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if artwork.updated %}{{ artwork.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="clearfix"></div>
+
+    {% for artwork in artworks %}
+        <h2>
+            <a href="{{ path('artwork_show', { 'id': artwork.id }) }}">
+                {{ artwork.title }}
+            </a>
+        </h2>
+        {{ text_service.trim(artwork.description, 100) }}
+        <p class='text-right'>
+            Created {{ artwork.created|date }}. Most recently updated {{ artwork.updated|date }}
+        </p>
+    {% endfor %}
 
     <div class="navigation">
         {{ knp_pagination_render(artworks) }}

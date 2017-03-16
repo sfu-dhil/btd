@@ -56,7 +56,7 @@ class Project extends AbstractEntity {
     /**
      * @var ProjectType
      * @ORM\ManyToOne(targetEntity="ProjectType", inversedBy="projects")
-     * @ORM\JoinColumn(name="projecttype_id")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $projectType;
 

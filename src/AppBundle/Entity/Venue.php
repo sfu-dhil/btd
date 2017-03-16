@@ -44,14 +44,14 @@ class Venue extends AbstractEntity {
     /**
      * @var Location
      * @ORM\ManyToOne(targetEntity="Location", inversedBy="venues")
-     * @ORM\JoinColumn(name="location_id")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $location;
 
     /**
      * @var VenueType
      * @ORM\ManyToOne(targetEntity="VenueType", inversedBy="venues")
-     * @ORM\JoinColumn(name="venuetype_id")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $venueType;
 

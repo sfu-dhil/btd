@@ -23,11 +23,25 @@
     <div class='clearfix'></div>
 
     <h2>{{ venue.name }}</h2>
+    <a href="{{ path('location_show', {'id': venue.location.id}) }}">{{ venue.location }}</a>
     <p>{{ venue.address }}</p>
     {{ venue.description|raw }}
     <p><a href='{{ venue.url }}'>{{ venue.url }}</a></p>
     <p class='text-right'>
         Created {{ venue.created|date }}. Most recently updated {{ venue.updated|date }}
     </p>
+
+    {% if venue.projects|length > 0 %}
+        {% for project in venue.projects %}
+           <h3>
+                <a href="{{ path('project_show', { 'id': project.id }) }}">
+                    {{ project }}
+                </a>
+            </h3>
+            <p>
+                {{ text_service.trim(project.description, 100) }}            
+            </p>            
+        {% endfor %}
+    {% endif %}
 
 {% endblock %}

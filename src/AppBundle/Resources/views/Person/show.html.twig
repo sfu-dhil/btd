@@ -30,13 +30,13 @@
     <p class='text-right'>
         Created {{ person.created|date }}. Most recently updated {{ person.updated|date }}
     </p>
-    
+
     <h2>Media Files</h2>
     <p>
         <a href="{{ path('person_add_media', {'id': person.id}) }}">Add media files</a> | 
         <a href="{{ path('person_remove_media', {'id': person.id}) }}">Remove media files</a>
     </p>
-    
+
     {% for mediaFile in person.mediaFiles %}
         <div class='row'>
             <div class='col-sm-4'>
@@ -64,6 +64,53 @@
             </div>
         </div>
     {% endfor %}
-    
+
+    {% if person.projectContributions|length %}
+        <h2>Projects</h2>
+        <table class="table table-bordered table-condensed table-hover table-striped">
+            <tr>
+                <th>Role</th>
+                <th>Project</th>
+            </tr>
+            {% for contribution in person.projectContributions %}
+                <tr>
+                    <td>
+                        <a href="{{ path('project_role_show', {'id': contribution.projectRole.id }) }}">
+                            {{ contribution.projectRole }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('project_show', {'id': contribution.project.id }) }}">
+                            {{ contribution.project }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if person.artworkContributions|length %}
+        <h2>Artworks</h2>
+        <table class="table table-bordered table-condensed table-hover table-striped">
+            <tr>
+                <th>Role</th>
+                <th>Project</th>
+            </tr>
+            {% for contribution in person.artworkContributions %}
+                <tr>
+                    <td>
+                        <a href="{{ path('artwork_role_show', {'id': contribution.artworkRole.id }) }}">
+                            {{ contribution.artworkRole }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('artwork_show', {'id': contribution.artwork.id }) }}">
+                            {{ contribution.artwork }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 
 {% endblock %}

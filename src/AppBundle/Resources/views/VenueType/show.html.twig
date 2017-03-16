@@ -44,4 +44,15 @@
         </tbody>
     </table>
 
+    {% if venueType.venues|length > 0 %}
+        <h2>Venues</h2>
+        {% for venue in venueType.venues %}
+            <p>
+                <strong><a href="{{ path('venue_show', {'id': venue.id}) }}">{{ venue }}</a></strong>
+                {{ venue.address }}<br/>
+                {{ text_service.trim(venue.description, 100) }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
 {% endblock %}

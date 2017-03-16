@@ -16,6 +16,7 @@ class ArtworkContribution extends AbstractEntity {
     /**
      * @var Artwork
      * @ORM\ManyToOne(targetEntity="Artwork", inversedBy="contributions")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $artwork;
 
@@ -34,6 +35,7 @@ class ArtworkContribution extends AbstractEntity {
     /**
      * @var ArtworkRole
      * @ORM\ManyToOne(targetEntity="ArtworkRole", inversedBy="contributions")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $artworkRole;
 

@@ -37,6 +37,7 @@ class MediaFile extends AbstractEntity {
     /**
      * @var MediaFileType
      * @ORM\ManyToOne(targetEntity="MediaFileType", inversedBy="mediaFiles")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $mediaFileType;
 

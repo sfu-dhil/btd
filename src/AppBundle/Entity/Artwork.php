@@ -183,6 +183,10 @@ class Artwork extends AbstractEntity {
         return $this->contributions;
     }
 
+    public function hasMediaFile(MediaFile $mediaFile) {
+        return $this->mediaFiles->contains($mediaFile);
+    }
+
     /**
      * Add mediaFile
      *
@@ -191,7 +195,9 @@ class Artwork extends AbstractEntity {
      * @return Artwork
      */
     public function addMediaFile(MediaFile $mediaFile) {
-        $this->mediaFiles[] = $mediaFile;
+        if (!$this->mediaFiles->contains($mediaFile)) {
+            $this->mediaFiles[] = $mediaFile;
+        }
 
         return $this;
     }

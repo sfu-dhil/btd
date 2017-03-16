@@ -50,7 +50,7 @@ class Organization extends AbstractEntity {
     /**
      * @var Location
      * @ORM\ManyToOne(targetEntity="Location", inversedBy="organizations")
-     * @ORM\JoinColumn(name="location_id")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $location;
 

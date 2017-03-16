@@ -17,6 +17,7 @@ class ProjectContribution extends AbstractEntity {
     /**
      * @var Project
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="contributions")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $project;
 
@@ -35,6 +36,7 @@ class ProjectContribution extends AbstractEntity {
     /**
      * @var ProjectRole
      * @ORM\ManyToOne(targetEntity="ProjectRole", inversedBy="contributions")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $projectRole;
 

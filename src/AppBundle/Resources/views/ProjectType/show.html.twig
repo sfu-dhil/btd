@@ -44,4 +44,19 @@
         </tbody>
     </table>
 
+    {% if projectType.projects|length > 0 %}
+        <h2>Projects</h2>
+        {% for project in projectType.projects %}
+            <p>
+                <strong>
+                    <a href="{{ path('project_show', {'id': project.id}) }}">{{ project }}</a>
+                </strong><br />
+                <a href="{{ path('location_show', {'id': project.venues[0].location.id}) }}">{{ project.venues[0].location }}</a>:
+                {{ project.startDate|date }} - {{ project.endDate|date }}
+            </p>
+            {{ project.excerpt|raw }}
+
+        {% endfor %}
+    {% endif %}
+
 {% endblock %}

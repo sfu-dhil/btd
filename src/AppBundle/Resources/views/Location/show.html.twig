@@ -44,4 +44,26 @@
         </tbody>
     </table>
 
+    {% if location.venues|length > 0 %}
+        <h2>Venues</h2>
+            {% for venue in location.venues %}
+                <p>
+                    <strong><a href="{{ path('venue_show', {'id': venue.id}) }}">{{ venue }}</a></strong>
+                    {{ venue.address }}<br/>
+                    {{ text_service.trim(venue.description, 100) }}
+                </p>
+            {% endfor %}
+    {% endif %}
+
+    {% if location.organizations|length > 0 %}
+        <h2>Organizations</h2>
+        {% for organization in location.organizations%}
+            <p>
+                <strong><a href="{{ path('organization_show', {'id': organization.id}) }}">{{ organization }}</a></strong>
+                {{ organization.address }}<br/>
+                {{ text_service.trim(organization.description, 100) }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
 {% endblock %}

@@ -38,6 +38,8 @@
     <dl class="dl-horizontal">
         <dt>Id</dt>
         <dd>{{ mediaFile.id }}</dd>
+        <dt>Media Type</dt>
+        <dd>{{ mediaFile.mediaFileType }}</dd>
         <dt>File type</dt>
         <dd>{{ mediaFile.mimeType }}</dd>
         <dt>File size</dt>
@@ -79,4 +81,43 @@
         {% endfor %}
     </dl>
 
+    {% if mediaFile.people %}
+        {% for person in mediaFile.people %}
+            <h3>
+                <a href="{{ path('person_show', { 'id': person.id }) }}">
+                    {{ person }}
+                </a>
+            </h3>
+            <p>
+                {{ text_service.trim(person.biography, 100) }}            
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    {% if mediaFile.artworks %}
+        {% for artwork in mediaFile.artworks %}
+            <h3>
+                <a href="{{ path('artwork_show', { 'id': artwork.id }) }}">
+                    {{ artwork }}
+                </a>
+            </h3>
+            <p>
+                {{ text_service.trim(artwork.description, 100) }}            
+            </p>
+        {% endfor %}
+    {% endif %}
+    
+    {% if mediaFile.projects %}
+        {% for project in mediaFile.projects %}
+            <h3>
+                <a href="{{ path('project_show', { 'id': project.id }) }}">
+                    {{ project }}
+                </a>
+            </h3>
+            <p>
+                {{ text_service.trim(project.description, 100) }}            
+            </p>
+        {% endfor %}
+    {% endif %}
+    
 {% endblock %}

@@ -67,6 +67,21 @@ class Builder implements ContainerAwareInterface {
                 'role' => 'separator',
                 'class' => 'divider',
             ));
+            $menu->addChild('artwork_contributions', array(
+                'label' => 'Artwork Contributions',
+                'route' => 'artwork_contribution_index',
+            ));
+            $menu->addChild('project_contributions', array(
+                'label' => 'Project Contributions',
+                'route' => 'project_contribution_index',
+            ));
+            $menu->addChild('divider2', array(
+                'label' => '',
+            ));
+            $menu['divider2']->setAttributes(array(
+                'role' => 'separator',
+                'class' => 'divider',
+            ));
             $menu->addChild('artwork_role', array(
                 'label' => 'Artwork Roles',
                 'route' => 'artwork_role_index',

@@ -42,9 +42,9 @@ class ProjectPage extends \Nines\UtilBundle\Entity\AbstractEntity
     private $content;
 
     /**
-     * @var ProjectType
+     * @var Project
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="projectPages")
-     * @ORM\JoinColumn(name="projecttype_id")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $project;
     

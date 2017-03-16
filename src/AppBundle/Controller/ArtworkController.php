@@ -207,4 +207,81 @@ class ArtworkController extends Controller {
         return $this->redirectToRoute('artwork_index');
     }
 
+    /**
+     * @Route("/{id}/add_media", name="artwork_add_media")
+     * @Method("GET")
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Artwork $artwork
+     */
+    public function addMediaAction(Request $request, Artwork $artwork) {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('AppBundle:MediaFile');
+        $q = $request->query->get('q');
+        $paginator = $this->get('knp_paginator');
+        if ($q) {
+            $query = $repo->searchQuery($q);
+            $results = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+        } else {
+            $results = $paginator->paginate($repo->findAll(), $request->query->getInt('page', 1), 25);
+        }
+
+        $addId = $request->query->get('addId');
+        if ($addId) {
+            $mediaFile = $repo->find($addId);
+            if (!$artwork->hasMediaFile($mediaFile)) {
+                $artwork->addMediaFile($mediaFile);
+                $mediaFile->addArtwork($artwork);
+                $em->flush();
+            }
+            $this->addFlash('success', 'The media file is associated with the artowrk.');
+            return $this->redirectToRoute('artwork_add_media', array(
+                        'id' => $artwork->getId(),
+                        'q' => $q,
+                        'page' => $request->query->getInt('page', 1)
+            ));
+        }
+
+        return array(
+            'artwork' => $artwork,
+            'q' => $q,
+            'results' => $results,
+        );
+    }
+
+    /**
+     * @Route("/{id}/remove_media", name="artwork_remove_media")
+     * @Method("GET")
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Artwork $artwork
+     */
+    public function removeMediaAction(Request $request, Artwork $artwork) {
+        $paginator = $this->get('knp_paginator');
+        $results = $paginator->paginate($artwork->getMediaFiles(), $request->query->getInt('page', 1), 25);
+
+        $removeId = $request->query->get('removeId');
+        if ($removeId) {
+            $em = $this->getDoctrine()->getManager();
+            $repo = $em->getRepository('AppBundle:MediaFile');
+            $mediaFile = $repo->find($removeId);
+            if ($artwork->hasMediaFile($mediaFile)) {
+                $artwork->removeMediaFile($mediaFile);
+                $mediaFile->removeArtwork($artwork);
+                $em->flush();
+            }
+            $this->addFlash('success', 'The media file is associated with the artowrk.');
+            return $this->redirectToRoute('artwork_remove_media', array(
+                'id' => $artwork->getId(),
+                'page' => $request->query->getInt('page', 1)
+            ));
+        }
+
+        return array(
+            'artwork' => $artwork,
+            'results' => $results,
+        );
+    }
 }

@@ -2,7 +2,9 @@
 
 {% block pageheader %} 
     <h1>{{ project.title }}</h1>
-    {{ project.startDate|date }} to {{ project.endDate|date }}. <br/>
+    <a href="{{ path('project_type_show', {'id': project.projectType.id }) }}">
+        {{ project.projectType }}
+    </a> {{ project.startDate|date }} to {{ project.endDate|date }}. <br/>
     {% for venue in project.venues %}
         <a href='{{ path('venue_show', {'id': venue.id}) }}'>{{ venue.name}}</a>, 
         <a href='{{ path('location_show', {'id': venue.location.id}) }}'>{{venue.location}}</a><br/> 

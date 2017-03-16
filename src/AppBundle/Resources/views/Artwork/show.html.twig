@@ -19,33 +19,83 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <tbody>
-            <tr>
-                <th>Title</th>
-                <td>{{ artwork.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ artwork.description }}</td>
-            </tr>
-            <tr>
-                <th>Materials</th>
-                <td>{{ artwork.materials }}</td>
-            </tr>
-            <tr>
-                <th>Copyright</th>
-                <td>{{ artwork.copyright }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{% if artwork.created %}{{ artwork.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{% if artwork.updated %}{{ artwork.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+
+    <div class="clearfix"></div>
+
+    <h1>{{ artwork.title }}</h1>
+    {{ artwork.description|raw }}
+    {{ artwork.materials|raw }}
+    {{ artwork.copyright|raw }}
+
+    <div class="text-right">
+        Created {{ artwork.created|date('Y-m-d H:i:s') }}. Most recent update {{ artwork.updated|date }}.
+    </div>
+
+
+    <h2>Media Files</h2>
+    <p>
+        <a href="{{ path('artwork_add_media', {'id': artwork.id}) }}">Add media files</a> | 
+        <a href="{{ path('artwork_remove_media', {'id': artwork.id}) }}">Remove media files</a>
+    </p>
+    {% if artwork.mediaFiles %}
+        {% for mediaFile in artwork.mediaFiles %}
+            <div class='row'>
+                <div class='col-sm-4'>
+                    <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
+                        <img src="{{ path('media_file_tn', {'id': mediaFile.id}) }}" class="img-thumbnail">
+                    </a>
+                </div>
+                <div class='col-sm-8'>
+                    {{ mediaFile.getMetadataFields('dc_title', false) }}
+                    <dl class="dl-horizontal">
+                        <dt>Id</dt>
+                        <dd>{{ mediaFile.id }}</dd>
+                        <dt>File type</dt>
+                        <dd>{{ mediaFile.mimeType }}</dd>
+                        <dt>Original name</dt>
+                        <dd>{{ mediaFile.originalName }}</dd>
+                        <dt>Uploaded</dt>
+                        <dd>{{ mediaFile.updated|date }}</dd>
+                        <dt>URL</dt>
+                        <dd>
+                            <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
+                                {{ url('media_file_raw', {'id': mediaFile.id}) }}
+                            </a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if artwork.contributions|length %}
+        <h2>Contributions</h2>
+        {% for contribution in artwork.contributions %}
+            {% if contribution.person %}
+                {% set person = contribution.person %}
+                <h3>
+                    {{ contribution.artworkRole }}: 
+                    <a href="{{ path('person_show', { 'id': person.id }) }}">
+                        {{ person.fullname }}
+                    </a>
+                </h3>
+                <p>
+                    {{ text_service.trim(person.biography, 100) }}            
+                </p>
+            {% endif %}
+            {% if contribution.organization %}
+                {% set organization = contribution.organization %}
+                <h3>
+                    {{ contribution.artworkRole }}: 
+                    <a href="{{ path('organization_show', { 'id': organization.id }) }}">
+                        {{ organization.name }}
+                    </a>
+                </h3>
+                <p>
+                    {{ text_service.trim(organization.description, 100) }}            
+                </p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
 {% endblock %}
