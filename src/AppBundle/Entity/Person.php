@@ -239,7 +239,7 @@ class Person extends AbstractEntity {
      * Check if a media file is associated with this person.
      * 
      * @param \AppBundle\Entity\MediaFile $mediaFile
-     * @return type
+     * @return boolean
      */
     public function hasMediaFile(MediaFile $mediaFile) {
         return $this->mediaFiles->contains($mediaFile);

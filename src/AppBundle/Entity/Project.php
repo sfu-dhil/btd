@@ -54,11 +54,11 @@ class Project extends AbstractEntity {
     private $url;
 
     /**
-     * @var ProjectType
-     * @ORM\ManyToOne(targetEntity="ProjectType", inversedBy="projects")
+     * @var ProjectCategory
+     * @ORM\ManyToOne(targetEntity="ProjectCategory", inversedBy="projects")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $projectType;
+    private $projectCategory;
 
     /**
      * @var Collection|Venue[]
@@ -172,25 +172,25 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Set projectType
+     * Set projectCategory
      *
-     * @param ProjectType $projectType
+     * @param ProjectCategory $projectCategory
      *
      * @return Project
      */
-    public function setProjectType(ProjectType $projectType = null) {
-        $this->projectType = $projectType;
+    public function setProjectCategory(ProjectCategory $projectCategory = null) {
+        $this->projectCategory = $projectCategory;
 
         return $this;
     }
 
     /**
-     * Get projectType
+     * Get projectCategory
      *
-     * @return ProjectType
+     * @return ProjectCategory
      */
-    public function getProjectType() {
-        return $this->projectType;
+    public function getProjectCategory() {
+        return $this->projectCategory;
     }
 
     /**
@@ -259,7 +259,7 @@ class Project extends AbstractEntity {
      * Check if a media file is associated with this project.
      * 
      * @param \AppBundle\Entity\MediaFile $mediaFile
-     * @return type
+     * @return boolean
      */
     public function hasMediaFile(MediaFile $mediaFile) {
         return $this->mediaFiles->contains($mediaFile);

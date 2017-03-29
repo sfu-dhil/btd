@@ -82,29 +82,29 @@ class Builder implements ContainerAwareInterface {
                 'role' => 'separator',
                 'class' => 'divider',
             ));
-            $menu->addChild('artwork_type', array(
-                'label' => 'Artwork Types',
-                'route' => 'artwork_type_index',
+            $menu->addChild('artwork_category', array(
+                'label' => 'Artwork Categories',
+                'route' => 'artwork_category_index',
             ));
             $menu->addChild('artwork_role', array(
                 'label' => 'Artwork Roles',
                 'route' => 'artwork_role_index',
             ));
-            $menu->addChild('mediafile_type', array(
-                'label' => 'Media File Types',
-                'route' => 'media_file_type_index',
+            $menu->addChild('mediafile_category', array(
+                'label' => 'Media File Categories',
+                'route' => 'media_file_category_index',
             ));
             $menu->addChild('project_role', array(
                 'label' => 'Project Roles',
                 'route' => 'project_role_index',
             ));
-            $menu->addChild('project_type', array(
-                'label' => 'Project Types',
-                'route' => 'project_type_index',
+            $menu->addChild('project_category', array(
+                'label' => 'Project Categories',
+                'route' => 'project_category_index',
             ));
-            $menu->addChild('venue_type', array(
-                'label' => 'Venue Types',
-                'route' => 'venue_type_index',
+            $menu->addChild('venue_category', array(
+                'label' => 'Venue Categories',
+                'route' => 'venue_category_index',
             ));
         }
 

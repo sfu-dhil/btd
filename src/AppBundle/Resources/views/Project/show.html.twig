@@ -2,8 +2,8 @@
 
 {% block pageheader %} 
     <h1>{{ project.title }}</h1>
-    <a href="{{ path('project_type_show', {'id': project.projectType.id }) }}">
-        {{ project.projectType }}
+    <a href="{{ path('project_category_show', {'id': project.projectCategory.id }) }}">
+        {{ project.projectCategory }}
     </a> {{ project.startDate|date }} to {{ project.endDate|date }}. <br/>
     {% for venue in project.venues %}
         <a href='{{ path('venue_show', {'id': venue.id}) }}'>{{ venue.name}}</a>, 
@@ -80,7 +80,7 @@
                     <dt>Id</dt>
                     <dd>{{ mediaFile.id }}</dd>
                     <dt>File type</dt>
-                    <dd>{{ mediaFile.mimeType }}</dd>
+                    <dd>{{ mediaFile.mimetype }}</dd>
                     <dt>Original name</dt>
                     <dd>{{ mediaFile.originalName }}</dd>
                     <dt>Uploaded</dt>

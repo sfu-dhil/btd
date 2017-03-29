@@ -42,10 +42,10 @@ class Artwork extends AbstractEntity {
     private $copyright;
 
     /**
-     * @var ArtworkType
-     * @ORM\ManyToOne(targetEntity="ArtworkType", inversedBy="artworks")
+     * @var ArtworkCategory
+     * @ORM\ManyToOne(targetEntity="ArtworkCategory", inversedBy="artworks")
      */
-    private $artworkType;
+    private $artworkCategory;
     
     /**
      * @var Collection|ArtworkContribution[]
@@ -269,26 +269,26 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Set artworkType
+     * Set artworkCategory
      *
-     * @param \AppBundle\Entity\ArtworkType $artworkType
+     * @param \AppBundle\Entity\ArtworkCategory $artworkCategory
      *
      * @return Artwork
      */
-    public function setArtworkType(\AppBundle\Entity\ArtworkType $artworkType = null)
+    public function setArtworkCategory(\AppBundle\Entity\ArtworkCategory $artworkCategory = null)
     {
-        $this->artworkType = $artworkType;
+        $this->artworkCategory = $artworkCategory;
 
         return $this;
     }
 
     /**
-     * Get artworkType
+     * Get artworkCategory
      *
-     * @return \AppBundle\Entity\ArtworkType
+     * @return \AppBundle\Entity\ArtworkCategory
      */
-    public function getArtworkType()
+    public function getArtworkCategory()
     {
-        return $this->artworkType;
+        return $this->artworkCategory;
     }
 }

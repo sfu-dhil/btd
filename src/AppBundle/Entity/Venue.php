@@ -49,11 +49,11 @@ class Venue extends AbstractEntity {
     private $location;
 
     /**
-     * @var VenueType
-     * @ORM\ManyToOne(targetEntity="VenueType", inversedBy="venues")
+     * @var VenueCategory
+     * @ORM\ManyToOne(targetEntity="VenueCategory", inversedBy="venues")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $venueType;
+    private $venueCategory;
 
     /**
      * @var Collection|Project[]
@@ -181,25 +181,25 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Set venueType
+     * Set venueCategory
      *
-     * @param VenueType $venueType
+     * @param VenueCategory $venueCategory
      *
      * @return Venue
      */
-    public function setVenueType(VenueType $venueType = null) {
-        $this->venueType = $venueType;
+    public function setVenueCategory(VenueCategory $venueCategory = null) {
+        $this->venueCategory = $venueCategory;
 
         return $this;
     }
 
     /**
-     * Get venueType
+     * Get venueCategory
      *
-     * @return VenueType
+     * @return VenueCategory
      */
-    public function getVenueType() {
-        return $this->venueType;
+    public function getVenueCategory() {
+        return $this->venueCategory;
     }
 
     /**

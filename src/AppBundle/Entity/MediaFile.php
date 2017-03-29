@@ -35,11 +35,11 @@ class MediaFile extends AbstractEntity {
     private $originalName;
     
     /**
-     * @var MediaFileType
-     * @ORM\ManyToOne(targetEntity="MediaFileType", inversedBy="mediaFiles")
+     * @var MediaFileCategory
+     * @ORM\ManyToOne(targetEntity="MediaFileCategory", inversedBy="mediaFiles")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $mediaFileType;
+    private $mediaFileCategory;
 
     /**
      * @var Collection|MediaFileField[]
@@ -183,27 +183,27 @@ class MediaFile extends AbstractEntity {
 
 
     /**
-     * Set mediaFileType
+     * Set mediaFileCategory
      *
-     * @param MediaFileType $mediaFileType
+     * @param MediaFileCategory $mediaFileCategory
      *
      * @return MediaFile
      */
-    public function setMediaFileType(MediaFileType $mediaFileType = null)
+    public function setMediaFileCategory(MediaFileCategory $mediaFileCategory = null)
     {
-        $this->mediaFileType = $mediaFileType;
+        $this->mediaFileCategory = $mediaFileCategory;
 
         return $this;
     }
 
     /**
-     * Get mediaFileType
+     * Get mediaFileCategory
      *
-     * @return MediaFileType
+     * @return MediaFileCategory
      */
-    public function getMediaFileType()
+    public function getMediaFileCategory()
     {
-        return $this->mediaFileType;
+        return $this->mediaFileCategory;
     }
 
     /**

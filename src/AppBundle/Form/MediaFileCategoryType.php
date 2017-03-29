@@ -2,12 +2,12 @@
 
 namespace AppBundle\Form;
 
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VenueType extends AbstractType {
+class MediaFileCategoryType extends AbstractType {
 
     /**
      * @param FormBuilderInterface $builder
@@ -15,12 +15,8 @@ class VenueType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('name');
-        $builder->add('address');
-        $builder->add('description', CKEditorType::class);
-        $builder->add('url');
-        $builder->add('location');
-        $builder->add('venueCategory');
-        $builder->add('projects');
+        $builder->add('label');
+        $builder->add('description');
     }
 
     /**
@@ -28,7 +24,7 @@ class VenueType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Venue'
+            'data_class' => 'AppBundle\Entity\MediaFileCategory'
         ));
     }
 
