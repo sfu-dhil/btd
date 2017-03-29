@@ -55,7 +55,7 @@ class Person extends AbstractEntity {
     
     /**
      * @var Collection|MediaFile[]
-     * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="projects")
+     * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="people")
      * @ORM\JoinTable(name="person_mediafiles")
      */
     private $mediaFiles;    
