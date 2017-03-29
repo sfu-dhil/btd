@@ -88,7 +88,7 @@ class Project extends AbstractEntity {
     
     /**
      * @var Collection|Artwork[]
-     * @ORM\ManyToMany(targetEntity="artwork", inversedBy="projects")
+     * @ORM\ManyToMany(targetEntity="Artwork", inversedBy="projects")
      * @ORM\JoinTable(name="project_artworks")
      */
     private $artworks;
