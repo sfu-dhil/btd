@@ -85,12 +85,20 @@ class Project extends AbstractEntity {
      * @ORM\JoinTable(name="project_mediafiles")
      */
     private $mediaFiles;
+    
+    /**
+     * @var Collection|Artwork[]
+     * @ORM\ManyToMany(targetEntity="artwork", inversedBy="projects")
+     * @ORM\JoinTable(name="project_artworks")
+     */
+    private $artworks;
 
     public function __construct() {
         parent::__construct();
         $this->venues = new ArrayCollection();
         $this->contributions = new ArrayCollection();
         $this->mediaFiles = new ArrayCollection();
+        $this->artworks = new ArrayCollection();
     }
 
     public function __toString() {
@@ -395,5 +403,39 @@ class Project extends AbstractEntity {
     public function getProjectPages()
     {
         return $this->projectPages;
+    }
+
+    /**
+     * Add artwork
+     *
+     * @param \AppBundle\Entity\artwork $artwork
+     *
+     * @return Project
+     */
+    public function addArtwork(\AppBundle\Entity\artwork $artwork)
+    {
+        $this->artworks[] = $artwork;
+
+        return $this;
+    }
+
+    /**
+     * Remove artwork
+     *
+     * @param \AppBundle\Entity\artwork $artwork
+     */
+    public function removeArtwork(\AppBundle\Entity\artwork $artwork)
+    {
+        $this->artworks->removeElement($artwork);
+    }
+
+    /**
+     * Get artworks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArtworks()
+    {
+        return $this->artworks;
     }
 }

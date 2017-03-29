@@ -59,7 +59,7 @@ class Builder implements ContainerAwareInterface {
             'route' => 'venue_index',
         ));
 
-        if ($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->container->get('security.token_storage')->getToken() && $this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $menu->addChild('divider', array(
                 'label' => '',
             ));
@@ -81,6 +81,10 @@ class Builder implements ContainerAwareInterface {
             $menu['divider2']->setAttributes(array(
                 'role' => 'separator',
                 'class' => 'divider',
+            ));
+            $menu->addChild('artwork_type', array(
+                'label' => 'Artwork Types',
+                'route' => 'artwork_type_index',
             ));
             $menu->addChild('artwork_role', array(
                 'label' => 'Artwork Roles',

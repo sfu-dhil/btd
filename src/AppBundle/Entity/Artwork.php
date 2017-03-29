@@ -42,6 +42,12 @@ class Artwork extends AbstractEntity {
     private $copyright;
 
     /**
+     * @var ArtworkType
+     * @ORM\ManyToOne(targetEntity="ArtworkType", inversedBy="artworks")
+     */
+    private $artworkType;
+    
+    /**
      * @var Collection|ArtworkContribution[]
      * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="artwork")
      */
@@ -54,10 +60,17 @@ class Artwork extends AbstractEntity {
      */
     private $mediaFiles;
 
+    /**
+     * @var Collection|Project[]
+     * @ORM\ManyToMany(targetEntity="Project", mappedBy="artworks")
+     */
+    private $projects;
+    
     public function __construct() {
         parent::__construct();
         $this->contributions = new ArrayCollection();
         $this->mediaFiles = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function __toString() {
@@ -220,4 +233,62 @@ class Artwork extends AbstractEntity {
         return $this->mediaFiles;
     }
 
+
+    /**
+     * Add project
+     *
+     * @param \AppBundle\Entity\Project $project
+     *
+     * @return Artwork
+     */
+    public function addProject(\AppBundle\Entity\Project $project)
+    {
+        $this->projects[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param \AppBundle\Entity\Project $project
+     */
+    public function removeProject(\AppBundle\Entity\Project $project)
+    {
+        $this->projects->removeElement($project);
+    }
+
+    /**
+     * Get projects
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjects()
+    {
+        return $this->projects;
+    }
+
+    /**
+     * Set artworkType
+     *
+     * @param \AppBundle\Entity\ArtworkType $artworkType
+     *
+     * @return Artwork
+     */
+    public function setArtworkType(\AppBundle\Entity\ArtworkType $artworkType = null)
+    {
+        $this->artworkType = $artworkType;
+
+        return $this;
+    }
+
+    /**
+     * Get artworkType
+     *
+     * @return \AppBundle\Entity\ArtworkType
+     */
+    public function getArtworkType()
+    {
+        return $this->artworkType;
+    }
 }

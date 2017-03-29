@@ -91,6 +91,10 @@ class MediaFile extends AbstractEntity {
     public function getPath() {
         return $this->file->getPath();
     }
+    
+    public function getRealPath() {
+        return $this->file->getRealPath();
+    }
 
     public function getFilename() {
         return $this->file->getFilename();

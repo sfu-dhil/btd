@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AppGenerateThumbnailsCommand extends ContainerAwareCommand
+class GenerateThumbnailsCommand extends ContainerAwareCommand
 {
     private $thumbnailSize;
     
