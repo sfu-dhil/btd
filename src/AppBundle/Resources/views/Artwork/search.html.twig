@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %} 
+    <h1>Artwork List</h1>
+    {% if artworks|length > 0 %}
+        <p class="count">
+            Displaying {{ artworks|length }} artworks of {{ artworks.getTotalItemCount }} total.
+        </p>
+    {% endif %}
+{% endblock %} 
+
+{% block body %}
+
+    <form method="get" action="{{ path('artwork_search') }}" class="form-horizontal">
+        <fieldset>
+            <legend>Search</legend>
+            <div class='form-group'>
+                <label class='col-sm-2 control-label' for='q'>Search term</label>
+                <div class='col-sm-10'>
+                    <div class='input-group'>
+                        <input type='text' name='q' id='q' class='form-control' value='{{ q }}'>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">
+                                <span class='glyphicon glyphicon-search'></span>
+                                Search
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <p class="help-block col-sm-offset-2">Boolean, full text, search any metadata field for the term.</p>
+            </div>
+        </fieldset>
+    </form>
+
+    {% if artworks|length > 0 %}
+        {% for artwork in artworks %}
+            <h2>
+                <a href="{{ path('artwork_show', { 'id': artwork.id }) }}">
+                    {{ artwork.title }}
+                </a>
+            </h2>
+            {{ text_service.trim(artwork.description, 100) }}
+            <p class='text-right'>
+                Created {{ artwork.created|date }}. Most recently updated {{ artwork.updated|date }}
+            </p>
+        {% endfor %}
+
+        <div class="navigation">
+            {{ knp_pagination_render(artworks) }}
+        </div>
+    {% endif %}
+
+{% endblock %}

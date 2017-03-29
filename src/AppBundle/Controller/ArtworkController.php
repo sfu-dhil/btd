@@ -38,44 +38,6 @@ class ArtworkController extends Controller {
     }
 
     /**
-     * Search for Artwork entities.
-     *
-     * To make this work, add a method like this one to the 
-     * AppBundle:Artwork repository. Replace the fieldName with
-     * something appropriate, and adjust the generated search.html.twig
-     * template.
-     * 
-      //    public function searchQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->where("e.fieldName like '%$q%'");
-      //        return $qb->getQuery();
-      //    }
-     *
-     *
-     * @Route("/search", name="artwork_search")
-     * @Method("GET")
-     * @Template()
-     * @param Request $request
-     */
-    public function searchAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('AppBundle:Artwork');
-        $q = $request->query->get('q');
-        if ($q) {
-            $query = $repo->searchQuery($q);
-            $paginator = $this->get('knp_paginator');
-            $artworks = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-        } else {
-            $artworks = array();
-        }
-
-        return array(
-            'artworks' => $artworks,
-            'q' => $q,
-        );
-    }
-
-    /**
      * Full text search for Artwork entities.
      *
      * To make this work, add a method like this one to the 
@@ -97,13 +59,13 @@ class ArtworkController extends Controller {
      *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
      *
      *
-     * @Route("/fulltext", name="artwork_fulltext")
+     * @Route("/search", name="artwork_search")
      * @Method("GET")
      * @Template()
      * @param Request $request
      * @return array
      */
-    public function fulltextAction(Request $request) {
+    public function searchAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:Artwork');
         $q = $request->query->get('q');

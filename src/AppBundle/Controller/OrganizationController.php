@@ -38,72 +38,15 @@ class OrganizationController extends Controller {
     }
 
     /**
-     * Search for Organization entities.
-     *
-     * To make this work, add a method like this one to the 
-     * AppBundle:Organization repository. Replace the fieldName with
-     * something appropriate, and adjust the generated search.html.twig
-     * template.
-     * 
-      //    public function searchQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->where("e.fieldName like '%$q%'");
-      //        return $qb->getQuery();
-      //    }
-     *
+     * Full text search for Organization entities.
      *
      * @Route("/search", name="organization_search")
      * @Method("GET")
      * @Template()
      * @param Request $request
-     */
-    public function searchAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('AppBundle:Organization');
-        $q = $request->query->get('q');
-        if ($q) {
-            $query = $repo->searchQuery($q);
-            $paginator = $this->get('knp_paginator');
-            $organizations = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-        } else {
-            $organizations = array();
-        }
-
-        return array(
-            'organizations' => $organizations,
-            'q' => $q,
-        );
-    }
-
-    /**
-     * Full text search for Organization entities.
-     *
-     * To make this work, add a method like this one to the 
-     * AppBundle:Organization repository. Replace the fieldName with
-     * something appropriate, and adjust the generated fulltext.html.twig
-     * template.
-     * 
-      //    public function fulltextQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-      //        $qb->orderBy('score', 'desc');
-      //        $qb->setParameter('q', $q);
-      //        return $qb->getQuery();
-      //    }
-     * 
-     * Requires a MatchAgainst function be added to doctrine, and appropriate
-     * fulltext indexes on your Organization entity.
-     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
-     *
-     *
-     * @Route("/fulltext", name="organization_fulltext")
-     * @Method("GET")
-     * @Template()
-     * @param Request $request
      * @return array
      */
-    public function fulltextAction(Request $request) {
+    public function searchAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:Organization');
         $q = $request->query->get('q');
