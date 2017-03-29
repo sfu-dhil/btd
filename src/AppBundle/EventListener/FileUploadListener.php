@@ -6,8 +6,8 @@ use AppBundle\Entity\MediaFile;
 use AppBundle\Services\FileUploader;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploadListener {
 
@@ -25,7 +25,11 @@ class FileUploadListener {
     }
 
     public function preUpdate(PreUpdateEventArgs $args) {
-        $this->upload($args->getEntity());
+        if($args->getEntity() instanceof MediaFile) {
+            $mediaFile = $args->getEntity();
+            $filename = $mediaFile->getFilename();
+            $mediaFile->setFile($filename[0] . '/' . $filename);
+        }
     }
 
     public function postLoad(LifecycleEventArgs $args) {
@@ -33,17 +37,9 @@ class FileUploadListener {
         if (!$entity instanceof MediaFile) {
             return;
         }
-        $directory = $this->uploader->getUploadDir();
-        if (($filename = $entity->getFile())) {
-            if (substr($filename, 0, strlen($directory)) === $directory) {
-                $filename = substr($filename, strlen($directory));
-            }
-            try {
-                $entity->setFile(new File($directory . '/' . $filename));
-            } catch(\Exception $e) {
-                $entity->setFile(new File($directory . '/../misc/missing-file.jpg'));
-            }
-        }
+        $filename = $entity->getFile();
+        $path = $this->uploader->getUploadDir() . '/' . $filename;
+        $entity->setFile(new File($path));
     }
 
     private function upload($entity) {
@@ -55,10 +51,6 @@ class FileUploadListener {
             return;
         }
         $filename = $this->uploader->upload($file);
-        $directory = $this->uploader->getUploadDir();
-        if (substr($filename, 0, strlen($directory)) === $directory) {
-            $filename = substr($filename, strlen($directory));
-        }
         $entity->setFile($filename);
     }
 
