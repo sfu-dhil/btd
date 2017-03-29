@@ -28,6 +28,12 @@ class MediaFile extends AbstractEntity {
      * @var File
      */
     private $file;
+    
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $hasThumbnail;
 
     /**
      * @ORM\Column(type="string")
@@ -69,6 +75,7 @@ class MediaFile extends AbstractEntity {
         parent::__construct();
         $this->metadataFields = new ArrayCollection();
         $this->people = new ArrayCollection();
+        $this->hasThumbnail = false;
     }
 
     public function __toString() {
@@ -281,11 +288,11 @@ class MediaFile extends AbstractEntity {
     /**
      * Add person
      *
-     * @param \AppBundle\Entity\Person $person
+     * @param Person $person
      *
      * @return MediaFile
      */
-    public function addPerson(\AppBundle\Entity\Person $person)
+    public function addPerson(Person $person)
     {
         if( ! $this->people->contains($person)) {
             $this->people[] = $person;
@@ -297,9 +304,9 @@ class MediaFile extends AbstractEntity {
     /**
      * Remove person
      *
-     * @param \AppBundle\Entity\Person $person
+     * @param Person $person
      */
-    public function removePerson(\AppBundle\Entity\Person $person)
+    public function removePerson(Person $person)
     {
         $this->people->removeElement($person);
     }
@@ -307,10 +314,34 @@ class MediaFile extends AbstractEntity {
     /**
      * Get people
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getPeople()
     {
         return $this->people;
+    }
+
+    /**
+     * Set hasThumbnail
+     *
+     * @param boolean $hasThumbnail
+     *
+     * @return MediaFile
+     */
+    public function setHasThumbnail($hasThumbnail)
+    {
+        $this->hasThumbnail = $hasThumbnail;
+
+        return $this;
+    }
+
+    /**
+     * Get hasThumbnail
+     *
+     * @return boolean
+     */
+    public function getHasThumbnail()
+    {
+        return $this->hasThumbnail;
     }
 }

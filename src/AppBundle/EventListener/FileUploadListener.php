@@ -4,6 +4,7 @@ namespace AppBundle\EventListener;
 
 use AppBundle\Entity\MediaFile;
 use AppBundle\Services\FileUploader;
+use AppBundle\Utility\Thumbnailer;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\File\File;
@@ -15,7 +16,7 @@ class FileUploadListener {
      * @var FileUploader
      */
     private $uploader;
-
+    
     public function __construct(FileUploader $uploader) {
         $this->uploader = $uploader;
     }
@@ -25,7 +26,7 @@ class FileUploadListener {
     }
 
     public function preUpdate(PreUpdateEventArgs $args) {
-        if($args->getEntity() instanceof MediaFile) {
+        if ($args->getEntity() instanceof MediaFile) {
             $mediaFile = $args->getEntity();
             $filename = $mediaFile->getFilename();
             $mediaFile->setFile($filename[0] . '/' . $filename);
@@ -39,7 +40,11 @@ class FileUploadListener {
         }
         $filename = $entity->getFile();
         $path = $this->uploader->getUploadDir() . '/' . $filename;
-        $entity->setFile(new File($path));
+        if (file_exists($path)) {
+            $entity->setFile(new File($path));
+        } else {
+            $entity->setFile(new File($this->uploader->getUploadDir() . '/../misc/missing-file.jpg'));
+        }
     }
 
     private function upload($entity) {

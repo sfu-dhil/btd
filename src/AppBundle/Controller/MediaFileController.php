@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\MediaFile;
 use AppBundle\Entity\MediaFileField;
 use AppBundle\Form\MediaFileMetadataType;
+use AppBundle\Utility\Thumbnailer;
 use Nines\DublinCoreBundle\Entity\Element;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -149,11 +150,10 @@ class MediaFileController extends Controller {
             $mediaFileField = new MediaFileField();
             $mediaFileField->setElement($em->getRepository(Element::class)->findOneBy(array('name' => 'dc_identifier')));
             $mediaFileField->setValue($mediaFile->getOriginalName());
-            $mediaFileField->setMediaFile($mediaFile);            
+            $mediaFileField->setMediaFile($mediaFile); 
             $em->persist($mediaFileField);
-            
+                        
             $em->flush();
-
             $this->addFlash('success', 'The new mediaFile was created');
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
         }
@@ -200,11 +200,16 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function thumbnailAction(MediaFile $mediaFile) {
+        if( ! $mediaFile->getHasThumbnail()) {
+            $thumbnailer = new Thumbnailer();
+            $thumbnailer->generateThumbnail($mediaFile);
+            $mediaFile->setHasThumbnail(true);
+            $this->getDoctrine()->getManager()->flush($mediaFile);
+        }
         $tn = $mediaFile->getThumbnail();
         if($tn) {
             return new BinaryFileResponse($tn);
         }
-        dump($tn);
         throw new NotFoundHttpException("Cannot find thumbnail.");
     }
 
@@ -229,6 +234,7 @@ class MediaFileController extends Controller {
             $this->get('app.file_uploader')->delete($oldFile);
             $this->get('app.file_uploader')->delete($tnFile);
             $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
+            $mediaFile->setHasThumbnail(false);
             
             $em = $this->getDoctrine()->getManager();            
             $mediaFileField = new MediaFileField();
