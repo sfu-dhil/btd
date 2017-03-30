@@ -1,33 +1,12 @@
-btd
+Between the Digital
 ===
+Between the Digital is an archive building project for the Ethnographic Terminalia Project.
 
-A Symfony project created on March 2, 2017, 1:40 pm.
+This application was developed by the Digital Humanities Innovation Lab at 
+Simon Fraser University with considerable assistance and support from the SFU
+Library.
 
-TO DO
-=====
-
-The Person entities URL attribute needs to be a list.
-
-People can have bios, and can also have artist statements which are associated
-with an artwork or project.
-
-Connect people to projects in a meaningful way. It should be easy to add
-individuals to projects (A is a presenter at B, C exhibited at D, etc).
-
-Consider adding pages to projects (there may be many different pages of
-context associated with a project - probably the same with artworks).
-
-Define thumb, small, medium, and large image sizes. Keep the originals.
-
-Add an easy way of associating images with projects, people, and artworks.
-
-eventually need a way to convert pdfs to images. Imagemagick:
-convert app/data/uploads/9/9fa3ea126268da9f87e5b52b1997f201.pdf[0] -resize 50% p.png
-
-And videos. Imagemagick+ffmpeg:
-$ convert app/data/uploads/9/9fa3ea126268da9f87e5b52b1997f201.mp4[0] -resize 50% puppy.png
-
-Etc.
+External libraries
 ====
 
 Video.js is used to play audio and video files, if the browser supports 
@@ -40,3 +19,124 @@ Requirements
 
 imagick PHP PECL extension
 gs to read PDF files.
+
+Installation
+----
+
+The WPHP application is based on Symfony 3.2. Installation follows the normal
+process for installing a Symfony application.
+
+1. Get the code from GitHub. 
+  
+  ```bash
+  git clone https://github.com/sfu-dhil/btd.git
+  ```
+
+1. Get the submodules from Git. There is quite a bit of reusable code in the
+application, and it's organized with git submodules.
+
+  ```bash
+  git submodule init
+  git submodule update --recursive --remote
+  ```
+
+1. Create a database and database user.
+  
+  ```sql
+  create database btd;
+  grant all on btd.* to btd@localhost;
+  set password for btd@localhost = password('hotpockets');
+  ```
+
+1. [Install composer](https://getcomposer.org/download/), if it isn't already 
+   installed somewhere.
+  
+1. Install the composer dependencies. Composer will ask for some 
+   configuration variables during installation.
+  
+  ```bash
+  ./vendor/bin/composer install --no-dev -o
+  ```
+  
+  Sometimes composer runs out of memory. If that happens, try this alternate.
+  
+  ```bash
+  php -d memory_limit=-1 ./vendor/bin/composer install --no-dev -o
+  ```
+
+1. Update file permissions. The user running the web server must 
+  be able to write to `var/cache/*` and `var/logs/*` and `var/sessions/*`. The 
+  symfony docs provide [recommended commands](http://symfony.com/doc/current/setup/file_permissions.html),
+  depending on your OS.
+  
+1. Load the schema into the database. This is done with the 
+  symfony console.
+  
+  ```bash
+  ./bin/console doctrine:schema:update --force
+  ```
+  
+1. Create an application user with full admin privileges. This is also done 
+  with the symfony console.
+  
+  ```bash
+  ./bin/console fos:user:create --super-admin  
+  ```
+  
+1. Install bower, npm, and nodejs if you haven't already. Then use bower to 
+  download and install the javascript and css dependencies.
+  
+  ```bash
+  bower install
+  ```
+
+1. Configure the web server. The application's `web/` directory must
+  be accessible to the world. Symfony 
+  provides [example configurations](http://symfony.com/doc/current/setup/web_server_configuration.html)
+  for most server setups.
+  
+At this point, the web interface should be up and running, and you should
+be able to login by following the Login link in the top right menu bar.
+
+Updates
+----
+
+Applying updates from git shouldn't be difficult.
+
+1. Get the updates from a git remote
+
+  ```bash
+  git pull
+  ```
+
+1. Update the git submodules.
+
+  ```bash
+  git submodule update --recursive --remote
+  ```
+
+1. Install any updated composer dependencies.
+
+  ```bash
+  php -d memory_limit=-1 ./vendor/bin/composer install -o
+  ```
+
+1. Apply any database schema updates
+
+  ```bash
+  ./bin/console doctrine:schema:update --force
+  ```
+  
+1. Update the web assets.
+  
+  ```bash
+  bower install
+  ```
+
+1. Clear the cache 
+
+  ```
+  ./bin/console cache:clear --env=prod
+  ```
+
+That should be it.
