@@ -29,6 +29,19 @@ services:
         tags:
             - { name: form.type }
 
+
+    app.form.organization_project_contribution_type:
+        class: AppBundle\Form\Organization\ProjectContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+    app.form.organization_artwork_contribution_type:
+        class: AppBundle\Form\Organization\ArtworkContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
     app.form.project_contribution_type:
         class: AppBundle\Form\Project\ContributionType
         arguments: [ "@doctrine.orm.entity_manager" ] 

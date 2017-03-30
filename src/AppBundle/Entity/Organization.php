@@ -56,13 +56,13 @@ class Organization extends AbstractEntity {
 
     /**
      * @var Collection|ArtworkContribution[]
-     * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="organization")
+     * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="organization", cascade={"persist"}, orphanRemoval=true)
      */
     private $artworkContributions;
 
     /**
      * @var Collection|ProjectContribution[]
-     * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="organization")
+     * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="organization", cascade={"persist"}, orphanRemoval=true)
      */
     private $projectContributions;
 

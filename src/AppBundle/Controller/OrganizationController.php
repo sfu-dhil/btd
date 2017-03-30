@@ -2,13 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Organization;
+use AppBundle\Form\Organization\ArtworkContributionsType;
+use AppBundle\Form\Organization\OrganizationType;
+use AppBundle\Form\Organization\ProjectContributionsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\Organization;
-use AppBundle\Form\OrganizationType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Organization controller.
@@ -74,7 +76,7 @@ class OrganizationController extends Controller {
      */
     public function newAction(Request $request) {
         $organization = new Organization();
-        $form = $this->createForm('AppBundle\Form\OrganizationType', $organization);
+        $form = $this->createForm(OrganizationType::class, $organization);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -117,7 +119,7 @@ class OrganizationController extends Controller {
      * @param Organization $organization
      */
     public function editAction(Request $request, Organization $organization) {
-        $editForm = $this->createForm('AppBundle\Form\OrganizationType', $organization);
+        $editForm = $this->createForm(OrganizationType::class, $organization);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -150,4 +152,57 @@ class OrganizationController extends Controller {
         return $this->redirectToRoute('organization_index');
     }
 
+    /**
+     * @Route("/{id}/project_contributions", name="organization_project_contributions")
+     * @Method({"GET", "POST"})
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Organization $organization
+     */
+    public function projectContributionsAction(Request $request, Organization $organization) {
+        $form = $this->createForm(ProjectContributionsType::class, $organization, array(
+            'organization' => $organization,
+        ));
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'The contributions have been updated.');
+            return $this->redirectToRoute('organization_show', array('id' => $organization->getId()));
+        }
+        
+        return array(
+            'organization' => $organization,
+            'edit_form' => $form->createView(),
+        );
+    }
+
+    /**
+     * @Route("/{id}/artwork_contributions", name="organization_artwork_contributions")
+     * @Method({"GET", "POST"})
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Organization $organization
+     */
+    public function artworkContributionsAction(Request $request, Organization $organization) {
+        $form = $this->createForm(ArtworkContributionsType::class, $organization, array(
+            'organization' => $organization,
+        ));
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'The contributions have been updated.');
+            return $this->redirectToRoute('organization_show', array('id' => $organization->getId()));
+        }
+        
+        return array(
+            'organization' => $organization,
+            'edit_form' => $form->createView(),
+        );
+    }
 }
