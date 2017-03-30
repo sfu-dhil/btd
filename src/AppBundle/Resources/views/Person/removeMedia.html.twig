@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %}
+    <h1>Add media</h1>
+    <p>Use the form below remove media associations. Click the thumbnail image to disassociate
+        the media with <a href='{{ path('person_show', {'id': person.id}) }}'>{{ person.fullname }}.
+    </p>
+{% endblock %}
+
+{% block body %}
+
+    {% if results|length %}
+        <div class='add_media'>
+            {% for result in results %}
+                {% set mediaFile = result %}
+                <div class='row'>
+                    <div class='col-sm-4'>
+                        <a href="{{ path('person_remove_media', { 'id': person.id, 'page': results.getCurrentPageNumber, 'removeId': mediaFile.id }) }}">
+                            <img src="{{ path('media_file_tn', {'id': mediaFile.id}) }}" class="img-thumbnail">
+                        </a>
+                    </div>
+                    <div class='col-sm-8'>
+                        {{ mediaFile.getMetadataFields('dc_title', false) }}
+                        <dl class="dl-horizontal">
+                            <dt>Id</dt>
+                            <dd>{{ mediaFile.id }}</dd>
+                            <dt>File type</dt>
+                            <dd>{{ mediaFile.mimetype }}</dd>
+                            <dt>Original name</dt>
+                            <dd>{{ mediaFile.originalName }}</dd>
+                            <dt>Uploaded</dt>
+                            <dd>{{ mediaFile.updated|date }}</dd>
+                            <dt>URL</dt>
+                            <dd>
+                                <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
+                                    {{ url('media_file_raw', {'id': mediaFile.id}) }}
+                                </a>
+                            </dd>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="navigation">
+            {{ knp_pagination_render(results) }}
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %} 
+    <h1>Location</h1>
+{% endblock %} 
+
+{% block body %}
+
+    <div class="btn-toolbar">
+        <div class="btn-group pull-right">
+            <a href="{{ path('location_index') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-arrow-left"></span> Back
+            </a>
+            <a href="{{ path('location_edit', { 'id': location.id }) }}" class="btn btn-default">
+                <span class='glyphicon glyphicon-edit'></span> Edit
+            </a>
+            <a href="{{ path('location_delete', { 'id': location.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this Location?">
+                <span class='glyphicon glyphicon-remove'></span> Delete
+            </a>
+        </div>
+    </div>
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <tbody>
+            <tr>
+                <th>City</th>
+                <td>{{ location.city }}</td>
+            </tr>
+            <tr>
+                <th>Region</th>
+                <td>{{ location.region }}</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>{{ location.country }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{% if location.created %}{{ location.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{% if location.updated %}{{ location.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% if location.venues|length > 0 %}
+        <h2>Venues</h2>
+            {% for venue in location.venues %}
+                <p>
+                    <strong><a href="{{ path('venue_show', {'id': venue.id}) }}">{{ venue }}</a></strong>
+                    {{ venue.address }}<br/>
+                    {{ text_service.trim(venue.description, 100) }}
+                </p>
+            {% endfor %}
+    {% endif %}
+
+    {% if location.organizations|length > 0 %}
+        <h2>Organizations</h2>
+        {% for organization in location.organizations%}
+            <p>
+                <strong><a href="{{ path('organization_show', {'id': organization.id}) }}">{{ organization }}</a></strong>
+                {{ organization.address }}<br/>
+                {{ text_service.trim(organization.description, 100) }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %} 
+    <h1>Artwork List</h1>
+    <p class="count">
+        Displaying {{ artworks|length }} artworks of {{ artworks.getTotalItemCount }} total.
+    </p>
+{% endblock %} 
+
+{% block body %}
+
+    <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            <a href="{{ path('artwork_new') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> New
+            </a>
+            <a href="{{ path('artwork_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </a>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    {% for artwork in artworks %}
+        <h2>
+            <a href="{{ path('artwork_show', { 'id': artwork.id }) }}">
+                {{ artwork.title }}
+            </a>
+        </h2>
+        {{ text_service.trim(artwork.description, 100) }}
+        <p class='text-right'>
+            Created {{ artwork.created|date }}. Most recently updated {{ artwork.updated|date }}
+        </p>
+    {% endfor %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(artworks) }}
+    </div>
+
+{% endblock %}

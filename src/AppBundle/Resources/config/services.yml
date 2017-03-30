@@ -1,0 +1,55 @@
+services:
+    app.file_uploader:
+        class: AppBundle\Services\FileUploader
+        arguments: ['%btd.media_upload_path%']
+
+    app.upload_listener:
+        class: AppBundle\EventListener\FileUploadListener
+        arguments: ['@app.file_uploader']
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
+    
+    app.form.artwork_contribution_type: 
+        class: AppBundle\Form\Artwork\ArtworkContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+    app.form.person_project_contribution_type:
+        class: AppBundle\Form\Person\ProjectContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+    app.form.person_artwork_contribution_type:
+        class: AppBundle\Form\Person\ArtworkContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+
+    app.form.organization_project_contribution_type:
+        class: AppBundle\Form\Organization\ProjectContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+    app.form.organization_artwork_contribution_type:
+        class: AppBundle\Form\Organization\ArtworkContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+    app.form.project_contribution_type:
+        class: AppBundle\Form\Project\ContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+    app.form.project_artwork_type:
+        class: AppBundle\Form\Project\ArtworkType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }

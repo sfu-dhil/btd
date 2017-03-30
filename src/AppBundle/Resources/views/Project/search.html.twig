@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %} 
+    <h1>Project Search</h1>
+    {% if projects|length > 0 %}
+        <p class="count">
+            Displaying {{ projects|length }} projects of {{ projects.getTotalItemCount }} total.
+        </p>
+    {% endif %}
+{% endblock %} 
+
+{% block body %}
+
+    <form method="get" action="{{ path('project_search') }}" class="form-horizontal">
+        <fieldset>
+            <legend>Search</legend>
+            <div class='form-group'>
+                <label class='col-sm-2 control-label' for='q'>Search term</label>
+                <div class='col-sm-10'>
+                    <div class='input-group'>
+                        <input type='text' name='q' id='q' class='form-control' value='{{ q }}'>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">
+                                <span class='glyphicon glyphicon-search'></span>
+                                Search
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <p class="help-block col-sm-offset-2">Search for projects or project pages here.</p>
+            </div>
+        </fieldset>
+    </form>    
+
+    {% if projects|length > 0 %}
+        {% for project in projects %}
+            <h2>
+                <a href="{{ path('project_show', { 'id': project.id }) }}">
+                    {{ project.title }}
+                </a>
+            </h2>
+            {{ project.excerpt|raw }}
+            <p class='text-right'>
+                Created {{ project.created|date }}. Most recently updated {{ project.updated|date }}
+            </p>
+        {% endfor %}
+
+        <div class="navigation">
+            {{ knp_pagination_render(projects) }}
+        </div>
+
+    {% endif %}
+
+{% endblock %}
