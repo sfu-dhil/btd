@@ -17,12 +17,10 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Bmatzner\JQueryUIBundle\BmatznerJQueryUIBundle(),
             
             new Nines\UserBundle\NinesUserBundle(),
             new Nines\DublinCoreBundle\NinesDublinCoreBundle(),
