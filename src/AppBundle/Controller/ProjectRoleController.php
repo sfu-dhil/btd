@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\ProjectRole;
+use AppBundle\Form\Project\ProjectRoleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\ProjectRole;
-use AppBundle\Form\ProjectRoleType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ProjectRole controller.
@@ -47,7 +47,7 @@ class ProjectRoleController extends Controller {
      */
     public function newAction(Request $request) {
         $projectRole = new ProjectRole();
-        $form = $this->createForm('AppBundle\Form\ProjectRoleType', $projectRole);
+        $form = $this->createForm(ProjectRoleType::class, $projectRole);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,7 +90,7 @@ class ProjectRoleController extends Controller {
      * @param ProjectRole $projectRole
      */
     public function editAction(Request $request, ProjectRole $projectRole) {
-        $editForm = $this->createForm('AppBundle\Form\ProjectRoleType', $projectRole);
+        $editForm = $this->createForm(ProjectRoleType::class, $projectRole);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

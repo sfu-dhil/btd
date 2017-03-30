@@ -1,22 +1,23 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Artwork;
 
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProjectCategoryType extends AbstractType {
+class ArtworkType extends AbstractType {
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name');
-        $builder->add('label');
-        $builder->add('description');
+        $builder->add('title');
+        $builder->add('description', CKEditorType::class);
+        $builder->add('materials', CKEditorType::class);
+        $builder->add('copyright', CKEditorType::class);
     }
 
     /**
@@ -24,7 +25,7 @@ class ProjectCategoryType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ProjectCategory'
+            'data_class' => 'AppBundle\Entity\Artwork'
         ));
     }
 

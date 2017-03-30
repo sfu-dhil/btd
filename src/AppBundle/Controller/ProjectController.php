@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Project;
+use AppBundle\Form\Project\ProjectType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\Project;
-use AppBundle\Form\ProjectType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Project controller.
@@ -74,7 +74,7 @@ class ProjectController extends Controller {
      */
     public function newAction(Request $request) {
         $project = new Project();
-        $form = $this->createForm('AppBundle\Form\ProjectType', $project);
+        $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -121,7 +121,7 @@ class ProjectController extends Controller {
      * @param Project $project
      */
     public function editAction(Request $request, Project $project) {
-        $editForm = $this->createForm('AppBundle\Form\ProjectType', $project);
+        $editForm = $this->createForm(ProjectType::class, $project);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

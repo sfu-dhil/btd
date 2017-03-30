@@ -41,7 +41,7 @@ class ProjectContribution extends AbstractEntity {
     private $projectRole;
 
     public function __toString() {
-        
+        return implode(':', array($this->project, $this->person, $this->organization, $this->projectRole));
     }
 
     /**

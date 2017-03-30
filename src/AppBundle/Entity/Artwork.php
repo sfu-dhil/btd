@@ -49,7 +49,7 @@ class Artwork extends AbstractEntity {
     
     /**
      * @var Collection|ArtworkContribution[]
-     * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="artwork")
+     * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="artwork", cascade={"persist"}, orphanRemoval=true)
      */
     private $contributions;
 

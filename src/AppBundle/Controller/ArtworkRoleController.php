@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\ArtworkRole;
+use AppBundle\Form\Artwork\ArtworkRoleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\ArtworkRole;
-use AppBundle\Form\ArtworkRoleType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ArtworkRole controller.
@@ -47,7 +47,7 @@ class ArtworkRoleController extends Controller {
      */
     public function newAction(Request $request) {
         $artworkRole = new ArtworkRole();
-        $form = $this->createForm('AppBundle\Form\ArtworkRoleType', $artworkRole);
+        $form = $this->createForm(ArtworkRoleType::class, $artworkRole);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,7 +90,7 @@ class ArtworkRoleController extends Controller {
      * @param ArtworkRole $artworkRole
      */
     public function editAction(Request $request, ArtworkRole $artworkRole) {
-        $editForm = $this->createForm('AppBundle\Form\ArtworkRoleType', $artworkRole);
+        $editForm = $this->createForm(ArtworkRoleType::class, $artworkRole);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

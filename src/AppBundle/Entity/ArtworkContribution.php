@@ -40,7 +40,7 @@ class ArtworkContribution extends AbstractEntity {
     private $artworkRole;
 
     public function __toString() {
-        
+        return implode(":", array($this->artwork, $this->person, $this->organization, $this->artworkRole));
     }
 
     /**

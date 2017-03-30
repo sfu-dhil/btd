@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\ProjectCategory;
+use AppBundle\Form\Project\ProjectCategoryType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\ProjectCategory;
-use AppBundle\Form\ProjectCategoryType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ProjectCategory controller.
@@ -47,7 +47,7 @@ class ProjectCategoryController extends Controller {
      */
     public function newAction(Request $request) {
         $projectCategory = new ProjectCategory();
-        $form = $this->createForm('AppBundle\Form\ProjectCategoryType', $projectCategory);
+        $form = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,7 +90,7 @@ class ProjectCategoryController extends Controller {
      * @param ProjectCategory $projectCategory
      */
     public function editAction(Request $request, ProjectCategory $projectCategory) {
-        $editForm = $this->createForm('AppBundle\Form\ProjectCategoryType', $projectCategory);
+        $editForm = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

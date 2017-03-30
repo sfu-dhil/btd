@@ -2,13 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Person;
+use AppBundle\Form\Person\ArtworkContributionsType;
+use AppBundle\Form\Person\ProjectContributionsType;
+use AppBundle\Form\Person\PersonType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\Person;
-use AppBundle\Form\PersonType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Person controller.
@@ -66,25 +68,6 @@ class PersonController extends Controller {
     /**
      * Full text search for Person entities.
      *
-     * To make this work, add a method like this one to the 
-     * AppBundle:Person repository. Replace the fieldName with
-     * something appropriate, and adjust the generated fulltext.html.twig
-     * template.
-     * 
-      //    public function fulltextQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-      //        $qb->orderBy('score', 'desc');
-      //        $qb->setParameter('q', $q);
-      //        return $qb->getQuery();
-      //    }
-     * 
-     * Requires a MatchAgainst function be added to doctrine, and appropriate
-     * fulltext indexes on your Person entity.
-     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
-     *
-     *
      * @Route("/fulltext", name="person_fulltext")
      * @Method("GET")
      * @Template()
@@ -119,7 +102,7 @@ class PersonController extends Controller {
      */
     public function newAction(Request $request) {
         $person = new Person();
-        $form = $this->createForm('AppBundle\Form\PersonType', $person);
+        $form = $this->createForm(PersonType::class, $person);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -162,7 +145,7 @@ class PersonController extends Controller {
      * @param Person $person
      */
     public function editAction(Request $request, Person $person) {
-        $editForm = $this->createForm('AppBundle\Form\PersonType', $person);
+        $editForm = $this->createForm(PersonType::class, $person);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -272,5 +255,58 @@ class PersonController extends Controller {
             'results' => $results,
         );
     }
+    
+    /**
+     * @Route("/{id}/project_contributions", name="person_project_contributions")
+     * @Method({"GET", "POST"})
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Person $person
+     */
+    public function projectContributionsAction(Request $request, Person $person) {
+        $form = $this->createForm(ProjectContributionsType::class, $person, array(
+            'person' => $person,
+        ));
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'The contributions have been updated.');
+            return $this->redirectToRoute('person_show', array('id' => $person->getId()));
+        }
+        
+        return array(
+            'person' => $person,
+            'edit_form' => $form->createView(),
+        );
+    }
 
+    /**
+     * @Route("/{id}/artwork_contributions", name="person_artwork_contributions")
+     * @Method({"GET", "POST"})
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Person $person
+     */
+    public function artworkContributionsAction(Request $request, Person $person) {
+        $form = $this->createForm(ArtworkContributionsType::class, $person, array(
+            'person' => $person,
+        ));
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'The contributions have been updated.');
+            return $this->redirectToRoute('person_show', array('id' => $person->getId()));
+        }
+        
+        return array(
+            'person' => $person,
+            'edit_form' => $form->createView(),
+        );
+    }
 }

@@ -1,23 +1,22 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Project;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProjectContributionType extends AbstractType {
+class ProjectCategoryType extends AbstractType {
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('project');
-        $builder->add('person');
-        $builder->add('organization');
-        $builder->add('projectRole');
+        $builder->add('name');
+        $builder->add('label');
+        $builder->add('description');
     }
 
     /**
@@ -25,7 +24,7 @@ class ProjectContributionType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ProjectContribution'
+            'data_class' => 'AppBundle\Entity\ProjectCategory'
         ));
     }
 

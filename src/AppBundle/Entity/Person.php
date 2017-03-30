@@ -43,13 +43,13 @@ class Person extends AbstractEntity {
 
     /**
      * @var Collection|ArtworkContribution[]
-     * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="person", cascade={"persist"}, orphanRemoval=true)
      */
     private $artworkContributions;
 
     /**
      * @var Collection|ProjectContribution[]
-     * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="person", cascade={"persist"}, orphanRemoval=true)
      */
     private $projectContributions;
     

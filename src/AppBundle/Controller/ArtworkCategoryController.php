@@ -49,7 +49,7 @@ class ArtworkCategoryController extends Controller
     public function newAction(Request $request)
     {
         $artworkCategory = new ArtworkCategory();
-        $form = $this->createForm('AppBundle\Form\ArtworkCategoryType', $artworkCategory);
+        $form = $this->createForm(ArtworkCategoryType::class, $artworkCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -94,7 +94,7 @@ class ArtworkCategoryController extends Controller
      */
     public function editAction(Request $request, ArtworkCategory $artworkCategory)
     {
-        $editForm = $this->createForm('AppBundle\Form\ArtworkCategoryType', $artworkCategory);
+        $editForm = $this->createForm(ArtworkCategoryType::class, $artworkCategory);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

@@ -9,14 +9,6 @@
 
 {% block body %}
 
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            <a href="{{ path('artwork_contribution_new') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus"></span> New
-            </a>
-        </div>
-    </div>
-
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>
@@ -24,7 +16,6 @@
                 <th>Organization</th>
                 <th>Role</th>
                 <th>Artwork</th>
-                <th>Delete</th>
             </tr>            
         </thead>
         <tbody>
@@ -45,11 +36,6 @@
                     </td>
                     <td>
                         <a href="{{ path('artwork_show', {'id': artworkContribution.artwork.id}) }}">{{ artworkContribution.artwork }}</a>
-                    </td>
-                    <td>
-                        <a href="{{ path('artwork_contribution_delete', { 'id': artworkContribution.id }) }}" data-confirm="Are you sure you want to delete this ArtworkContribution?">
-                            Delete
-                        </a>
                     </td>
                 </tr>
             {% endfor %}

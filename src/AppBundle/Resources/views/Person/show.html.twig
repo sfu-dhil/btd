@@ -65,8 +65,9 @@
         </div>
     {% endfor %}
 
+    <h2>Projects</h2>
+    <p><a href="{{ path('person_project_contributions', {'id': person.id}) }}">Update project contributions</a></p>
     {% if person.projectContributions|length %}
-        <h2>Projects</h2>
         <table class="table table-bordered table-condensed table-hover table-striped">
             <tr>
                 <th>Role</th>
@@ -89,8 +90,9 @@
         </table>
     {% endif %}
 
+    <h2>Artworks</h2>
+    <p><a href="{{ path('person_artwork_contributions', {'id': person.id}) }}">Update project contributions</a></p>
     {% if person.artworkContributions|length %}
-        <h2>Artworks</h2>
         <table class="table table-bordered table-condensed table-hover table-striped">
             <tr>
                 <th>Role</th>

@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectPage;
+use AppBundle\Form\Project\ProjectPageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -54,7 +55,7 @@ class ProjectPageController extends Controller {
     public function newAction(Request $request, Project $project) {
         $projectPage = new ProjectPage();
         $projectPage->setProject($project);
-        $form = $this->createForm('AppBundle\Form\ProjectPageType', $projectPage);
+        $form = $this->createForm(ProjectPageType::class, $projectPage);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -111,7 +112,7 @@ class ProjectPageController extends Controller {
         if($project->getId() !== $projectPage->getProject()->getId()) {
             throw new NotFoundHttpException();
         }
-        $editForm = $this->createForm('AppBundle\Form\ProjectPageType', $projectPage);
+        $editForm = $this->createForm(ProjectPageType::class, $projectPage);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

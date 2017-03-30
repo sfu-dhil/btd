@@ -2,13 +2,14 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Artwork;
+use AppBundle\Form\Artwork\ArtworkType;
+use AppBundle\Form\ArtworkContributionsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\Artwork;
-use AppBundle\Form\ArtworkType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Artwork controller.
@@ -39,25 +40,6 @@ class ArtworkController extends Controller {
 
     /**
      * Full text search for Artwork entities.
-     *
-     * To make this work, add a method like this one to the 
-     * AppBundle:Artwork repository. Replace the fieldName with
-     * something appropriate, and adjust the generated fulltext.html.twig
-     * template.
-     * 
-      //    public function fulltextQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-      //        $qb->orderBy('score', 'desc');
-      //        $qb->setParameter('q', $q);
-      //        return $qb->getQuery();
-      //    }
-     * 
-     * Requires a MatchAgainst function be added to doctrine, and appropriate
-     * fulltext indexes on your Artwork entity.
-     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
-     *
      *
      * @Route("/search", name="artwork_search")
      * @Method("GET")
@@ -93,7 +75,7 @@ class ArtworkController extends Controller {
      */
     public function newAction(Request $request) {
         $artwork = new Artwork();
-        $form = $this->createForm('AppBundle\Form\ArtworkType', $artwork);
+        $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -136,7 +118,7 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function editAction(Request $request, Artwork $artwork) {
-        $editForm = $this->createForm('AppBundle\Form\ArtworkType', $artwork);
+        $editForm = $this->createForm(ArtworkType::class, $artwork);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -244,6 +226,33 @@ class ArtworkController extends Controller {
         return array(
             'artwork' => $artwork,
             'results' => $results,
+        );
+    }
+    
+    /**
+     * @Route("/{id}/contributions", name="artwork_contributions")
+     * @Method({"GET", "POST"})
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Artwork $artwork
+     */
+    public function contributionsAction(Request $request, Artwork $artwork) {
+        $form = $this->createForm(ArtworkContributionsType::class, $artwork, array(
+            'artwork' => $artwork,
+        ));
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'The contributions have been updated.');
+            return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
+        }
+        
+        return array(
+            'artwork' => $artwork,
+            'edit_form' => $form->createView(),
         );
     }
 }

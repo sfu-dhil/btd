@@ -11,3 +11,20 @@ services:
             - { name: doctrine.event_listener, event: preUpdate }
             - { name: doctrine.event_listener, event: postLoad }
     
+    app.form.artwork_contribution_type: 
+        class: AppBundle\Form\Artwork\ArtworkContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+    app.form.person_project_contribution_type:
+        class: AppBundle\Form\Person\ProjectContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+    app.form.person_artwork_contribution_type:
+        class: AppBundle\Form\Person\ArtworkContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
