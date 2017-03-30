@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -69,7 +70,7 @@ class Project extends AbstractEntity {
 
     /**
      * @var Collection|ProjectContribution[]
-     * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="project", cascade={"persist"}, orphanRemoval=true)
      */
     private $contributions;
 
@@ -258,7 +259,7 @@ class Project extends AbstractEntity {
     /**
      * Check if a media file is associated with this project.
      * 
-     * @param \AppBundle\Entity\MediaFile $mediaFile
+     * @param MediaFile $mediaFile
      * @return boolean
      */
     public function hasMediaFile(MediaFile $mediaFile) {
@@ -302,7 +303,7 @@ class Project extends AbstractEntity {
     /**
      * Set startDate
      *
-     * @param \DateTime $startDate
+     * @param DateTime $startDate
      *
      * @return Project
      */
@@ -316,7 +317,7 @@ class Project extends AbstractEntity {
     /**
      * Get startDate
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartDate()
     {
@@ -326,7 +327,7 @@ class Project extends AbstractEntity {
     /**
      * Set endDate
      *
-     * @param \DateTime $endDate
+     * @param DateTime $endDate
      *
      * @return Project
      */
@@ -340,7 +341,7 @@ class Project extends AbstractEntity {
     /**
      * Get endDate
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -374,11 +375,11 @@ class Project extends AbstractEntity {
     /**
      * Add projectPage
      *
-     * @param \AppBundle\Entity\ProjectPage $projectPage
+     * @param ProjectPage $projectPage
      *
      * @return Project
      */
-    public function addProjectPage(\AppBundle\Entity\ProjectPage $projectPage)
+    public function addProjectPage(ProjectPage $projectPage)
     {
         $this->projectPages[] = $projectPage;
 
@@ -388,9 +389,9 @@ class Project extends AbstractEntity {
     /**
      * Remove projectPage
      *
-     * @param \AppBundle\Entity\ProjectPage $projectPage
+     * @param ProjectPage $projectPage
      */
-    public function removeProjectPage(\AppBundle\Entity\ProjectPage $projectPage)
+    public function removeProjectPage(ProjectPage $projectPage)
     {
         $this->projectPages->removeElement($projectPage);
     }
@@ -398,7 +399,7 @@ class Project extends AbstractEntity {
     /**
      * Get projectPages
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getProjectPages()
     {
@@ -408,23 +409,27 @@ class Project extends AbstractEntity {
     /**
      * Add artwork
      *
-     * @param \AppBundle\Entity\artwork $artwork
+     * @param Artwork $artwork
      *
      * @return Project
      */
-    public function addArtwork(\AppBundle\Entity\artwork $artwork)
+    public function addArtwork(Artwork $artwork)
     {
         $this->artworks[] = $artwork;
 
         return $this;
     }
+    
+    public function hasArtwork(Artwork $artwork) {
+        return $this->artworks->contains($artwork);
+    }
 
     /**
      * Remove artwork
      *
-     * @param \AppBundle\Entity\artwork $artwork
+     * @param Artwork $artwork
      */
-    public function removeArtwork(\AppBundle\Entity\artwork $artwork)
+    public function removeArtwork(Artwork $artwork)
     {
         $this->artworks->removeElement($artwork);
     }
@@ -432,7 +437,7 @@ class Project extends AbstractEntity {
     /**
      * Get artworks
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getArtworks()
     {

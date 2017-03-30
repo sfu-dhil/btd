@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Artwork;
 use AppBundle\Form\Artwork\ArtworkType;
+use AppBundle\Form\Artwork\ProjectsType;
 use AppBundle\Form\ArtworkContributionsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -248,6 +249,41 @@ class ArtworkController extends Controller {
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
             return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
+        }
+        
+        return array(
+            'artwork' => $artwork,
+            'edit_form' => $form->createView(),
+        );
+    }
+    
+    /**
+     * @Route("/{id}/projects", name="artwork_projects")
+     * @Method({"GET", "POST"})
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Artwork $artwork
+     */
+    public function projectsAction(Request $request, Artwork $artwork) {
+        $oldProjects = $artwork->getProjects()->toArray();
+        $form = $this->createForm(ProjectsType::class, $artwork);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+            foreach($oldProjects as $project) {
+                dump($project);
+                $project->removeArtwork($artwork);
+            }
+            foreach($artwork->getProjects() as $project) {
+                if( ! $project->hasArtwork($artwork)) {
+                    $project->addArtwork($artwork);
+                }
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'The projects have been updated.');
+            // return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
         }
         
         return array(

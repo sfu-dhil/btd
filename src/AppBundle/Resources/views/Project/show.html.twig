@@ -96,8 +96,7 @@
     {% endfor %}
 
     <h2>Contributors</h2>
-
-
+    <p><a href="{{ path('project_contributions', {'id': project.id}) }}">Update project contributions</a></p>
     {% for contribution in project.contributions %}
         {% if contribution.person %}
             {% set person = contribution.person %}
@@ -124,5 +123,19 @@
             </p>
         {% endif %}
     {% endfor %}
+
+    <h2>Artworks</h2>
+    <p><a href="{{ path('project_artworks', {'id': project.id}) }}">Update project artworks</a></p>
+    {% for artwork in project.artworks %}
+        <h3>
+            <a href="{{ path('artwork_show', { 'id': artwork.id }) }}">
+                {{ artwork }}
+            </a>
+        </h3>
+        <p>
+            {{ text_service.trim(artwork.description, 100) }}            
+        </p>
+    {% endfor %}
+
 
 {% endblock %}

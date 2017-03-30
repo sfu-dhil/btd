@@ -102,4 +102,16 @@
         {% endfor %}
     {% endif %}
 
+    <h2>Projects</h2>
+    <p>
+        <a href="{{ path('artwork_projects', {'id': artwork.id}) }}">Edit projects</a>
+    </p>
+    {% for project in artwork.projects%}
+        <h3>
+            <a href="{{ path('project_show', { 'id': project.id }) }}">
+                {{ project }}
+            </a>
+        </h3>
+        {{ project.excerpt|raw }}            
+    {% endfor %}
 {% endblock %}

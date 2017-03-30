@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Project;
+use AppBundle\Form\Project\ArtworksType;
+use AppBundle\Form\Project\ContributionsType;
 use AppBundle\Form\Project\ProjectType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -226,14 +228,68 @@ class ProjectController extends Controller {
             }
             $this->addFlash('success', 'The media file is associated with the artowrk.');
             return $this->redirectToRoute('project_remove_media', array(
-                'id' => $project->getId(),
-                'page' => $request->query->getInt('page', 1)
+                        'id' => $project->getId(),
+                        'page' => $request->query->getInt('page', 1)
             ));
         }
 
         return array(
             'project' => $project,
             'results' => $results,
+        );
+    }
+
+    /**
+     * @Route("/{id}/contributions", name="project_contributions")
+     * @Method({"GET", "POST"})
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Project $project
+     */
+    public function contributionsAction(Request $request, Project $project) {
+        $form = $this->createForm(ContributionsType::class, $project, array(
+            'project' => $project,
+        ));
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'The contributions have been updated.');
+            // return $this->redirectToRoute('project_show', array('id' => $project->getId()));
+        }
+
+        return array(
+            'project' => $project,
+            'edit_form' => $form->createView(),
+        );
+    }
+
+    /**
+     * @Route("/{id}/artworks", name="project_artworks")
+     * @Method({"GET", "POST"})
+     * @Template()
+     * 
+     * @param Request $request
+     * @param Project $project
+     */
+    public function artworksAction(Request $request, Project $project) {
+        $form = $this->createForm(ArtworksType::class, $project, array(
+            'project' => $project,
+        ));
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'The artworks have been updated.');
+            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
+        }
+        
+        return array(
+            'project' => $project,
+            'edit_form' => $form->createView(),
         );
     }
 }

@@ -28,3 +28,15 @@ services:
         arguments: [ "@doctrine.orm.entity_manager" ] 
         tags:
             - { name: form.type }
+
+    app.form.project_contribution_type:
+        class: AppBundle\Form\Project\ContributionType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
+
+    app.form.project_artwork_type:
+        class: AppBundle\Form\Project\ArtworkType
+        arguments: [ "@doctrine.orm.entity_manager" ] 
+        tags:
+            - { name: form.type }
