@@ -19,3 +19,4 @@
 !/app/data/uploads/.gitkeep
 
 web/bower
+docs/build
