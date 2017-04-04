@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Artwork;
 use AppBundle\Form\Artwork\ArtworkType;
 use AppBundle\Form\Artwork\ProjectsType;
-use AppBundle\Form\ArtworkContributionsType;
+use AppBundle\Form\Artwork\ArtworkContributionsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

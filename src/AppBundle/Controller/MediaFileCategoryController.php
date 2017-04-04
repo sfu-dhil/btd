@@ -51,7 +51,7 @@ class MediaFileCategoryController extends Controller {
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $mediaFileCategory = new MediaFileCategory();
-        $form = $this->createForm('AppBundle\Form\MediaFileTypeType', $mediaFileType);
+        $form = $this->createForm(MediaFileCategoryType::class, $mediaFileCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

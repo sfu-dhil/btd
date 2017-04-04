@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\ArtworkContribution;
-use AppBundle\Form\ArtworkContributionType;
+use AppBundle\Form\Artwork\ArtworkContributionType;
 
 /**
  * ArtworkContribution controller.
