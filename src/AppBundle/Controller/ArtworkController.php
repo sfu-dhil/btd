@@ -75,6 +75,10 @@ class ArtworkController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $artwork = new Artwork();
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
@@ -119,6 +123,10 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function editAction(Request $request, Artwork $artwork) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $editForm = $this->createForm(ArtworkType::class, $artwork);
         $editForm->handleRequest($request);
 
@@ -144,6 +152,10 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function deleteAction(Request $request, Artwork $artwork) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($artwork);
         $em->flush();
@@ -161,6 +173,10 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function addMediaAction(Request $request, Artwork $artwork) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:MediaFile');
         $q = $request->query->get('q');
@@ -204,6 +220,10 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function removeMediaAction(Request $request, Artwork $artwork) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $paginator = $this->get('knp_paginator');
         $results = $paginator->paginate($artwork->getMediaFiles(), $request->query->getInt('page', 1), 25);
 
@@ -239,6 +259,10 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function contributionsAction(Request $request, Artwork $artwork) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $form = $this->createForm(ArtworkContributionsType::class, $artwork, array(
             'artwork' => $artwork,
         ));
@@ -266,6 +290,10 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function projectsAction(Request $request, Artwork $artwork) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $oldProjects = $artwork->getProjects()->toArray();
         $form = $this->createForm(ProjectsType::class, $artwork);
         $form->handleRequest($request);

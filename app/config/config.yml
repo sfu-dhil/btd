@@ -140,3 +140,7 @@ nines_feedback:
 nines_blog:
     default_status: draft
     default_category: none
+
+nines_user:
+    permission_levels: [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN ]
+        

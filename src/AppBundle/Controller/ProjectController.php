@@ -75,6 +75,10 @@ class ProjectController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $project = new Project();
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
@@ -123,6 +127,10 @@ class ProjectController extends Controller {
      * @param Project $project
      */
     public function editAction(Request $request, Project $project) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $editForm = $this->createForm(ProjectType::class, $project);
         $editForm->handleRequest($request);
 
@@ -152,6 +160,10 @@ class ProjectController extends Controller {
      * @param Project $project
      */
     public function deleteAction(Request $request, Project $project) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($project);
         $em->flush();
@@ -169,6 +181,10 @@ class ProjectController extends Controller {
      * @param Project $project
      */
     public function addMediaAction(Request $request, Project $project) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:MediaFile');
         $q = $request->query->get('q');
@@ -213,6 +229,10 @@ class ProjectController extends Controller {
      * @param Project $project
      */
     public function removeMediaAction(Request $request, Project $project) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $paginator = $this->get('knp_paginator');
         $results = $paginator->paginate($project->getMediaFiles(), $request->query->getInt('page', 1), 25);
 
@@ -248,6 +268,10 @@ class ProjectController extends Controller {
      * @param Project $project
      */
     public function contributionsAction(Request $request, Project $project) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $form = $this->createForm(ContributionsType::class, $project, array(
             'project' => $project,
         ));
@@ -275,6 +299,10 @@ class ProjectController extends Controller {
      * @param Project $project
      */
     public function artworksAction(Request $request, Project $project) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $form = $this->createForm(ArtworksType::class, $project, array(
             'project' => $project,
         ));

@@ -46,6 +46,10 @@ class ProjectRoleController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $projectRole = new ProjectRole();
         $form = $this->createForm(ProjectRoleType::class, $projectRole);
         $form->handleRequest($request);
@@ -90,6 +94,10 @@ class ProjectRoleController extends Controller {
      * @param ProjectRole $projectRole
      */
     public function editAction(Request $request, ProjectRole $projectRole) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $editForm = $this->createForm(ProjectRoleType::class, $projectRole);
         $editForm->handleRequest($request);
 
@@ -115,6 +123,10 @@ class ProjectRoleController extends Controller {
      * @param ProjectRole $projectRole
      */
     public function deleteAction(Request $request, ProjectRole $projectRole) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectRole);
         $em->flush();
