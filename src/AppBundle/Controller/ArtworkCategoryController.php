@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\ArtworkCategory;
+use AppBundle\Form\Artwork\ArtworkCategoryType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\ArtworkCategory;
-use AppBundle\Form\ArtworkCategoryType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ArtworkCategory controller.
@@ -48,6 +48,10 @@ class ArtworkCategoryController extends Controller
      */
     public function newAction(Request $request)
     {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $artworkCategory = new ArtworkCategory();
         $form = $this->createForm(ArtworkCategoryType::class, $artworkCategory);
         $form->handleRequest($request);
@@ -94,6 +98,10 @@ class ArtworkCategoryController extends Controller
      */
     public function editAction(Request $request, ArtworkCategory $artworkCategory)
     {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $editForm = $this->createForm(ArtworkCategoryType::class, $artworkCategory);
         $editForm->handleRequest($request);
 
@@ -120,6 +128,10 @@ class ArtworkCategoryController extends Controller
      */
     public function deleteAction(Request $request, ArtworkCategory $artworkCategory)
     {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($artworkCategory);
         $em->flush();

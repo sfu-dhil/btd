@@ -46,6 +46,10 @@ class ArtworkRoleController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $artworkRole = new ArtworkRole();
         $form = $this->createForm(ArtworkRoleType::class, $artworkRole);
         $form->handleRequest($request);
@@ -90,6 +94,10 @@ class ArtworkRoleController extends Controller {
      * @param ArtworkRole $artworkRole
      */
     public function editAction(Request $request, ArtworkRole $artworkRole) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $editForm = $this->createForm(ArtworkRoleType::class, $artworkRole);
         $editForm->handleRequest($request);
 
@@ -115,6 +123,10 @@ class ArtworkRoleController extends Controller {
      * @param ArtworkRole $artworkRole
      */
     public function deleteAction(Request $request, ArtworkRole $artworkRole) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($artworkRole);
         $em->flush();

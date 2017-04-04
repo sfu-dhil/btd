@@ -75,6 +75,10 @@ class OrganizationController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $organization = new Organization();
         $form = $this->createForm(OrganizationType::class, $organization);
         $form->handleRequest($request);
@@ -119,6 +123,10 @@ class OrganizationController extends Controller {
      * @param Organization $organization
      */
     public function editAction(Request $request, Organization $organization) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $editForm = $this->createForm(OrganizationType::class, $organization);
         $editForm->handleRequest($request);
 
@@ -144,6 +152,10 @@ class OrganizationController extends Controller {
      * @param Organization $organization
      */
     public function deleteAction(Request $request, Organization $organization) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($organization);
         $em->flush();
@@ -161,6 +173,10 @@ class OrganizationController extends Controller {
      * @param Organization $organization
      */
     public function projectContributionsAction(Request $request, Organization $organization) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $form = $this->createForm(ProjectContributionsType::class, $organization, array(
             'organization' => $organization,
         ));
@@ -188,6 +204,10 @@ class OrganizationController extends Controller {
      * @param Organization $organization
      */
     public function artworkContributionsAction(Request $request, Organization $organization) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $form = $this->createForm(ArtworkContributionsType::class, $organization, array(
             'organization' => $organization,
         ));

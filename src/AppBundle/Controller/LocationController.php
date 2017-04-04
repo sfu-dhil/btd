@@ -73,6 +73,10 @@ class LocationController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $location = new Location();
         $form = $this->createForm('AppBundle\Form\LocationType', $location);
         $form->handleRequest($request);
@@ -117,6 +121,10 @@ class LocationController extends Controller {
      * @param Location $location
      */
     public function editAction(Request $request, Location $location) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $editForm = $this->createForm('AppBundle\Form\LocationType', $location);
         $editForm->handleRequest($request);
 
@@ -142,6 +150,10 @@ class LocationController extends Controller {
      * @param Location $location
      */
     public function deleteAction(Request $request, Location $location) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($location);
         $em->flush();

@@ -17,5 +17,6 @@
 !/app/data/uploads
 /app/data/uploads/*
 !/app/data/uploads/.gitkeep
-
 web/bower
+/nbproject/private/
+docs/build

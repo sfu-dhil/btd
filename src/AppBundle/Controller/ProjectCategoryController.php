@@ -46,6 +46,10 @@ class ProjectCategoryController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $projectCategory = new ProjectCategory();
         $form = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $form->handleRequest($request);
@@ -90,6 +94,10 @@ class ProjectCategoryController extends Controller {
      * @param ProjectCategory $projectCategory
      */
     public function editAction(Request $request, ProjectCategory $projectCategory) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $editForm = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $editForm->handleRequest($request);
 
@@ -115,6 +123,10 @@ class ProjectCategoryController extends Controller {
      * @param ProjectCategory $projectCategory
      */
     public function deleteAction(Request $request, ProjectCategory $projectCategory) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectCategory);
         $em->flush();

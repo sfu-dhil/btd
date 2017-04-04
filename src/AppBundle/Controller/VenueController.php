@@ -46,6 +46,10 @@ class VenueController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $venue = new Venue();
         $form = $this->createForm('AppBundle\Form\VenueType', $venue);
         $form->handleRequest($request);
@@ -90,6 +94,10 @@ class VenueController extends Controller {
      * @param Venue $venue
      */
     public function editAction(Request $request, Venue $venue) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $editForm = $this->createForm('AppBundle\Form\VenueType', $venue);
         $editForm->handleRequest($request);
 
@@ -115,6 +123,10 @@ class VenueController extends Controller {
      * @param Venue $venue
      */
     public function deleteAction(Request $request, Venue $venue) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($venue);
         $em->flush();

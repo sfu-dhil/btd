@@ -53,6 +53,10 @@ class ProjectPageController extends Controller {
      * @param Project $project
      */
     public function newAction(Request $request, Project $project) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $projectPage = new ProjectPage();
         $projectPage->setProject($project);
         $form = $this->createForm(ProjectPageType::class, $projectPage);
@@ -109,6 +113,10 @@ class ProjectPageController extends Controller {
      * @param ProjectPage $projectPage
      */
     public function editAction(Request $request, Project $project, ProjectPage $projectPage) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         if($project->getId() !== $projectPage->getProject()->getId()) {
             throw new NotFoundHttpException();
         }
@@ -146,6 +154,10 @@ class ProjectPageController extends Controller {
      * @param ProjectPage $projectPage
      */
     public function deleteAction(Request $request, Project $project, ProjectPage $projectPage) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectPage);
         $em->flush();

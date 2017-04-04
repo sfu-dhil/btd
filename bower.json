@@ -1,5 +1,5 @@
 {
-  "name": "New Narratives",
+  "name": "btd",
   "authors": [
     "Michael Joyce <ubermichael@gmail.com>"
   ],
@@ -12,6 +12,8 @@
     "jquery": "^3.2.1",
     "bootstrap": "^3.3.7",
     "jquery-ui": "^1.12.1",
-    "typeahead.js": "^0.11.1"
+    "typeahead.js": "^0.11.1",
+    "video.js": "^5.19.1",
+    "pdfobject": "pdfobject2#*"
   }
 }

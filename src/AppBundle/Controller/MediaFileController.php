@@ -136,6 +136,10 @@ class MediaFileController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $mediaFile = new MediaFile();
         $form = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile, array(
             'max_file_upload' => UploadedFile::getMaxFilesize()
@@ -223,6 +227,10 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function editAction(Request $request, MediaFile $mediaFile) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $oldFile = $mediaFile->getFile();
         $tnFile = $mediaFile->getThumbnail();
         $editForm = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile, array(
@@ -261,6 +269,10 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function deleteAction(Request $request, MediaFile $mediaFile) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $this->get('app.file_uploader')->delete($mediaFile->getFile());
         $this->get('app.file_uploader')->delete($mediaFile->getThumbnail());
@@ -284,6 +296,10 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function metadataAction(Request $request, MediaFile $mediaFile) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(MediaFileMetadataType::class, null, array(
             'mediaFile' => $mediaFile, 

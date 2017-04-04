@@ -11,12 +11,14 @@
             <a href="{{ path('artwork_index') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-arrow-left"></span> Back
             </a>
-            <a href="{{ path('artwork_edit', { 'id': artwork.id }) }}" class="btn btn-default">
-                <span class='glyphicon glyphicon-edit'></span> Edit
-            </a>
-            <a href="{{ path('artwork_delete', { 'id': artwork.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this Artwork?">
-                <span class='glyphicon glyphicon-remove'></span> Delete
-            </a>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                <a href="{{ path('artwork_edit', { 'id': artwork.id }) }}" class="btn btn-default">
+                    <span class='glyphicon glyphicon-edit'></span> Edit
+                </a>
+                <a href="{{ path('artwork_delete', { 'id': artwork.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this Artwork?">
+                    <span class='glyphicon glyphicon-remove'></span> Delete
+                </a>
+            {% endif %}
         </div>
     </div>
 
@@ -33,11 +35,15 @@
 
 
     <h2>Media Files</h2>
-    <p>
-        <a href="{{ path('media_file_new') }}">Upoad media files</a> |
-        <a href="{{ path('artwork_add_media', {'id': artwork.id}) }}">Add media files</a> | 
-        <a href="{{ path('artwork_remove_media', {'id': artwork.id}) }}">Remove media files</a>
-    </p>
+
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <p>
+            <a href="{{ path('media_file_new') }}">Upoad media files</a> |
+            <a href="{{ path('artwork_add_media', {'id': artwork.id}) }}">Add media files</a> | 
+            <a href="{{ path('artwork_remove_media', {'id': artwork.id}) }}">Remove media files</a>
+        </p>
+    {% endif %}
+
     {% if artwork.mediaFiles %}
         {% for mediaFile in artwork.mediaFiles %}
             <div class='row'>
@@ -70,9 +76,13 @@
     {% endif %}
 
     <h2>Contributions</h2>
-    <p>
-        <a href="{{ path('artwork_contributions', {'id': artwork.id}) }}">Edit contributions</a>
-    </p>
+
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <p>
+            <a href="{{ path('artwork_contributions', {'id': artwork.id}) }}">Edit contributions</a>
+        </p>
+    {% endif %}
+
     {% if artwork.contributions|length %}
         {% for contribution in artwork.contributions %}
             {% if contribution.person %}
@@ -103,9 +113,13 @@
     {% endif %}
 
     <h2>Projects</h2>
-    <p>
-        <a href="{{ path('artwork_projects', {'id': artwork.id}) }}">Edit projects</a>
-    </p>
+
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <p>
+            <a href="{{ path('artwork_projects', {'id': artwork.id}) }}">Edit projects</a>
+        </p>
+    {% endif %}
+
     {% for project in artwork.projects%}
         <h3>
             <a href="{{ path('project_show', { 'id': project.id }) }}">
