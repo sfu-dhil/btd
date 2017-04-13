@@ -17,10 +17,16 @@ security:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
-            
+                csrf_token_generator: security.csrf.token_manager            
             logout:       true
             anonymous:    true
+            
+            remember_me:
+                secret: '%secret%'
+                lifetime: 2419200 # 28 days in seconds.
+                path: '%router.request_context.base_url%'
+                domain: '%router.request_context.host%'
+                secure: '%secure_cookies%'
 
     access_control:
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
