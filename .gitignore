@@ -14,9 +14,10 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/web/bower
 !/app/data/uploads
 /app/data/uploads/*
 !/app/data/uploads/.gitkeep
-web/bower
-/nbproject/private/
-docs/build
+/nbproject
+/docs/build
+/web/docs
