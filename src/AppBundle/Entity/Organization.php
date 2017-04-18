@@ -11,7 +11,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * Organization
  *
  * @ORM\Table(name="organization", indexes={
- *  @ORM\Index(columns={"name", "address", "description", "url", "contact"}, flags={"fulltext"}),
+ *  @ORM\Index(columns={"name", "address", "description", "contact"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrganizationRepository")
  */
@@ -37,13 +37,13 @@ class Organization extends AbstractEntity {
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="array")
      */
-    private $url;
+    private $urls;
 
     /**
      * @var string
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $contact;
 
@@ -140,28 +140,6 @@ class Organization extends AbstractEntity {
      */
     public function getDescription() {
         return $this->description;
-    }
-
-    /**
-     * Set url
-     *
-     * @param string $url
-     *
-     * @return Organization
-     */
-    public function setUrl($url) {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return string
-     */
-    public function getUrl() {
-        return $this->url;
     }
 
     /**
@@ -270,4 +248,28 @@ class Organization extends AbstractEntity {
         return $this->projectContributions;
     }
 
+
+    /**
+     * Set urls
+     *
+     * @param array $urls
+     *
+     * @return Organization
+     */
+    public function setUrls($urls)
+    {
+        $this->urls = $urls;
+
+        return $this;
+    }
+
+    /**
+     * Get urls
+     *
+     * @return array
+     */
+    public function getUrls()
+    {
+        return $this->urls;
+    }
 }

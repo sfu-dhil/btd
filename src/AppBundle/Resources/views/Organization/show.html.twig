@@ -30,13 +30,19 @@
         {{ organization.address|nl2br }}
     </address>
     {{ organization.description|raw }}
-    <p>
-        <a href='{{ organization.url }}'>
-            {{ organization.url }}
-        </a>
-    </p>
-    <h3>Contact</h3>
-    {{ organization.contact }}
+
+    {% if organization.urls|length > 0 %}
+        <ul>
+            {% for url in organization.urls %}
+                <li><a href="{{ url }}">{{ url }}</a></li>
+                {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if organization.contact %}
+        <h3>Contact</h3>
+        {{ organization.contact }}
+    {% endif %}
 
     <p class='text-right'>
         Created {{ organization.created|date }}. Most recently updated {{ organization.updated|date }}
