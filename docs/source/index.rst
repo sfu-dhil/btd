@@ -15,8 +15,19 @@ and anthropology. It will develop an open access web-based archive of
 the ETC exhibitions and pedagogical tool for teaching about
 anthropology and art.
 
+User Manual
+-----------
 
-Contents:
+.. toctree::
+   :maxdepth: 1
+      
+   styleguide
+   category-fields
+   metadata
+   workflow
+
+Develper Manual
+---------------
 
 .. toctree::
    :maxdepth: 1
