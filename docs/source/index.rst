@@ -6,7 +6,7 @@ Welcome to Between the Digital's documentation!
 Between the Physical and the Virtual: Anthropology, Art, and Emergent
 Digital Hybrid Spaces
 
-Kate Hennessey, School of Interactive Arts and Technology
+Kate Hennessy, School of Interactive Arts and Technology
 
 This project is grounded in the ongoing work of the `Ethnographic
 Terminalia Collective`_, which since 2009 has staged annual exhibitions
