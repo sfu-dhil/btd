@@ -46,6 +46,12 @@ class Person extends AbstractEntity {
      * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="person", cascade={"persist"}, orphanRemoval=true)
      */
     private $artworkContributions;
+    
+    /**
+     * @var Collection|ArtisticStatement[]
+     * @ORM\ManyToMany(targetEntity="ArtisticStatement", mappedBy="people")
+     */
+    private $artisticStatements;
 
     /**
      * @var Collection|ProjectContribution[]
@@ -64,6 +70,8 @@ class Person extends AbstractEntity {
         parent::__construct();
         $this->artworkContributions = new ArrayCollection();
         $this->projectContributions = new ArrayCollection();
+        $this->artisticStatements = new ArrayCollection();
+        $this->affiliations = new ArrayCollection();
         $this->urls = array();
     }
 
@@ -280,4 +288,73 @@ class Person extends AbstractEntity {
     {
         return $this->mediaFiles;
     }
+
+    /**
+     * Add affiliation
+     *
+     * @param Organization $affiliation
+     *
+     * @return Person
+     */
+    public function addAffiliation(Organization $affiliation)
+    {
+        $this->affiliations[] = $affiliation;
+
+        return $this;
+    }
+
+    /**
+     * Remove affiliation
+     *
+     * @param Organization $affiliation
+     */
+    public function removeAffiliation(Organization $affiliation)
+    {
+        $this->affiliations->removeElement($affiliation);
+    }
+
+    /**
+     * Get affiliations
+     *
+     * @return Collection
+     */
+    public function getAffiliations()
+    {
+        return $this->affiliations;
+    }
+
+    /**
+     * Add artisticStatement
+     *
+     * @param \AppBundle\Entity\ArtisticStatement $artisticStatement
+     *
+     * @return Person
+     */
+    public function addArtisticStatement(\AppBundle\Entity\ArtisticStatement $artisticStatement)
+    {
+        $this->artisticStatements[] = $artisticStatement;
+
+        return $this;
+    }
+
+    /**
+     * Remove artisticStatement
+     *
+     * @param \AppBundle\Entity\ArtisticStatement $artisticStatement
+     */
+    public function removeArtisticStatement(\AppBundle\Entity\ArtisticStatement $artisticStatement)
+    {
+        $this->artisticStatements->removeElement($artisticStatement);
+    }
+
+    /**
+     * Get artisticStatements
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArtisticStatements()
+    {
+        return $this->artisticStatements;
+    }
+
 }

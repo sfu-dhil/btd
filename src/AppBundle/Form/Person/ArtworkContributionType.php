@@ -8,10 +8,10 @@
 
 namespace AppBundle\Form\Person;
 
-use AppBundle\Entity\Person;
 use AppBundle\Entity\ArtworkContribution;
+use AppBundle\Entity\Person;
 use AppBundle\Transformer\HiddenEntityTransformer;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,14 +25,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ArtworkContributionType extends AbstractType {
 
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $em;
 
-    public function __construct(ObjectManager $em) {
+    public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
     }
-
+    
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $person = $options['person'];
         $builder->add('person', HiddenType::class, array(

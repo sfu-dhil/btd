@@ -25,15 +25,15 @@
     <div class='clear-fix'></div>
 
     {% if mediaFile.mimetype starts with 'image/' %}
-        {% include 'AppBundle:MediaFile:image.html.twig' %}
+        {% include 'AppBundle:media_file:image.html.twig' %}
     {% elseif mediaFile.mimetype starts with 'video/' %}
-        {% include 'AppBundle:MediaFile:video.html.twig' %}
+        {% include 'AppBundle:media_file:video.html.twig' %}
     {% elseif mediaFile.mimetype starts with 'audio/' %}
-        {% include 'AppBundle:MediaFile:audio.html.twig' %}
+        {% include 'AppBundle:media_file:audio.html.twig' %}
     {% elseif mediaFile.mimetype == 'application/pdf' %}
-        {% include 'AppBundle:MediaFile:pdf.html.twig' %}
+        {% include 'AppBundle:media_file:pdf.html.twig' %}
     {% else %}
-        {% include 'AppBundle:MediaFile:unknown.html.twig' %}
+        {% include 'AppBundle:media_file:unknown.html.twig' %}
     {% endif %}    
 
     <h2>File Info</h2>

@@ -7,7 +7,7 @@
 	path = docs
 	url = https://github.com/sfu-dhil/btd-docs.git
 	branch = master
-[submodule "app/Resources/SensioGeneratorBundle/Resources/views"]
-	path = app/Resources/SensioGeneratorBundle/Resources/views
-	url = https://github.com/ubermichael/skeleton.git
+[submodule "app/Resources/SensioGeneratorBundle/skeleton"]
+	path = app/Resources/SensioGeneratorBundle/skeleton
+	url = git@github.com:ubermichael/skeleton.git
 	branch = master

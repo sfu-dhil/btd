@@ -10,6 +10,19 @@ namespace AppBundle\Repository;
  */
 class PersonRepository extends \Doctrine\ORM\EntityRepository {
 
+    /**
+     * Do a typeahead-style query and return the results.
+     * 
+     * @param string $q
+     * @return Collection|Person[]
+     */
+    public function typeaheadQuery($q) {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where('p.fullname like :q');
+        $qb->setParameter('q', '%' . $q . '%');
+        return $qb->getQuery()->execute();
+    }
+    
     public function searchQuery($q) {
         $qb = $this->createQueryBuilder('e');
         $qb->where("MATCH_AGAINST(e.fullname, e.biography) AGAINST(:q 'BOOLEAN') > 0");
