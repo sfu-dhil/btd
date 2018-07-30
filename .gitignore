@@ -23,3 +23,4 @@
 /web/docs
 web/upload
 phpunit.xml
+app/config/deploy.yml
