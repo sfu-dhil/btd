@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\MediaFile;
 use AppBundle\Entity\MediaFileField;
 use AppBundle\Form\MediaFileMetadataType;
+use AppBundle\Services\FileUploader;
 use AppBundle\Utility\Thumbnailer;
 use Nines\DublinCoreBundle\Entity\Element;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -46,11 +47,11 @@ class MediaFileController extends Controller {
     /**
      * Search for MediaFile entities.
      *
-     * To make this work, add a method like this one to the 
+     * To make this work, add a method like this one to the
      * AppBundle:MediaFile repository. Replace the fieldName with
      * something appropriate, and adjust the generated search.html.twig
      * template.
-     * 
+     *
       //    public function searchQuery($q) {
       //        $qb = $this->createQueryBuilder('e');
       //        $qb->where("e.fieldName like '%$q%'");
@@ -84,11 +85,11 @@ class MediaFileController extends Controller {
     /**
      * Full text search for MediaFile entities.
      *
-     * To make this work, add a method like this one to the 
+     * To make this work, add a method like this one to the
      * AppBundle:MediaFile repository. Replace the fieldName with
      * something appropriate, and adjust the generated fulltext.html.twig
      * template.
-     * 
+     *
       //    public function fulltextQuery($q) {
       //        $qb = $this->createQueryBuilder('e');
       //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
@@ -97,7 +98,7 @@ class MediaFileController extends Controller {
       //        $qb->setParameter('q', $q);
       //        return $qb->getQuery();
       //    }
-     * 
+     *
      * Requires a MatchAgainst function be added to doctrine, and appropriate
      * fulltext indexes on your MediaFile entity.
      *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
@@ -126,7 +127,7 @@ class MediaFileController extends Controller {
             'q' => $q,
         );
     }
-    
+
     /**
      * Creates a new MediaFile entity.
      *
@@ -147,16 +148,16 @@ class MediaFileController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();                    
+            $em = $this->getDoctrine()->getManager();
             $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
             $em->persist($mediaFile);
-            
+
             $mediaFileField = new MediaFileField();
             $mediaFileField->setElement($em->getRepository(Element::class)->findOneBy(array('name' => 'dc_identifier')));
             $mediaFileField->setValue($mediaFile->getOriginalName());
-            $mediaFileField->setMediaFile($mediaFile); 
+            $mediaFileField->setMediaFile($mediaFile);
             $em->persist($mediaFileField);
-                        
+
             $em->flush();
             $this->addFlash('success', 'The new mediaFile was created');
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
@@ -184,7 +185,7 @@ class MediaFileController extends Controller {
             'mediaFile' => $mediaFile,
         );
     }
-    
+
     /**
      * Finds and displays a media file.
      *
@@ -195,7 +196,7 @@ class MediaFileController extends Controller {
     public function mediaAction(MediaFile $mediaFile) {
         return new BinaryFileResponse($mediaFile->getFile());
     }
-    
+
     /**
      * Finds and displays a media file.
      *
@@ -243,12 +244,12 @@ class MediaFileController extends Controller {
             $this->get('app.file_uploader')->delete($tnFile);
             $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
             $mediaFile->setHasThumbnail(false);
-            
-            $em = $this->getDoctrine()->getManager();            
+
+            $em = $this->getDoctrine()->getManager();
             $mediaFileField = new MediaFileField();
             $mediaFileField->setElement($em->getRepository(Element::class)->findOneBy(array('name' => 'dc_identifier')));
             $mediaFileField->setValue($mediaFile->getOriginalName());
-            
+
             $em->flush();
             $this->addFlash('success', 'The mediaFile has been updated.');
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
@@ -268,14 +269,14 @@ class MediaFileController extends Controller {
      * @param Request $request
      * @param MediaFile $mediaFile
      */
-    public function deleteAction(Request $request, MediaFile $mediaFile) {
+    public function deleteAction(Request $request, MediaFile $mediaFile, FileUploader $uploader) {
         if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $em = $this->getDoctrine()->getManager();
-        $this->get('app.file_uploader')->delete($mediaFile->getFile());
-        $this->get('app.file_uploader')->delete($mediaFile->getThumbnail());
+        $uploader->delete($mediaFile->getFile());
+        $uploader->delete($mediaFile->getThumbnail());
         foreach($mediaFile->getMetadataFields() as $field) {
             $em->remove($field);
         }
@@ -285,7 +286,7 @@ class MediaFileController extends Controller {
 
         return $this->redirectToRoute('media_file_index');
     }
-    
+
     /**
      * Edit metadata for a media file.
      *
@@ -302,7 +303,7 @@ class MediaFileController extends Controller {
         }
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(MediaFileMetadataType::class, null, array(
-            'mediaFile' => $mediaFile, 
+            'mediaFile' => $mediaFile,
             'entityManager' => $em
         ));
         $form->handleRequest($request);
@@ -325,11 +326,11 @@ class MediaFileController extends Controller {
             $this->addFlash('success', 'The metadata has been updated.');
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
         }
-        
+
         return array(
             'edit_form' => $form->createView(),
-            'mediaFile' => $mediaFile,            
+            'mediaFile' => $mediaFile,
         );
     }
-    
+
 }
