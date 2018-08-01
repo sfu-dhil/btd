@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Project;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectContribution;
 use AppBundle\Transformer\HiddenEntityTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
@@ -34,8 +35,8 @@ class ContributionType extends AbstractType {
         $builder->add('person');
         $builder->add('organization');
         $builder->add('projectRole');
-        
-        $builder->get('project')->addModelTransformer(new HiddenEntityTransformer($this->em, Project::class));        
+
+        $builder->get('project')->addModelTransformer(new HiddenEntityTransformer($this->em, Project::class));
     }
 
     /**
@@ -43,7 +44,7 @@ class ContributionType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ProjectContribution',
+            'data_class' => ProjectContribution::class,
             'project' => null,
         ));
     }

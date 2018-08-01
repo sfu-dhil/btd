@@ -2,9 +2,10 @@
 
 namespace AppBundle\Form\Project;
 
+use AppBundle\Entity\ProjectCategory;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProjectCategoryType extends AbstractType {
@@ -24,7 +25,7 @@ class ProjectCategoryType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ProjectCategory'
+            'data_class' => ProjectCategory::class,
         ));
     }
 

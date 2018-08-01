@@ -25,7 +25,7 @@ class ArtworkType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Artwork'
+            'data_class' => AppBundle\Entity\Artwork::class,
         ));
     }
 

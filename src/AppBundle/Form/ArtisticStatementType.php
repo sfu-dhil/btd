@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\ArtisticStatement;
 use AppBundle\Entity\Artwork;
 use AppBundle\Entity\Person;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -24,7 +25,7 @@ class ArtisticStatementType extends AbstractType {
                 'help_block' => '',
             ),
         ));
-        
+
         $builder->add('excerpt', CKEditorType::class, array(
             'label' => 'Excerpt',
             'required' => false,
@@ -32,7 +33,7 @@ class ArtisticStatementType extends AbstractType {
                 'help_block' => '',
             ),
         ));
-        
+
         $builder->add('content', CKEditorType::class, array(
             'label' => 'Content',
             'required' => true,
@@ -40,7 +41,7 @@ class ArtisticStatementType extends AbstractType {
                 'help_block' => '',
             ),
         ));
-        
+
         $builder->add('artwork', Select2EntityType::class, array(
             'required' => true,
             'label' => 'Artwork',
@@ -54,7 +55,7 @@ class ArtisticStatementType extends AbstractType {
             'delay' => 250,
             'language' => 'en',
         ));
-        
+
         $builder->add('people', Select2EntityType::class, array(
             'required' => true,
             'label' => 'People',
@@ -75,7 +76,7 @@ class ArtisticStatementType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ArtisticStatement'
+            'data_class' => ArtisticStatement::class,
         ));
     }
 

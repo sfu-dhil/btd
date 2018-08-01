@@ -24,7 +24,7 @@ class ArtworkRoleType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ArtworkRole'
+            'data_class' => AppBundle\Entity\ArtworkRole::class,
         ));
     }
 

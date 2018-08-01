@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Project;
 
+use AppBundle\Entity\Project;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -40,7 +41,7 @@ class ProjectType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Project'
+            'data_class' => Project::class,
         ));
     }
 

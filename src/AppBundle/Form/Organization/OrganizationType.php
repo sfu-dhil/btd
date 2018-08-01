@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Organization;
 
+use AppBundle\Entity\Organization;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -29,7 +30,7 @@ class OrganizationType extends AbstractType {
             'attr' => array(
                 'group_class' => 'collection',
             ),
-        ));        
+        ));
         $builder->add('contact');
         $builder->add('location');
     }
@@ -39,7 +40,7 @@ class OrganizationType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Organization'
+            'data_class' => Organization::class,
         ));
     }
 
