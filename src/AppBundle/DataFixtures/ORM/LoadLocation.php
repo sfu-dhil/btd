@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadLocation form.
  */
-class LoadLocation extends Fixture implements DependentFixtureInterface
+class LoadLocation extends Fixture
 {
     /**
      * {@inheritDoc}
@@ -22,25 +22,13 @@ class LoadLocation extends Fixture implements DependentFixtureInterface
             $fixture->setCity('City ' . $i);
             $fixture->setRegion('Region ' . $i);
             $fixture->setCountry('Country ' . $i);
-            
+
             $em->persist($fixture);
             $this->setReference('location.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
     
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
-        // add dependencies here, or remove this 
-        // function and "implements DependentFixtureInterface" above
-        return [
-            
-        ];
-    }
-    
-        
 }

@@ -23,25 +23,25 @@ class LoadProjectPage extends Fixture implements DependentFixtureInterface
             $fixture->setExcerpt('Excerpt ' . $i);
             $fixture->setContent('Content ' . $i);
             $fixture->setProject($this->getReference('project.1'));
-            
+
             $em->persist($fixture);
             $this->setReference('projectpage.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function getDependencies() {
-        // add dependencies here, or remove this 
+        // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            
+            LoadProject::class,
         ];
     }
-    
-        
+
+
 }

@@ -29,25 +29,28 @@ class LoadProject extends Fixture implements DependentFixtureInterface
             $fixture->setVenues($this->getReference('venues.1'));
             $fixture->setMediafiles($this->getReference('mediaFiles.1'));
             $fixture->setArtworks($this->getReference('artworks.1'));
-            
+
             $em->persist($fixture);
             $this->setReference('project.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function getDependencies() {
-        // add dependencies here, or remove this 
+        // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            
+            LoadProjectCategory::class,
+            LoadVenue::class,
+            LoadMediaFile::class,
+            LoadArtwork::class,
         ];
     }
-    
-        
+
+
 }

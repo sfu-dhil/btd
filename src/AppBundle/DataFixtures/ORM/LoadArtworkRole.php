@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadArtworkRole form.
  */
-class LoadArtworkRole extends Fixture implements DependentFixtureInterface
+class LoadArtworkRole extends Fixture
 {
     /**
      * {@inheritDoc}
@@ -19,25 +19,13 @@ class LoadArtworkRole extends Fixture implements DependentFixtureInterface
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new ArtworkRole();
-            
+
             $em->persist($fixture);
             $this->setReference('artworkrole.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
-        // add dependencies here, or remove this 
-        // function and "implements DependentFixtureInterface" above
-        return [
-            
-        ];
-    }
-    
-        
+
 }

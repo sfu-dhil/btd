@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadProjectCategory form.
  */
-class LoadProjectCategory extends Fixture implements DependentFixtureInterface
+class LoadProjectCategory extends Fixture
 {
     /**
      * {@inheritDoc}
@@ -19,25 +19,13 @@ class LoadProjectCategory extends Fixture implements DependentFixtureInterface
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new ProjectCategory();
-            
+
             $em->persist($fixture);
             $this->setReference('projectcategory.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
-        // add dependencies here, or remove this 
-        // function and "implements DependentFixtureInterface" above
-        return [
-            
-        ];
-    }
-    
-        
+
 }

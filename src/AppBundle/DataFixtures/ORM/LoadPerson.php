@@ -25,25 +25,26 @@ class LoadPerson extends Fixture implements DependentFixtureInterface
             $fixture->setUrls('Urls ' . $i);
             $fixture->setArtisticstatements($this->getReference('artisticStatements.1'));
             $fixture->setMediafiles($this->getReference('mediaFiles.1'));
-            
+
             $em->persist($fixture);
             $this->setReference('person.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function getDependencies() {
-        // add dependencies here, or remove this 
+        // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            
+            LoadArtisticStatement::class,
+            LoadMediaFile::class,
         ];
     }
-    
-        
+
+
 }

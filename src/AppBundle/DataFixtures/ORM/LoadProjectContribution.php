@@ -23,25 +23,28 @@ class LoadProjectContribution extends Fixture implements DependentFixtureInterfa
             $fixture->setPerson($this->getReference('person.1'));
             $fixture->setOrganization($this->getReference('organization.1'));
             $fixture->setProjectrole($this->getReference('projectRole.1'));
-            
+
             $em->persist($fixture);
             $this->setReference('projectcontribution.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function getDependencies() {
-        // add dependencies here, or remove this 
+        // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            
+            LoadPerson::class,
+            LoadProject::class,
+            LoadOrganization::class,
+            LoadProjectRole::class,
         ];
     }
-    
-        
+
+
 }

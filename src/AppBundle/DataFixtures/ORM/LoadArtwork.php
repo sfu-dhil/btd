@@ -26,25 +26,27 @@ class LoadArtwork extends Fixture implements DependentFixtureInterface
             $fixture->setArtworkcategory($this->getReference('artworkCategory.1'));
             $fixture->setMediafiles($this->getReference('mediaFiles.1'));
             $fixture->setProjects($this->getReference('projects.1'));
-            
+
             $em->persist($fixture);
             $this->setReference('artwork.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function getDependencies() {
-        // add dependencies here, or remove this 
+        // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            
+            LoadArtworkCategory::class,
+            LoadMediaFile::class,
+            LoadProject::class,
         ];
     }
-    
-        
+
+
 }

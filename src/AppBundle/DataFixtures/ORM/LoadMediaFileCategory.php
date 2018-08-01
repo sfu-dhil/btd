@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadMediaFileCategory form.
  */
-class LoadMediaFileCategory extends Fixture implements DependentFixtureInterface
+class LoadMediaFileCategory extends Fixture
 {
     /**
      * {@inheritDoc}
@@ -19,25 +19,13 @@ class LoadMediaFileCategory extends Fixture implements DependentFixtureInterface
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new MediaFileCategory();
-            
+
             $em->persist($fixture);
             $this->setReference('mediafilecategory.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
-        // add dependencies here, or remove this 
-        // function and "implements DependentFixtureInterface" above
-        return [
-            
-        ];
-    }
-    
-        
+
 }

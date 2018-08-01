@@ -20,25 +20,25 @@ class LoadMediaFileField extends Fixture implements DependentFixtureInterface
         for($i = 0; $i < 4; $i++) {
             $fixture = new MediaFileField();
             $fixture->setMediafile($this->getReference('mediaFile.1'));
-            
+
             $em->persist($fixture);
             $this->setReference('mediafilefield.' . $i);
         }
-        
+
         $em->flush();
-        
+
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function getDependencies() {
-        // add dependencies here, or remove this 
+        // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            
+            LoadMediaFile::class,
         ];
     }
-    
-        
+
+
 }
