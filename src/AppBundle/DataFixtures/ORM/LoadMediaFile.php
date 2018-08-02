@@ -22,13 +22,10 @@ class LoadMediaFile extends Fixture implements DependentFixtureInterface
             $fixture->setFile('File ' . $i);
             $fixture->setHasThumbnail('HasThumbnail ' . $i);
             $fixture->setOriginalName('OriginalName ' . $i);
-            $fixture->setMediafilecategory($this->getReference('mediaFileCategory.1'));
-            $fixture->setArtworks($this->getReference('artworks.1'));
-            $fixture->setProjects($this->getReference('projects.1'));
-            $fixture->setPeople($this->getReference('people.1'));
+            $fixture->setMediafilecategory($this->getReference('mediafilecategory.1'));
 
             $em->persist($fixture);
-            $this->setReference('mediafile.' . $i);
+            $this->setReference('mediafile.' . $i, $fixture);
         }
 
         $em->flush();
@@ -43,9 +40,6 @@ class LoadMediaFile extends Fixture implements DependentFixtureInterface
         // function and "implements DependentFixtureInterface" above
         return [
             LoadMediaFileCategory::class,
-            LoadArtwork::class,
-            LoadProject::class,
-            LoadPerson::class,
         ];
     }
 

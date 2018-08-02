@@ -19,9 +19,10 @@ class LoadProjectCategory extends Fixture
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new ProjectCategory();
-
+            $fixture->setName('project-category-' . $i);
+            $fixture->setLabel('Project Category ' . $i);
             $em->persist($fixture);
-            $this->setReference('projectcategory.' . $i);
+            $this->setReference('projectcategory.' . $i, $fixture);
         }
 
         $em->flush();

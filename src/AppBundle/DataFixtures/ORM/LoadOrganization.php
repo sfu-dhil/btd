@@ -22,12 +22,14 @@ class LoadOrganization extends Fixture implements DependentFixtureInterface
             $fixture->setName('Name ' . $i);
             $fixture->setAddress('Address ' . $i);
             $fixture->setDescription('Description ' . $i);
-            $fixture->setUrls('Urls ' . $i);
+            $fixture->setUrls(array(
+                'http://example.com/organization/' . $i,
+            ));
             $fixture->setContact('Contact ' . $i);
             $fixture->setLocation($this->getReference('location.1'));
 
             $em->persist($fixture);
-            $this->setReference('organization.' . $i);
+            $this->setReference('organization.' . $i, $fixture);
         }
 
         $em->flush();

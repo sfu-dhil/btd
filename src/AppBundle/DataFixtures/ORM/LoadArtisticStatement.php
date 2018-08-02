@@ -23,10 +23,10 @@ class LoadArtisticStatement extends Fixture implements DependentFixtureInterface
             $fixture->setExcerpt('Excerpt ' . $i);
             $fixture->setContent('Content ' . $i);
             $fixture->setArtwork($this->getReference('artwork.1'));
-            $fixture->setPeople($this->getReference('people.1'));
+            $fixture->addPerson($this->getReference('person.1'));
 
             $em->persist($fixture);
-            $this->setReference('artisticstatement.' . $i);
+            $this->setReference('artisticstatement.' . $i, $fixture);
         }
 
         $em->flush();

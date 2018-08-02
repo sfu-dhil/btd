@@ -24,11 +24,11 @@ class LoadLocation extends Fixture
             $fixture->setCountry('Country ' . $i);
 
             $em->persist($fixture);
-            $this->setReference('location.' . $i);
+            $this->setReference('location.' . $i, $fixture);
         }
 
         $em->flush();
 
     }
-    
+
 }

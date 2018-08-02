@@ -6,6 +6,7 @@ use AppBundle\Entity\MediaFileField;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Nines\DublinCoreBundle\DataFixtures\ORM\LoadElementData;
 
 /**
  * LoadMediaFileField form.
@@ -19,10 +20,12 @@ class LoadMediaFileField extends Fixture implements DependentFixtureInterface
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new MediaFileField();
-            $fixture->setMediafile($this->getReference('mediaFile.1'));
+            $fixture->setValue('Media file field value ' . $i);
+            $fixture->setElement($this->getReference('dc_title'));
+            $fixture->setMediafile($this->getReference('mediafile.1'));
 
             $em->persist($fixture);
-            $this->setReference('mediafilefield.' . $i);
+            $this->setReference('mediafilefield.' . $i, $fixture);
         }
 
         $em->flush();
@@ -37,6 +40,7 @@ class LoadMediaFileField extends Fixture implements DependentFixtureInterface
         // function and "implements DependentFixtureInterface" above
         return [
             LoadMediaFile::class,
+            LoadElementData::class,
         ];
     }
 

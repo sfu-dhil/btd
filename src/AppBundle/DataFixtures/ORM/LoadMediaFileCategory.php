@@ -19,9 +19,10 @@ class LoadMediaFileCategory extends Fixture
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new MediaFileCategory();
-
+            $fixture->setName('mediafile-category-' . $i);
+            $fixture->setLabel('MediaFile Category ' . $i);
             $em->persist($fixture);
-            $this->setReference('mediafilecategory.' . $i);
+            $this->setReference('mediafilecategory.' . $i, $fixture);
         }
 
         $em->flush();

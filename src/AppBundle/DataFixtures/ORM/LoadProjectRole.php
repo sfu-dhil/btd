@@ -19,13 +19,14 @@ class LoadProjectRole extends Fixture
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new ProjectRole();
-
+            $fixture->setName('project-role-' . $i);
+            $fixture->setLabel('Project Role ' . $i);
             $em->persist($fixture);
-            $this->setReference('projectrole.' . $i);
+            $this->setReference('projectrole.' . $i, $fixture);
         }
 
         $em->flush();
 
     }
-    
+
 }

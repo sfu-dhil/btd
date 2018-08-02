@@ -19,9 +19,10 @@ class LoadArtworkRole extends Fixture
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new ArtworkRole();
-
+            $fixture->setName('artwork-role-' . $i);
+            $fixture->setLabel('Artwork Role ' . $i);
             $em->persist($fixture);
-            $this->setReference('artworkrole.' . $i);
+            $this->setReference('artworkrole.' . $i, $fixture);
         }
 
         $em->flush();

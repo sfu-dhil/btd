@@ -22,10 +22,10 @@ class LoadProjectContribution extends Fixture implements DependentFixtureInterfa
             $fixture->setProject($this->getReference('project.1'));
             $fixture->setPerson($this->getReference('person.1'));
             $fixture->setOrganization($this->getReference('organization.1'));
-            $fixture->setProjectrole($this->getReference('projectRole.1'));
+            $fixture->setProjectRole($this->getReference('projectrole.1'));
 
             $em->persist($fixture);
-            $this->setReference('projectcontribution.' . $i);
+            $this->setReference('projectcontribution.' . $i, $fixture);
         }
 
         $em->flush();

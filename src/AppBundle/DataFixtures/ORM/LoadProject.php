@@ -20,18 +20,16 @@ class LoadProject extends Fixture implements DependentFixtureInterface
         for($i = 0; $i < 4; $i++) {
             $fixture = new Project();
             $fixture->setTitle('Title ' . $i);
-            $fixture->setStartDate('StartDate ' . $i);
-            $fixture->setEndDate('EndDate ' . $i);
+            $fixture->setStartDate(new \DateTime('2010-01-01'));
+            $fixture->setEndDate(new \DateTime('2010-01-02'));
             $fixture->setExcerpt('Excerpt ' . $i);
             $fixture->setDescription('Description ' . $i);
-            $fixture->setUrl('Url ' . $i);
-            $fixture->setProjectcategory($this->getReference('projectCategory.1'));
-            $fixture->setVenues($this->getReference('venues.1'));
-            $fixture->setMediafiles($this->getReference('mediaFiles.1'));
-            $fixture->setArtworks($this->getReference('artworks.1'));
+            $fixture->setUrl('http://example.com/project/' . $i);
+            $fixture->setProjectCategory($this->getReference('projectcategory.1'));
+            $fixture->addVenue($this->getReference('venue.1'));
 
             $em->persist($fixture);
-            $this->setReference('project.' . $i);
+            $this->setReference('project.' . $i, $fixture);
         }
 
         $em->flush();
@@ -47,8 +45,6 @@ class LoadProject extends Fixture implements DependentFixtureInterface
         return [
             LoadProjectCategory::class,
             LoadVenue::class,
-            LoadMediaFile::class,
-            LoadArtwork::class,
         ];
     }
 

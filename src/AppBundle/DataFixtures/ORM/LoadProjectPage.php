@@ -25,7 +25,7 @@ class LoadProjectPage extends Fixture implements DependentFixtureInterface
             $fixture->setProject($this->getReference('project.1'));
 
             $em->persist($fixture);
-            $this->setReference('projectpage.' . $i);
+            $this->setReference('projectpage.' . $i, $fixture);
         }
 
         $em->flush();

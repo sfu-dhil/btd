@@ -22,10 +22,10 @@ class LoadArtworkContribution extends Fixture implements DependentFixtureInterfa
             $fixture->setArtwork($this->getReference('artwork.1'));
             $fixture->setPerson($this->getReference('person.1'));
             $fixture->setOrganization($this->getReference('organization.1'));
-            $fixture->setArtworkrole($this->getReference('artworkRole.1'));
+            $fixture->setArtworkrole($this->getReference('artworkrole.1'));
 
             $em->persist($fixture);
-            $this->setReference('artworkcontribution.' . $i);
+            $this->setReference('artworkcontribution.' . $i, $fixture);
         }
 
         $em->flush();

@@ -24,11 +24,10 @@ class LoadVenue extends Fixture implements DependentFixtureInterface
             $fixture->setDescription('Description ' . $i);
             $fixture->setUrl('Url ' . $i);
             $fixture->setLocation($this->getReference('location.1'));
-            $fixture->setVenuecategory($this->getReference('venueCategory.1'));
-            $fixture->setProjects($this->getReference('projects.1'));
+            $fixture->setVenueCategory($this->getReference('venuecategory.1'));
 
             $em->persist($fixture);
-            $this->setReference('venue.' . $i);
+            $this->setReference('venue.' . $i, $fixture);
         }
 
         $em->flush();
@@ -44,7 +43,6 @@ class LoadVenue extends Fixture implements DependentFixtureInterface
         return [
             LoadLocation::class,
             LoadVenueCategory::class,
-            LoadProject::class,
         ];
     }
 

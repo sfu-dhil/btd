@@ -4,7 +4,6 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\VenueCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -19,9 +18,10 @@ class LoadVenueCategory extends Fixture
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new VenueCategory();
-
+            $fixture->setName('venue-category-' . $i);
+            $fixture->setLabel('Venue Category ' . $i);
             $em->persist($fixture);
-            $this->setReference('venuecategory.' . $i);
+            $this->setReference('venuecategory.' . $i, $fixture);
         }
 
         $em->flush();
