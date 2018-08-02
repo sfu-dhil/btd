@@ -17,7 +17,7 @@ class Builder implements ContainerAwareInterface {
     use ContainerAwareTrait;
 
     const CARET = ' ▾'; // U+25BE, black down-pointing small triangle.
-    
+
     /**
      * @var FactoryInterface
      */
@@ -32,7 +32,7 @@ class Builder implements ContainerAwareInterface {
      * @var TokenStorageInterface
      */
     private $tokenStorage;
-    
+
     /**
      * @var EntityManagerInterface
      */
@@ -54,7 +54,7 @@ class Builder implements ContainerAwareInterface {
 
     /**
      * Build a menu for blog posts.
-     * 
+     *
      * @param array $options
      * @return ItemInterface
      */
@@ -67,20 +67,24 @@ class Builder implements ContainerAwareInterface {
             'label' => 'Home',
             'route' => 'homepage',
         ));
-        
+
         $browse = $menu->addChild('browse', array(
             'label' => 'Browse ' . self::CARET,
             'uri' => '#',
         ));
-        
+
         $browse->setAttribute('dropdown', true);
         $browse->setLinkAttribute('class', 'dropdown-toggle');
         $browse->setLinkAttribute('data-toggle', 'dropdown');
         $browse->setChildrenAttribute('class', 'dropdown-menu');
-        
+
         $browse->addChild('artwork', array(
             'label' => 'Artworks',
             'route' => 'artwork_index',
+        ));
+        $browse->addChild('artistic_statement', array(
+            'label' => 'Artistic Statements',
+            'route' => 'artwork_statement_index',
         ));
         $browse->addChild('location', array(
             'label' => 'Locations',
@@ -101,7 +105,7 @@ class Builder implements ContainerAwareInterface {
         $browse->addChild('organization', array(
             'label' => 'Organizations',
             'route' => 'organization_index',
-        ));        
+        ));
         $browse->addChild('venue', array(
             'label' => 'Venues',
             'route' => 'venue_index',

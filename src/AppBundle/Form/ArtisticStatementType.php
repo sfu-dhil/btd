@@ -6,10 +6,11 @@ use AppBundle\Entity\ArtisticStatement;
 use AppBundle\Entity\Artwork;
 use AppBundle\Entity\Person;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ArtisticStatementType extends AbstractType {
 
@@ -42,32 +43,15 @@ class ArtisticStatementType extends AbstractType {
             ),
         ));
 
-        $builder->add('artwork', Select2EntityType::class, array(
+        $builder->add('artwork', EntityType::class, array(
             'required' => true,
             'label' => 'Artwork',
-            'multiple' => false,
-            'remote_route' => 'artwork_typeahead',
             'class' => Artwork::class,
-            'primary_key' => 'id',
-            'text_property' => 'title',
-            'page_limit' => 10,
-            'allow_clear' => true,
-            'delay' => 250,
-            'language' => 'en',
         ));
 
-        $builder->add('people', Select2EntityType::class, array(
+        $builder->add('people', CollectionType::class, array(
             'required' => true,
             'label' => 'People',
-            'multiple' => true,
-            'remote_route' => 'person_typeahead',
-            'class' => Person::class,
-            'primary_key' => 'id',
-            'text_property' => 'fullname',
-            'page_limit' => 10,
-            'allow_clear' => true,
-            'delay' => 250,
-            'language' => 'en',
         ));
     }
 

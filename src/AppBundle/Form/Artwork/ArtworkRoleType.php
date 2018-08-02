@@ -2,9 +2,9 @@
 
 namespace AppBundle\Form\Artwork;
 
+use AppBundle\Entity\ArtworkRole;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArtworkRoleType extends AbstractType {
@@ -24,7 +24,7 @@ class ArtworkRoleType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => AppBundle\Entity\ArtworkRole::class,
+            'data_class' => ArtworkRole::class,
         ));
     }
 

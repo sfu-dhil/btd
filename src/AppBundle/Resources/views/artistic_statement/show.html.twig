@@ -43,7 +43,7 @@
                     <ul>
                         {% for people in artisticStatement.people %}
                         <li>
-                            <a href="{{ path("people_show", {"id":people.id}) }}">
+                            <a href="{{ path("person_show", {"id":people.id}) }}">
                                 {{ people }}
                             </a>
                         </li>
