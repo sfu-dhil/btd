@@ -277,6 +277,8 @@ class MediaFileController extends Controller {
         $em = $this->getDoctrine()->getManager();
         if($mediaFile->getFile()) {
             $uploader->delete($mediaFile->getFile());
+        }
+        if($mediaFile->getThumbnail()) {
             $uploader->delete($mediaFile->getThumbnail());
         }
         foreach($mediaFile->getMetadataFields() as $field) {
