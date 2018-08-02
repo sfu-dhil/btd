@@ -275,8 +275,10 @@ class MediaFileController extends Controller {
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $em = $this->getDoctrine()->getManager();
-        $uploader->delete($mediaFile->getFile());
-        $uploader->delete($mediaFile->getThumbnail());
+        if($mediaFile->getFile()) {
+            $uploader->delete($mediaFile->getFile());
+            $uploader->delete($mediaFile->getThumbnail());
+        }
         foreach($mediaFile->getMetadataFields() as $field) {
             $em->remove($field);
         }
