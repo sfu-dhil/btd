@@ -23,16 +23,16 @@ class Project extends AbstractEntity {
      * @ORM\Column(type="string")
      */
     private $title;
-    
+
     /**
      * @var DateTime
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="date")
      */
     private $startDate;
-    
+
     /**
      * @var DateTime
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="date")
      */
     private $endDate;
 
@@ -41,7 +41,7 @@ class Project extends AbstractEntity {
      * @ORM\Column(type="text")
      */
     private $excerpt;
-    
+
     /**
      * @var string
      * @ORM\Column(type="text")
@@ -86,7 +86,7 @@ class Project extends AbstractEntity {
      * @ORM\JoinTable(name="project_mediafiles")
      */
     private $mediaFiles;
-    
+
     /**
      * @var Collection|Artwork[]
      * @ORM\ManyToMany(targetEntity="Artwork", inversedBy="projects")
@@ -258,14 +258,14 @@ class Project extends AbstractEntity {
 
     /**
      * Check if a media file is associated with this project.
-     * 
+     *
      * @param MediaFile $mediaFile
      * @return boolean
      */
     public function hasMediaFile(MediaFile $mediaFile) {
         return $this->mediaFiles->contains($mediaFile);
     }
-    
+
     /**
      * Add mediaFile
      *
@@ -419,7 +419,7 @@ class Project extends AbstractEntity {
 
         return $this;
     }
-    
+
     public function hasArtwork(Artwork $artwork) {
         return $this->artworks->contains($artwork);
     }

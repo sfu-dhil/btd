@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi:             ~
-    translator:      
+    translator:
         enabled: true
         logging: false
     secret:          "%secret%"
@@ -29,11 +29,11 @@ framework:
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"    
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
         name: PHP_SESSION_BTD
         cookie_path: '%router.request_context.base_url%'
         cookie_domain: '%router.request_context.host%'
-        cookie_secure: '%secure_cookies%'        
+        cookie_secure: '%secure_cookies%'
     fragments:       ~
     http_method_override: true
     assets: ~
@@ -44,10 +44,10 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    
-    form_themes:      
+
+    form_themes:
         - 'bootstrap_3_horizontal_layout.html.twig'
-        - '@NinesUtilBundle/Form/fields.html.twig'
+        - 'NinesUtilBundle:form:fields.html.twig'
     paths:
         '%kernel.root_dir%/../src/Nines/UtilBundle/Resources/views': NinesUtilBundle
     exception_controller:  NinesUtilBundle:Error:showException
@@ -57,7 +57,7 @@ twig:
         environment: "%kernel.environment%"
     date:
         format: d.m.Y, H:i:s
-        interval_format: '%%d days'        
+        interval_format: '%%d days'
 
 # Doctrine Configuration
 doctrine:
@@ -76,12 +76,12 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-        
+
         dql:
             datetime_functions:
-                YEAR: DoctrineExtensions\Query\Mysql\Year 
+                YEAR: DoctrineExtensions\Query\Mysql\Year
                 DATE: DoctrineExtensions\Query\Mysql\Date
-                STRTODATE: DoctrineExtensions\Query\Mysql\StrToDate                
+                STRTODATE: DoctrineExtensions\Query\Mysql\StrToDate
             string_functions:
                 MATCH_AGAINST: DoctrineExtensions\Query\Mysql\MatchAgainst
             numeric_functions:
@@ -118,10 +118,10 @@ fos_user:
         form:
             type: Nines\UserBundle\Form\PasswordType
     from_email:
-        address:        noreply@'%router.request_context.host%'
+        address:        noreply@dhil.lib.sfu.ca
         sender_name:    Do Not Reply
-            
-ivory_ck_editor:
+
+fos_ck_editor:
     input_sync: true
     default_config: btd_config
     configs:
@@ -129,7 +129,7 @@ ivory_ck_editor:
             toolbar: btd_toolbar
     toolbars:
         configs:
-            btd_toolbar: 
+            btd_toolbar:
                 - [ Source, -, Cut, Copy, Paste, PasteText, PasteFromWord, -, Undo, Redo ]
                 - [ Link, Unlink, Anchor, -, SpecialChar ]
                 - [ Format, Styles, -, Bold, Italic, Strike, -, RemoveFormat, -, NumberedList, BulletedList, -, Indent, Outdent, -, Blockquote, -, JustifyLeft, JustifyCenter, JustifyRight, JustifyBlock ]
@@ -155,4 +155,3 @@ nines_blog:
 
 nines_user:
     permission_levels: [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN ]
-        

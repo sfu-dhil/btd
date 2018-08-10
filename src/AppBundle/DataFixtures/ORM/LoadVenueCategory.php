@@ -4,13 +4,12 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\VenueCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * LoadVenueCategory form.
  */
-class LoadVenueCategory extends Fixture implements DependentFixtureInterface
+class LoadVenueCategory extends Fixture
 {
     /**
      * {@inheritDoc}
@@ -19,25 +18,14 @@ class LoadVenueCategory extends Fixture implements DependentFixtureInterface
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new VenueCategory();
-            
+            $fixture->setName('venue-category-' . $i);
+            $fixture->setLabel('Venue Category ' . $i);
             $em->persist($fixture);
-            $this->setReference('venuecategory.' . $i);
+            $this->setReference('venuecategory.' . $i, $fixture);
         }
-        
+
         $em->flush();
-        
+
     }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
-        // add dependencies here, or remove this 
-        // function and "implements DependentFixtureInterface" above
-        return [
-            
-        ];
-    }
-    
-        
+
 }

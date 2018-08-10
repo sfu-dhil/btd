@@ -2,7 +2,8 @@
 
 namespace AppBundle\Form\Artwork;
 
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use AppBundle\Entity\Artwork;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +26,7 @@ class ArtworkType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Artwork'
+            'data_class' => Artwork::class,
         ));
     }
 

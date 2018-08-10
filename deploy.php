@@ -14,6 +14,14 @@ foreach($settings['.settings'] as $key => $value) {
     set($key, $value);
 }
 
+task('dhil:precheck', function(){
+    $out = runLocally('git cherry -v');
+    if($out !== '') {
+        $commits = count(explode("\n", $out));
+        writeln("<error>Warning: {$commits} unpublished commits will not be included in the deployment.</error>");
+    }
+});
+
 task('dhil:ckeditor', function(){
     $output = run('{{bin/php}} {{bin/console}} ckeditor:install');
     writeln($output);
@@ -63,7 +71,7 @@ task('dhil:download:images', function(){
     $host = get('hostname');
     $become = get('become');
 
-    runLocally("rsync -av -e 'ssh' --rsync-path='sudo -u $become rsync' $user@$host:{{release_path}}/web/images/clippings/ ./web/images/clippings", ['timeout' => null]);
+    runLocally("rsync -av -e 'ssh' --rsync-path='sudo -u $become rsync' $user@$host:{{deploy_path}}/shared/web/images/clippings/ ./web/images/clippings", ['timeout' => null]);
 })->desc('Download clipping images from server.');
 
 task('dhil:upload:images', function(){
@@ -132,6 +140,7 @@ task('success', function(){
 
 task('deploy', [
     'deploy:info',
+    'dhil:precheck',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

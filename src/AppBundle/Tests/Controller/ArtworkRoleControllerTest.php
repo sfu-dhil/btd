@@ -16,129 +16,129 @@ class ArtworkRoleControllerTest extends BaseTestCase
             LoadArtworkRole::class
         ];
     }
-    
+
     public function testAnonIndex() {
         $client = $this->makeClient();
-        $crawler = $client->request('GET', '/artworkrole/');
+        $crawler = $client->request('GET', '/artwork_role/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('New')->count());
     }
-    
+
     public function testUserIndex() {
         $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/artworkrole/');
+        $crawler = $client->request('GET', '/artwork_role/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('New')->count());
     }
-    
+
     public function testAdminIndex() {
         $client = $this->makeClient(LoadUser::ADMIN);
-        $crawler = $client->request('GET', '/artworkrole/');
+        $crawler = $client->request('GET', '/artwork_role/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(1, $crawler->selectLink('New')->count());
     }
-    
+
     public function testAnonShow() {
         $client = $this->makeClient();
-        $crawler = $client->request('GET', '/artworkrole/1');
+        $crawler = $client->request('GET', '/artwork_role/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('Edit')->count());
         $this->assertEquals(0, $crawler->selectLink('Delete')->count());
     }
-    
+
     public function testUserShow() {
         $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/artworkrole/1');
+        $crawler = $client->request('GET', '/artwork_role/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('Edit')->count());
         $this->assertEquals(0, $crawler->selectLink('Delete')->count());
     }
-    
+
     public function testAdminShow() {
         $client = $this->makeClient(LoadUser::ADMIN);
-        $crawler = $client->request('GET', '/artworkrole/1');
+        $crawler = $client->request('GET', '/artwork_role/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(1, $crawler->selectLink('Edit')->count());
         $this->assertEquals(1, $crawler->selectLink('Delete')->count());
     }
     public function testAnonEdit() {
         $client = $this->makeClient();
-        $crawler = $client->request('GET', '/artworkrole/1/edit');
+        $crawler = $client->request('GET', '/artwork_role/1/edit');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect('/login'));
     }
-    
+
     public function testUserEdit() {
         $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/artworkrole/1/edit');
+        $crawler = $client->request('GET', '/artwork_role/1/edit');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect('/login'));
     }
-    
+
     public function testAdminEdit() {
         $client = $this->makeClient(LoadUser::ADMIN);
-        $formCrawler = $client->request('GET', '/artworkrole/1/edit');
+        $formCrawler = $client->request('GET', '/artwork_role/1/edit');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
+
         $this->markTestIncomplete(
           'This test has not been implemented yet.'
-        );        
+        );
         $form = $formCrawler->selectButton('Update')->form([
             // DO STUFF HERE.
-            // 'artworkroles[FIELDNAME]' => 'FIELDVALUE',
+            // 'artwork_roles[FIELDNAME]' => 'FIELDVALUE',
         ]);
-        
+
         $client->submit($form);
-        $this->assertTrue($client->getResponse()->isRedirect('/artworkrole/1'));
+        $this->assertTrue($client->getResponse()->isRedirect('/artwork_role/1'));
         $responseCrawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         // $this->assertEquals(1, $responseCrawler->filter('td:contains("FIELDVALUE")')->count());
     }
-    
+
     public function testAnonNew() {
         $client = $this->makeClient();
-        $crawler = $client->request('GET', '/artworkrole/new');
+        $crawler = $client->request('GET', '/artwork_role/new');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect('/login'));
     }
-    
+
     public function testUserNew() {
         $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/artworkrole/new');
+        $crawler = $client->request('GET', '/artwork_role/new');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect('/login'));
     }
 
     public function testAdminNew() {
         $client = $this->makeClient(LoadUser::ADMIN);
-        $formCrawler = $client->request('GET', '/artworkrole/new');
+        $formCrawler = $client->request('GET', '/artwork_role/new');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
+
         $this->markTestIncomplete(
           'This test has not been implemented yet.'
-        );        
+        );
         $form = $formCrawler->selectButton('Create')->form([
             // DO STUFF HERE.
-            // 'artworkroles[FIELDNAME]' => 'FIELDVALUE',
+            // 'artwork_roles[FIELDNAME]' => 'FIELDVALUE',
         ]);
-        
+
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect());
         $responseCrawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         // $this->assertEquals(1, $responseCrawler->filter('td:contains("FIELDVALUE")')->count());
     }
-    
+
     public function testAnonDelete() {
         $client = $this->makeClient();
-        $crawler = $client->request('GET', '/artworkrole/1/delete');
+        $crawler = $client->request('GET', '/artwork_role/1/delete');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect('/login'));
     }
-    
+
     public function testUserDelete() {
         $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/artworkrole/1/delete');
+        $crawler = $client->request('GET', '/artwork_role/1/delete');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect('/login'));
     }
@@ -146,12 +146,12 @@ class ArtworkRoleControllerTest extends BaseTestCase
     public function testAdminDelete() {
         $preCount = count($this->em->getRepository(ArtworkRole::class)->findAll());
         $client = $this->makeClient(LoadUser::ADMIN);
-        $crawler = $client->request('GET', '/artworkrole/1/delete');
+        $crawler = $client->request('GET', '/artwork_role/1/delete');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect());
         $responseCrawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
+
         $this->em->clear();
         $postCount = count($this->em->getRepository(ArtworkRole::class)->findAll());
         $this->assertEquals($preCount - 1, $postCount);

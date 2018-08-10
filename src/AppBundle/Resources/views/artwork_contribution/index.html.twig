@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
-    <h1>ArtworkContribution List</h1>
+{% block pageheader %}
+    <h1>Artwork Contribution List</h1>
     <p class="count">
-        Displaying {{ artworkContributions|length }} artworkContributions of {{ artworkContributions.getTotalItemCount }} total.
+        Displaying {{ artworkContributions|length }} artwork contributions of {{ artworkContributions.getTotalItemCount }} total.
     </p>
-{% endblock %} 
+{% endblock %}
 
 {% block body %}
 
@@ -16,7 +16,7 @@
                 <th>Organization</th>
                 <th>Role</th>
                 <th>Artwork</th>
-            </tr>            
+            </tr>
         </thead>
         <tbody>
             {% for artworkContribution in artworkContributions %}

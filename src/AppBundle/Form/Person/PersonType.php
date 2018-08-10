@@ -2,7 +2,8 @@
 
 namespace AppBundle\Form\Person;
 
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use AppBundle\Entity\Person;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,7 +30,7 @@ class PersonType extends AbstractType {
             'attr' => array(
                 'group_class' => 'collection',
             ),
-        ));        
+        ));
     }
 
     /**
@@ -37,7 +38,7 @@ class PersonType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Person'
+            'data_class' => Person::class
         ));
     }
 

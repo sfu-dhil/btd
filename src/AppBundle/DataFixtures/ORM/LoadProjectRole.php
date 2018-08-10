@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadProjectRole form.
  */
-class LoadProjectRole extends Fixture implements DependentFixtureInterface
+class LoadProjectRole extends Fixture
 {
     /**
      * {@inheritDoc}
@@ -19,25 +19,14 @@ class LoadProjectRole extends Fixture implements DependentFixtureInterface
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new ProjectRole();
-            
+            $fixture->setName('project-role-' . $i);
+            $fixture->setLabel('Project Role ' . $i);
             $em->persist($fixture);
-            $this->setReference('projectrole.' . $i);
+            $this->setReference('projectrole.' . $i, $fixture);
         }
-        
+
         $em->flush();
-        
+
     }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
-        // add dependencies here, or remove this 
-        // function and "implements DependentFixtureInterface" above
-        return [
-            
-        ];
-    }
-    
-        
+
 }
