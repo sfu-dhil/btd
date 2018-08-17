@@ -6,7 +6,7 @@ use AppBundle\Entity\Person;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,14 +21,19 @@ class PersonType extends AbstractType {
         $builder->add('sortableName');
         $builder->add('biography', CKEditorType::class);
         $builder->add('urls', CollectionType::class, array(
-            'label' => "Websites",
-            'entry_type' => TextType::class,
-            'required' => false,
             'allow_add' => true,
             'allow_delete' => true,
+            'by_reference' => false,
             'delete_empty' => true,
+            'entry_type' => UrlType::class,
+            'entry_options' => array(
+                'label' => false,
+            ),
+            'label' => 'Links',
+            'required' => false,
             'attr' => array(
-                'group_class' => 'collection',
+                'class' => 'collection collection-simple',
+                'help_block' => 'List of URLs associated with the person',
             ),
         ));
     }

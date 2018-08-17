@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new FOS\CKEditorBundle\FOSCKEditorBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
 
             new Nines\UserBundle\NinesUserBundle(),
             new Nines\DublinCoreBundle\NinesDublinCoreBundle(),

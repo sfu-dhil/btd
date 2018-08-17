@@ -1,79 +1,110 @@
+// btd
 (function ($, window) {
 
-    $(document).ready(function () {
-        
-        var hostname = window.location.hostname.replace('www.', '');
-        $('a').each(function (index, value) {
-            if (value.hostname !== hostname) {
-                $(this).attr('target', '_blank');
-            }
-        });
+    var hostname = window.location.hostname.replace('www.', '');
 
-        $(window).bind('beforeunload', function (e) {
-            var clean = true;
-            $('form').each(function () {
-                var $form = $(this);
-                if ($form.data('dirty')) {
-                    clean = false;
-                }
-            });
-            if (!clean) {
-                var message = 'You have unsaved changes.';
-                e.returnValue = message;
-                return message;
-            }
-        });
+    var dirty = false;
 
-        $('form').each(function () {
-            var $form = $(this);
-            $form.data('dirty', false);
-            $form.on('change', function () {
-                $form.data('dirty', true);
-            });
-            $form.on('submit', function () {
-                $(window).unbind('beforeunload');
-            });
-        });
-    });
-
-    function addFormItem($container) {
-        var prototype = $container.data('prototype');
-        console.log(prototype);
-        var index = $container.data('count');
-        var $form = $(prototype.replace(/__name__/g, index).replace(/label__/g, ''));
-        $container.append($form);
-        $form.children('label').replaceWith('<div class="col-sm-2"><a class="btn btn-primary remove">Remove</a></div>');
-        $form.find("a.remove").click(function (e) {
-            e.preventDefault();
-            $form.remove();
-        });
-        $container.data('count', index + 1);
-    }
-
-    function updateFormItem($container) {
-        $container.data('count', $container.find('div.form-group').length);
-        $container.find('.form-group').each(function (index, element) {
-            var $form = $(element);
-            $form.find('label').replaceWith('<div class="col-sm-2"><a class="btn btn-primary remove">Remove</a></div>');
-            $form.find("a.remove").click(function (e) {
-                e.preventDefault();
-                $form.remove();
-            });
+    function confirm() {
+        var $this = $(this);
+        $this.click(function () {
+            return window.confirm($this.data('confirm'));
         });
     }
 
-    $(document).ready(function () {
-        $('form div.collection').each(function (idx, element) {
-            var $e = $(element);
-            $e.children("label").append('<a href="#" class="btn btn-primary">Add</a>');
-            var $a = $e.find("a");
-            var $container = $e.find('div[data-prototype]');
-            updateFormItem($container);
-            $a.click(function (e) {
-                e.preventDefault();
-                addFormItem($container);
-            });
+    function link() {
+        if(this.hostname.replace('www.', '') === hostname) {
+            return;
+        }
+        $(this).attr('target', '_blank');
+    }
+
+    function windowBeforeUnload(e) {
+        if (dirty) {
+            var message = 'You have unsaved changes.';
+            e.returnValue = message;
+            return message;
+        }
+    }
+
+    function formDirty() {
+        var $form = $(this);
+        $form.data('dirty', false);
+        $form.on('input', function () {
+            dirty = true;
         });
+        $form.on('submit', function () {
+            $(window).unbind('beforeunload');
+        });
+    }
+
+    function formPopup(e) {
+        e.preventDefault();
+        var url = $(this).prop('href');
+        window.open(url, "_blank", "toolbar=no,scrollbars=yes,resizable=yes,top=60,left=60,width=500,height=600");
+    }
+
+    function simpleCollection() {
+        $('.collection-simple').collection({
+            init_with_n_elements: 1,
+            allow_up: false,
+            allow_down: false,
+            max: 400,
+            add: '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span></a>',
+            remove: '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-minus"></span></a>',
+            add_at_the_end: false,
+        });
+    }
+
+    function complexCollection() {
+        $('.collection-complex').collection({
+            init_with_n_elements: 1,
+            allow_up: false,
+            allow_down: false,
+            max: 400,
+            add: '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span></a>',
+            remove: '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-minus"></span></a>',
+            add_at_the_end: true,
+            after_add: function(collection, element){
+                $(element).find('.select2entity').select2entity();
+                $(element).find('.select2-container').css('width', '100%');
+                return true;
+            },
+        });
+    }
+
+    function ckeditor() {
+        if (window.CKEDITOR) {
+            for (var key in window.CKEDITOR.instances) {
+                var instance = window.CKEDITOR.instances[key];
+                instance.on('mode', function () {
+                    if (this.mode === 'source') {
+                        var editable = instance.editable();
+                        editable.attachListener(editable, 'input', function () {
+                            dirty = true;
+                        });
+                    }
+                });
+                instance.on('change', function () {
+                    dirty = true;
+                });
+            }
+        }
+    }
+
+
+    $(document).ready(function () {
+        $(window).bind('beforeunload', windowBeforeUnload);
+        $('form').each(formDirty);
+        $("a.popup").click(formPopup);
+        $("a").each(link);
+        $("*[data-confirm]").each(confirm);
+        $('[data-toggle="popover"]').popover(); // add this line to enable boostrap popover
+        if (typeof $().collection === 'function') {
+            simpleCollection();
+            complexCollection();
+        }
+        ckeditor();
     });
 
 })(jQuery, window);
