@@ -29,7 +29,7 @@ class PersonController extends Controller {
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT e FROM AppBundle:Person e ORDER BY e.id';
+        $dql = 'SELECT e FROM AppBundle:Person e ORDER BY e.sortableName';
         $query = $em->createQuery($dql);
         $paginator = $this->get('knp_paginator');
         $people = $paginator->paginate($query, $request->query->getint('page', 1), 25);
@@ -194,7 +194,7 @@ class PersonController extends Controller {
      * @Route("/{id}/add_media", name="person_add_media")
      * @Method("GET")
      * @Template()
-     * 
+     *
      * @param Request $request
      * @param Person $person
      */
@@ -241,7 +241,7 @@ class PersonController extends Controller {
      * @Route("/{id}/remove_media", name="person_remove_media")
      * @Method("GET")
      * @Template()
-     * 
+     *
      * @param Request $request
      * @param Person $person
      */
@@ -275,12 +275,12 @@ class PersonController extends Controller {
             'results' => $results,
         );
     }
-    
+
     /**
      * @Route("/{id}/project_contributions", name="person_project_contributions")
      * @Method({"GET", "POST"})
      * @Template()
-     * 
+     *
      * @param Request $request
      * @param Person $person
      */
@@ -293,14 +293,14 @@ class PersonController extends Controller {
             'person' => $person,
         ));
         $form->handleRequest($request);
-        
+
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
             return $this->redirectToRoute('person_show', array('id' => $person->getId()));
         }
-        
+
         return array(
             'person' => $person,
             'edit_form' => $form->createView(),
@@ -311,7 +311,7 @@ class PersonController extends Controller {
      * @Route("/{id}/artwork_contributions", name="person_artwork_contributions")
      * @Method({"GET", "POST"})
      * @Template()
-     * 
+     *
      * @param Request $request
      * @param Person $person
      */
@@ -324,14 +324,14 @@ class PersonController extends Controller {
             'person' => $person,
         ));
         $form->handleRequest($request);
-        
+
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
             return $this->redirectToRoute('person_show', array('id' => $person->getId()));
         }
-        
+
         return array(
             'person' => $person,
             'edit_form' => $form->createView(),
