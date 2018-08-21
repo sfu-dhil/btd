@@ -126,6 +126,7 @@ fos_ck_editor:
     default_config: btd_config
     configs:
         btd_config:
+            entities: false
             toolbar: btd_toolbar
     toolbars:
         configs:
