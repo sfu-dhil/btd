@@ -14,10 +14,11 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
 
-    Nines\BlogBundle\Menu\Builder:
+
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
         tags:
-            - { name: knp_menu.menu_builder, method: postNavMenu, alias: posts}
-            - { name: knp_menu.menu_builder, method: pageNavMenu, alias: pages}
+            - { name: twig.extension }
 
     Nines\FeedbackBundle\Services\NotifierService:
         arguments:

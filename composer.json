@@ -6,6 +6,9 @@
         "psr-4": {
             "": "src/"
         },
+        "exclude-from-classmap": [
+                    "/Tests/"
+        ],
         "classmap": [
             "app/AppKernel.php",
             "app/AppCache.php"

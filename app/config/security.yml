@@ -5,7 +5,7 @@ security:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
-        ROLE_ADMIN:       [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN ]
+        ROLE_ADMIN:       [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN, ROLE_DC_ADMIN ]
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     providers:
@@ -17,10 +17,10 @@ security:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager            
+                csrf_token_generator: security.csrf.token_manager
             logout:       true
             anonymous:    true
-            
+
             remember_me:
                 secret: '%secret%'
                 lifetime: 2419200 # 28 days in seconds.

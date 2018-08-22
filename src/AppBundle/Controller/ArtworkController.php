@@ -168,7 +168,7 @@ class ArtworkController extends Controller {
      * @Route("/{id}/add_media", name="artwork_add_media")
      * @Method("GET")
      * @Template()
-     * 
+     *
      * @param Request $request
      * @param Artwork $artwork
      */
@@ -215,7 +215,7 @@ class ArtworkController extends Controller {
      * @Route("/{id}/remove_media", name="artwork_remove_media")
      * @Method("GET")
      * @Template()
-     * 
+     *
      * @param Request $request
      * @param Artwork $artwork
      */
@@ -249,12 +249,12 @@ class ArtworkController extends Controller {
             'results' => $results,
         );
     }
-    
+
     /**
      * @Route("/{id}/contributions", name="artwork_contributions")
      * @Method({"GET", "POST"})
      * @Template()
-     * 
+     *
      * @param Request $request
      * @param Artwork $artwork
      */
@@ -267,25 +267,25 @@ class ArtworkController extends Controller {
             'artwork' => $artwork,
         ));
         $form->handleRequest($request);
-        
+
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
             return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
         }
-        
+
         return array(
             'artwork' => $artwork,
             'edit_form' => $form->createView(),
         );
     }
-    
+
     /**
      * @Route("/{id}/projects", name="artwork_projects")
      * @Method({"GET", "POST"})
      * @Template()
-     * 
+     *
      * @param Request $request
      * @param Artwork $artwork
      */
@@ -297,7 +297,7 @@ class ArtworkController extends Controller {
         $oldProjects = $artwork->getProjects()->toArray();
         $form = $this->createForm(ProjectsType::class, $artwork);
         $form->handleRequest($request);
-        
+
         if($form->isSubmitted() && $form->isValid()) {
             foreach($oldProjects as $project) {
                 dump($project);
@@ -313,7 +313,7 @@ class ArtworkController extends Controller {
             $this->addFlash('success', 'The projects have been updated.');
             // return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
         }
-        
+
         return array(
             'artwork' => $artwork,
             'edit_form' => $form->createView(),
