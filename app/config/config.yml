@@ -128,6 +128,7 @@ fos_ck_editor:
     default_config: btd_config
     configs:
         btd_config:
+            entities: false
             toolbar: btd_toolbar
     toolbars:
         configs:
@@ -145,10 +146,10 @@ nines_feedback:
     public_status: published
     commenting:
         blog_post:
-            class: Nines\BlogBundle\Post
+            class: Nines\BlogBundle\Entity\Post
             route: post_show
         blog_page:
-            class: Nines\BlogBundle\Page
+            class: Nines\BlogBundle\Entity\Page
             route: page_show
 
 nines_blog:
@@ -156,4 +157,4 @@ nines_blog:
     default_category: none
 
 nines_user:
-    permission_levels: [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN ]
+    permission_levels: [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN, ROLE_DC_ADMIN ]

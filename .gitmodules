@@ -1,12 +1,12 @@
 [submodule "src/Nines"]
-	path = src/Nines
+    path = src/Nines
     url=https://github.com/ubermichael/nines-bundles.git
-    branch = master        
+    branch = master
 [submodule "docs"]
-	path = docs
-	url = https://github.com/sfu-dhil/btd-docs.git
-	branch = master
+    path = docs
+    url = https://github.com/sfu-dhil/btd-docs.git
+    branch = master
 [submodule "app/Resources/SensioGeneratorBundle/skeleton"]
-	path = app/Resources/SensioGeneratorBundle/skeleton
-	url = https://github.com/ubermichael/skeleton.git
-	branch = master
+    path = app/Resources/SensioGeneratorBundle/skeleton
+    url = https://github.com/ubermichael/skeleton.git
+    branch = master

@@ -6,7 +6,7 @@ use AppBundle\Entity\MediaFileField;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Nines\DublinCoreBundle\DataFixtures\ORM\LoadElementData;
+use Nines\DublinCoreBundle\DataFixtures\ORM\LoadElement;
 
 /**
  * LoadMediaFileField form.
@@ -40,7 +40,7 @@ class LoadMediaFileField extends Fixture implements DependentFixtureInterface
         // function and "implements DependentFixtureInterface" above
         return [
             LoadMediaFile::class,
-            LoadElementData::class,
+            LoadElement::class,
         ];
     }
 

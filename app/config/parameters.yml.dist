@@ -18,7 +18,7 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    # make sure the symfony login cookies work with multiple apps on 
+    # make sure the symfony login cookies work with multiple apps on
     # a single domain.
     router.request_context.host: localhost
     router.request_context.scheme: http
@@ -30,7 +30,12 @@ parameters:
     nines_blog.homepage_posts: 3
     nines_blog.menu_posts: 5
 
-    # 
+
+    nines_feedback.sender: noreply@example.com
+    nines_feedback.recipient: notify@example.com
+    nines_feedback.subject: New feedback received
+
+    #
     btd.homepage_entries: 5
 
     # path to the uploaded files, relative to the app directory.

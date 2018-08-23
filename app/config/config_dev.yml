@@ -11,6 +11,9 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+swiftmailer:
+    disable_delivery: true
+
 monolog:
     use_microseconds: false
     handlers:

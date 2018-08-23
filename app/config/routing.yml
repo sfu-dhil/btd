@@ -1,3 +1,7 @@
+nines_dublin_core:
+    resource: "@NinesDublinCoreBundle/Controller/"
+    type:     annotation
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
@@ -13,7 +17,7 @@ nines_user:
 nines_feedback:
     resource: "@NinesFeedbackBundle/Controller/"
     type: annotation
-    
+
 nines_dc:
     resource: "@NinesDublinCoreBundle/Controller/"
     type:     annotation
