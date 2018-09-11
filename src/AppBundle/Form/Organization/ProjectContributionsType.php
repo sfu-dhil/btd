@@ -15,29 +15,31 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProjectContributionsType extends AbstractType {
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $organization = $options['organization'];
         $builder->add('projectContributions', CollectionType::class, array(
+            'entry_type' => ProjectContributionType::class,
+            'required' => false,
             'allow_add' => true,
             'allow_delete' => true,
             'delete_empty' => true,
-            'entry_type' => ProjectContributionType::class,
             'entry_options' => array(
                 'organization' => $organization,
+                'label' => false,
             ),
             'label' => 'Contribution',
             'attr' => array(
-                'group_class' => 'collection',
+                'class' => 'collection-simple',
             ),
         ));
     }
-    
+
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => Organization::class,
             'organization' => null,
         ));
     }
-    
+
 }

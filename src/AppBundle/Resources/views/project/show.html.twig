@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>{{ project.title }}</h1>
     <a href="{{ path('project_category_show', {'id': project.projectCategory.id }) }}">
         {{ project.projectCategory }}
     </a> {{ project.startDate|date }} to {{ project.endDate|date }}. <br/>
     {% for venue in project.venues %}
-        <a href='{{ path('venue_show', {'id': venue.id}) }}'>{{ venue.name}}</a>, 
-        <a href='{{ path('location_show', {'id': venue.location.id}) }}'>{{venue.location}}</a><br/> 
+        <a href='{{ path('venue_show', {'id': venue.id}) }}'>{{ venue.name}}</a>,
+        <a href='{{ path('location_show', {'id': venue.location.id}) }}'>{{venue.location}}</a><br/>
     {% endfor %}
-{% endblock %} 
+{% endblock %}
 
 {% block body %}
 
@@ -67,7 +67,7 @@
 
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
         <p>
-            <a href="{{ path('project_add_media', {'id': project.id}) }}">Add media files</a> | 
+            <a href="{{ path('project_add_media', {'id': project.id}) }}">Add media files</a> |
             <a href="{{ path('project_remove_media', {'id': project.id}) }}">Remove media files</a>
         </p>
     {% endif %}
@@ -112,25 +112,25 @@
         {% if contribution.person %}
             {% set person = contribution.person %}
             <h3>
-                {{ contribution.projectRole }}: 
+                {{ contribution.projectRole }}:
                 <a href="{{ path('person_show', { 'id': person.id }) }}">
                     {{ person.fullname }}
                 </a>
             </h3>
             <p>
-                {{ text_service.trim(person.biography, 100) }}            
+                {{ text_service.trim(person.biography, 100) }}
             </p>
         {% endif %}
         {% if contribution.organization %}
             {% set organization = contribution.organization %}
             <h3>
-                {{ contribution.projectRole }}: 
+                {{ contribution.projectRole }}:
                 <a href="{{ path('organization_show', { 'id': organization.id }) }}">
                     {{ organization.name }}
                 </a>
             </h3>
             <p>
-                {{ text_service.trim(organization.description, 100) }}            
+                {{ text_service.trim(organization.description, 100) }}
             </p>
         {% endif %}
     {% endfor %}
@@ -141,7 +141,7 @@
             <a href="{{ path('project_artworks', {'id': project.id}) }}">Update project artworks</a>
         </p>
     {% endif %}
-    
+
     {% for artwork in project.artworks %}
         <h3>
             <a href="{{ path('artwork_show', { 'id': artwork.id }) }}">
@@ -149,7 +149,7 @@
             </a>
         </h3>
         <p>
-            {{ text_service.trim(artwork.description, 100) }}            
+            {{ text_service.trim(artwork.description, 100) }}
         </p>
     {% endfor %}
 

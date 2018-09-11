@@ -9,5 +9,13 @@ namespace AppBundle\Repository;
  * repository methods below.
  */
 class VenueRepository extends \Doctrine\ORM\EntityRepository {
-    
+
+    public function typeaheadQuery($q) {
+        $qb = $this->createQueryBuilder('e');
+        $qb->andWhere("e.name LIKE :q");
+        $qb->orderBy('e.name');
+        $qb->setParameter('q', "{$q}%");
+        return $qb->getQuery()->execute();
+    }
+
 }

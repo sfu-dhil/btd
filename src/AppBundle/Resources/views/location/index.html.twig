@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>Location List</h1>
     <p class="count">
         Displaying {{ locations|length }} locations of {{ locations.getTotalItemCount }} total.
     </p>
-{% endblock %} 
+{% endblock %}
 
 {% block body %}
 
@@ -29,7 +29,8 @@
                 <th>Region</th>
                 <th>Country</th>
                 <th>Created</th>
-                <th>Updated</th>            </tr>
+                <th>Updated</th>
+            </tr>
         </thead>
         <tbody>
             {% for location in locations %}
