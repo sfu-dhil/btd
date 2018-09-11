@@ -19,13 +19,13 @@ class MediaFileMetadataType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $em = $options['entityManager'];
         $mediaFile = $options['mediaFile'];
-        
-        foreach($em->getRepository(Element::class)->findAll() as $element) {
+
+        foreach ($em->getRepository(Element::class)->findAll() as $element) {
             $fields = $mediaFile->getMetadataFields($element->getName());
-            $values = $fields->map(function(AbstractField $field){
-                        return $field->getValue();
-            })->toArray();
-            
+            $values = $fields->map(function(AbstractField $field) {
+                    return $field->getValue();
+                })->toArray();
+
             $builder->add($element->getName(), CollectionType::class, array(
                 'label' => $element->getLabel(),
                 'entry_type' => TextType::class,
@@ -33,9 +33,13 @@ class MediaFileMetadataType extends AbstractType {
                 'allow_add' => true,
                 'allow_delete' => true,
                 'delete_empty' => true,
+                'entry_options' => array(
+                    'label' => false,
+                ),
+                'by_reference' => false,
                 'attr' => array(
                     'help_block' => $element->getDescription(),
-                    'group_class' => 'collection',
+                    'class' => 'collection-simple',
                 ),
                 'data' => array_merge(array_values($values), array(' ')),
             ));
