@@ -28,7 +28,7 @@ class OrganizationType extends AbstractType {
             'allow_delete' => true,
             'delete_empty' => true,
             'attr' => array(
-                'group_class' => 'collection',
+                'class' => 'collection-simple',
             ),
         ));
         $builder->add('contact');
