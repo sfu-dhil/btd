@@ -25,13 +25,10 @@ class ContributionsType extends AbstractType {
             'allow_delete' => true,
             'delete_empty' => true,
             'entry_options' => array(
-                'label' => false,
-            ),
-            'by_reference' => false,
-            'entry_options' => array(
                 'project' => $project,
                 'label' => false,
             ),
+            'by_reference' => false,
             'label' => 'Contribution',
             'attr' => array(
                 'class' => 'collection-simple',
