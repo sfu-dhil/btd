@@ -3,11 +3,13 @@
 namespace AppBundle\Form\Project;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\Venue;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ProjectType extends AbstractType {
 
@@ -23,7 +25,17 @@ class ProjectType extends AbstractType {
         $builder->add('endDate', DateType::class, array(
             'widget' => 'single_text',
         ));
-        $builder->add('venues');
+        $builder->add('venues', Select2EntityType::class, array(
+            'remote_route' => 'venue_typeahead',
+            'class' => Venue::class,
+            'multiple' => true,
+            'primary_key' => 'id',
+            'text_property' => 'name',
+            'page_limit' => 10,
+            'allow_clear' => true,
+            'delay' => 250,
+            'language' => 'en',
+        ));
         $builder->add('excerpt', CKEditorType::class, array(
             'attr' => array(
                 'help_block' => 'Excerpts will be shown on the home page and in '
