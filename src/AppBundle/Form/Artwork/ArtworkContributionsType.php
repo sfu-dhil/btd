@@ -22,22 +22,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ArtworkContributionsType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $artwork = $options['artwork'];        
+        $artwork = $options['artwork'];
         $builder->add('contributions', CollectionType::class, array(
+            'entry_type' => ArtworkContributionType::class,
+            'required' => false,
             'allow_add' => true,
             'allow_delete' => true,
             'delete_empty' => true,
-            'entry_type' => ArtworkContributionType::class,
             'entry_options' => array(
+                'label' => false,
                 'artwork' => $artwork,
             ),
+            'by_reference' => false,
             'label' => 'Contribution',
             'attr' => array(
-                'group_class' => 'collection',
+                'class' => 'collection-simple',
             ),
         ));
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
@@ -47,5 +50,5 @@ class ArtworkContributionsType extends AbstractType {
             'artwork' => null,
         ));
     }
-    
-}    
+
+}
