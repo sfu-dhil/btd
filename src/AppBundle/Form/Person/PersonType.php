@@ -32,7 +32,7 @@ class PersonType extends AbstractType {
             'label' => 'Links',
             'required' => false,
             'attr' => array(
-                'class' => 'collection collection-simple',
+                'class' => 'collection-simple',
                 'help_block' => 'List of URLs associated with the person',
             ),
         ));
