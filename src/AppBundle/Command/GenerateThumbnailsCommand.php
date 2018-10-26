@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class GenerateThumbnailsCommand extends ContainerAwareCommand
 {
     private $thumbnailSize;
-    
+
     protected function configure()
     {
         $this
@@ -22,7 +22,7 @@ class GenerateThumbnailsCommand extends ContainerAwareCommand
             ->setDescription('Generate thumbnails for media files.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Regenerate all thumbnails.');
     }
-    
+
     public function setContainer(ContainerInterface $container = null) {
         parent::setContainer($container);
         $this->thumbnailSize = $container->getParameter('btd.media_thumbnail_size');
@@ -30,9 +30,10 @@ class GenerateThumbnailsCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        die("NOT IMPLEMENTED.");
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $thumbnailer = new Thumbnailer();
-        
+
         $mediaFiles = array();
         if($input->getOption('force')) {
             $mediaFiles = $em->getRepository(MediaFile::class)->findAll();

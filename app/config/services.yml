@@ -68,6 +68,11 @@ services:
     AppBundle\Services\FileUploader:
         arguments: ['%btd.media_upload_path%']
 
+    AppBundle\Services\Thumbnailer:
+        arguments:
+            $width: '%btd.thumbnail_width%'
+            $height: '%btd.thumbnail_height%'
+
     AppBundle\EventListener\FileUploadListener:
         tags:
             - { name: doctrine.event_listener, event: prePersist }

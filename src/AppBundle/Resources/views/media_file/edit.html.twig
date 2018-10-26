@@ -3,17 +3,49 @@
 {% block body %}
     <h1>Media File edit</h1>
 
-    {{ form_start(edit_form) }}
-    {{ form_widget(edit_form) }}
-    <div class="form-group">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">
-            <input type="submit" value="Update" class="btn btn-primary" />
-            <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}" class="btn btn-warning">Cancel</a>
+    <div class='row'>
+        <div class='col-sm-4'>
+            <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}">
+                <img src="{{ path('media_file_tn', {'id': mediaFile.id}) }}" class="img-thumbnail">
+            </a>
+        </div>
+        <div class='col-sm-8'>
+            <a href="{{ path('media_file_show', {'id': mediaFile.id}) }}">
+                {{ mediaFile.getMetadataFields('dc_title', false) }}
+            </a>
+            <dl class="dl-horizontal">
+                <dt>Id</dt>
+                <dd>{{ mediaFile.id }}</dd>
+                <dt>Media Category</dt>
+                <dd>{{ mediaFile.mediaFileCategory }}</dd>
+                <dt>File category</dt>
+                <dd>{{ mediaFile.mimetype }}</dd>
+                <dt>Original name</dt>
+                <dd>{{ mediaFile.originalName }}</dd>
+                <dt>Uploaded</dt>
+                <dd>{{ mediaFile.updated|date }}</dd>
+                <dt>URL</dt>
+                <dd>
+                    <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
+                        {{ url('media_file_raw', {'id': mediaFile.id}) }}
+                    </a>
+                </dd>
         </div>
     </div>
-    {{ form_end(edit_form) }}
 
+    <div class='row'>
+        {{ form_start(edit_form) }}
+        {{ form_row(edit_form.newFile) }}
+        {{ form_rest(edit_form) }}
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <input type="submit" value="Update" class="btn btn-primary" />
+                <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}" class="btn btn-warning">Cancel</a>
+            </div>
+        </div>
+        {{ form_end(edit_form) }}
+    </div>
 {% endblock %}
 
 {% block styles %}

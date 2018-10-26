@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\DublinCoreBundle\Entity\AbstractField;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * MediaFile
@@ -20,15 +19,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MediaFile extends AbstractEntity {
 
     /**
-     * In the database, this is the path to the file. Outside the database,
-     * a Doctrine event listener will turn the path into a file object.
-     * 
-     * @ORM\Column(type="string")
-     * @Assert\File()
+     * A Doctrine event listener will turn the filename into a file object.
+     *
      * @var File
      */
     private $file;
-    
+
+    /**
+     * @var string
+     * @ORM\Column(name="file", type="string")
+     */
+    private $filename;
+
     /**
      * @var boolean
      * @ORM\Column(type="boolean", options={"default": false})
@@ -39,7 +41,7 @@ class MediaFile extends AbstractEntity {
      * @ORM\Column(type="string")
      */
     private $originalName;
-    
+
     /**
      * @var MediaFileCategory
      * @ORM\ManyToOne(targetEntity="MediaFileCategory", inversedBy="mediaFiles")
@@ -70,7 +72,7 @@ class MediaFile extends AbstractEntity {
      * @ORM\ManyToMany(targetEntity="Person", mappedBy="mediaFiles")
      */
     private $people;
-    
+
     public function __construct() {
         parent::__construct();
         $this->metadataFields = new ArrayCollection();
@@ -82,11 +84,22 @@ class MediaFile extends AbstractEntity {
         return $this->getId();
     }
 
+    public function setFilename($filename) {
+        $this->filename = $filename;
+    }
+
+    public function getFilename() {
+        return $this->filename;
+    }
+
+    /**
+     * @return File
+     */
     public function getFile() {
         return $this->file;
     }
-    
-    public function setFile($file) {
+
+    public function setFile(File $file) {
         $this->file = $file;
         return $this;
     }
@@ -98,15 +111,11 @@ class MediaFile extends AbstractEntity {
     public function getPath() {
         return $this->file->getPath();
     }
-    
+
     public function getRealPath() {
         return $this->file->getRealPath();
     }
 
-    public function getFilename() {
-        return $this->file->getFilename();
-    }
-    
     public function getBasename() {
         return $this->file->getBasename('.' . $this->file->getExtension());
     }
@@ -114,7 +123,7 @@ class MediaFile extends AbstractEntity {
     public function getSize() {
         return $this->file->getSize();
     }
-    
+
     public function getThumbnail() {
         $base = $this->getBasename();
         $path = $this->getPath();
@@ -284,7 +293,7 @@ class MediaFile extends AbstractEntity {
     public function hasPerson(Person $person) {
         return $this->people->contains($person);
     }
-    
+
     /**
      * Add person
      *

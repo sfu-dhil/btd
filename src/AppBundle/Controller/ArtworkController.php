@@ -300,7 +300,6 @@ class ArtworkController extends Controller {
 
         if($form->isSubmitted() && $form->isValid()) {
             foreach($oldProjects as $project) {
-                dump($project);
                 $project->removeArtwork($artwork);
             }
             foreach($artwork->getProjects() as $project) {

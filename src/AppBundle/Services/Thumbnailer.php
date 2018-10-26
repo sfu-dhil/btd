@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace AppBundle\Utility;
+namespace AppBundle\Services;
 
 use AppBundle\Entity\MediaFile;
 use Imagick;
@@ -17,9 +17,18 @@ use Imagick;
  * @author michael
  */
 class Thumbnailer {
-    
+
+    private $width;
+
+    private $height;
+
+    public function __construct($width, $height) {
+        $this->width = $width;
+        $this->height = $height;
+    }
+
     protected function thumb(Imagick $magick, $path, $basename) {
-        $magick->cropThumbnailImage(256, 171);
+        $magick->cropThumbnailImage($this->width, $this->height);
         $magick->setImageFormat('jpg');
         $handle = fopen(dirname($path) . '/' . $basename . '_tn.jpg', 'wb');
         fwrite($handle, $magick->getimageblob());

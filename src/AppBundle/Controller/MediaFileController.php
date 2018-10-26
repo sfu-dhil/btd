@@ -5,13 +5,16 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\MediaFile;
 use AppBundle\Entity\MediaFileField;
 use AppBundle\Form\MediaFileMetadataType;
+use AppBundle\Form\MediaFileType;
 use AppBundle\Services\FileUploader;
 use AppBundle\Utility\Thumbnailer;
 use Nines\DublinCoreBundle\Entity\Element;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -137,7 +140,7 @@ class MediaFileController extends Controller {
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
@@ -205,14 +208,8 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function thumbnailAction(MediaFile $mediaFile) {
-        if( ! $mediaFile->getHasThumbnail()) {
-            $thumbnailer = new Thumbnailer();
-            $thumbnailer->generateThumbnail($mediaFile);
-            $mediaFile->setHasThumbnail(true);
-            $this->getDoctrine()->getManager()->flush($mediaFile);
-        }
         $tn = $mediaFile->getThumbnail();
-        if($tn) {
+        if ($tn) {
             return new BinaryFileResponse($tn);
         }
         throw new NotFoundHttpException("Cannot find thumbnail.");
@@ -226,30 +223,37 @@ class MediaFileController extends Controller {
      * @Template()
      * @param Request $request
      * @param MediaFile $mediaFile
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      */
-    public function editAction(Request $request, MediaFile $mediaFile) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
-        $oldFile = $mediaFile->getFile();
-        $tnFile = $mediaFile->getThumbnail();
-        $editForm = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile, array(
-            'max_file_upload' => UploadedFile::getMaxFilesize()
+    public function editAction(Request $request, MediaFile $mediaFile, FileUploader $uploader) {
+        $max = $uploader->getMaxUploadSize();
+        $editForm = $this->createForm(MediaFileType::class, $mediaFile, array(
+            'max_file_upload' => $max,
+        ));
+        $editForm->remove('file');
+        $editForm->add('newFile', FileType::class, array(
+            'label' => 'New File',
+            'required' => false,
+            'attr' => array(
+                'help_block' => "Select a file to replace the current one. Optional. Maximum file upload size is {$max}."
+            ),
+            'mapped' => false,
         ));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->get('app.file_uploader')->delete($oldFile);
-            $this->get('app.file_uploader')->delete($tnFile);
-            $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
-            $mediaFile->setHasThumbnail(false);
-
             $em = $this->getDoctrine()->getManager();
-            $mediaFileField = new MediaFileField();
-            $mediaFileField->setElement($em->getRepository(Element::class)->findOneBy(array('name' => 'dc_identifier')));
-            $mediaFileField->setValue($mediaFile->getOriginalName());
+            if (($upload = $editForm->get('newFile')->getData())) {
+                $mediaFile->setFile($upload);
+                $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
+                $mediaFile->preUpdate();
 
+                $mediaFileField = new MediaFileField();
+                $mediaFileField->setElement($em->getRepository(Element::class)->findOneBy(array('name' => 'dc_identifier')));
+                $mediaFileField->setValue($mediaFile->getOriginalName());
+                $mediaFileField->setMediaFile($mediaFile);
+                $em->persist($mediaFileField);
+            }
             $em->flush();
             $this->addFlash('success', 'The mediaFile has been updated.');
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
@@ -270,18 +274,18 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function deleteAction(Request $request, MediaFile $mediaFile, FileUploader $uploader) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $em = $this->getDoctrine()->getManager();
-        if($mediaFile->getFile()) {
+        if ($mediaFile->getFile()) {
             $uploader->delete($mediaFile->getFile());
         }
-        if($mediaFile->getThumbnail()) {
+        if ($mediaFile->getThumbnail()) {
             $uploader->delete($mediaFile->getThumbnail());
         }
-        foreach($mediaFile->getMetadataFields() as $field) {
+        foreach ($mediaFile->getMetadataFields() as $field) {
             $em->remove($field);
         }
         $em->remove($mediaFile);
@@ -301,7 +305,7 @@ class MediaFileController extends Controller {
      * @param MediaFile $mediaFile
      */
     public function metadataAction(Request $request, MediaFile $mediaFile) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
@@ -313,12 +317,12 @@ class MediaFileController extends Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $repo = $em->getRepository(Element::class);
-            foreach($mediaFile->getMetadataFields() as $field) {
+            foreach ($mediaFile->getMetadataFields() as $field) {
                 $em->remove($field);
             }
-            foreach($form->getData() as $name => $values) {
+            foreach ($form->getData() as $name => $values) {
                 $element = $repo->findOneBy(array('name' => $name));
-                foreach($values as $value) {
+                foreach ($values as $value) {
                     $field = new MediaFileField();
                     $field->setElement($element);
                     $field->setMediaFile($mediaFile);

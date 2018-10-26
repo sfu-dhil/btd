@@ -30,16 +30,15 @@ parameters:
     nines_blog.homepage_posts: 3
     nines_blog.menu_posts: 5
 
-
     nines_feedback.sender: noreply@example.com
     nines_feedback.recipient: notify@example.com
     nines_feedback.subject: New feedback received
 
-    #
     btd.homepage_entries: 5
 
     # path to the uploaded files, relative to the app directory.
     btd.media_upload_path: '%kernel.root_dir%/data/uploads'
 
     # maximum dimensions of an image thumbnail.
-    btd.media_thumbnail_size: 200
+    btd.thumbnail_width: 256
+    btd.thumbnail_height: 171
