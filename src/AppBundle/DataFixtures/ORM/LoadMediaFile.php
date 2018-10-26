@@ -19,7 +19,8 @@ class LoadMediaFile extends Fixture implements DependentFixtureInterface
     {
         for($i = 0; $i < 4; $i++) {
             $fixture = new MediaFile();
-            $fixture->setFile('File ' . $i);
+            $fixture->setFile(new \Symfony\Component\HttpFoundation\File\File(__FILE__, false));
+            $fixture->setFilename("a/abc.php");
             $fixture->setHasThumbnail('HasThumbnail ' . $i);
             $fixture->setOriginalName('OriginalName ' . $i);
             $fixture->setMediafilecategory($this->getReference('mediafilecategory.1'));

@@ -7,7 +7,6 @@ use AppBundle\Entity\MediaFileField;
 use AppBundle\Form\MediaFileMetadataType;
 use AppBundle\Form\MediaFileType;
 use AppBundle\Services\FileUploader;
-use AppBundle\Utility\Thumbnailer;
 use Nines\DublinCoreBundle\Entity\Element;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -223,9 +222,12 @@ class MediaFileController extends Controller {
      * @Template()
      * @param Request $request
      * @param MediaFile $mediaFile
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      */
     public function editAction(Request $request, MediaFile $mediaFile, FileUploader $uploader) {
+        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $max = $uploader->getMaxUploadSize();
         $editForm = $this->createForm(MediaFileType::class, $mediaFile, array(
             'max_file_upload' => $max,

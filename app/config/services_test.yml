@@ -17,11 +17,11 @@ services:
         tags:
             - { name: knp_menu.menu_builder, method: postNavMenu, alias: posts}
             - { name: knp_menu.menu_builder, method: pageNavMenu, alias: pages}
-            
+
     Nines\UserBundle\Menu\Builder:
         tags:
             - { name: knp_menu.menu_builder, method: userNavMenu, alias: user}
-            
+
     AppBundle\Menu\Builder:
         public: true
         tags:
@@ -30,6 +30,11 @@ services:
     AppBundle\Services\FileUploader:
         public: true
         arguments: ['%btd.media_upload_path%']
+
+    AppBundle\Services\Thumbnailer:
+        arguments:
+            $width: '%btd.thumbnail_width%'
+            $height: '%btd.thumbnail_height%'
 
     AppBundle\EventListener\FileUploadListener:
         public: true
