@@ -42,3 +42,18 @@ parameters:
     # maximum dimensions of an image thumbnail.
     btd.thumbnail_width: 256
     btd.thumbnail_height: 171
+
+    # tracking configuration
+    # true or false
+    dhil.piwik_enabled: false
+
+    # protocol-relative url to the base piwik install
+    # like "//analytics.example.com/piwik/"
+    dhil.piwik_url: ~
+
+    # A number.
+    dhil.piwik_siteid: ~
+
+    # Where the application lives
+    # eg. "*.example.com/application"
+    dhil.piwik_domain: ~
