@@ -37,6 +37,11 @@ task('dhil:phpunit', function() {
     writeln($output);
 })->desc('Run phpunit.');
 
+task('dhil:clear:test-cache', function(){
+    $output = run('{{bin/php}} {{bin/console}} cache:clear --env=test');
+    writeln($output);
+});
+
 task('dhil:test', [
     'deploy:info',
     'deploy:prepare',
@@ -46,6 +51,7 @@ task('dhil:test', [
     'deploy:create_cache_dir',
     'deploy:shared',
     'deploy:vendors',
+    'dhil:clear:test-cache',
     'dhil:phpunit',
 ])->desc('Run test suite on server in a clean environment.');
 after('dhil:test', 'deploy:unlock');
@@ -149,6 +155,7 @@ task('deploy', [
     'deploy:create_cache_dir',
     'deploy:shared',
     'deploy:vendors',
+    'dhil:clear:test-cache',
     'dhil:phpunit',
     'dhil:ckeditor',
     'deploy:assets:install',
