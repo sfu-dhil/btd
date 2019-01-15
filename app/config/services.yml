@@ -14,37 +14,10 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
 
-
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
-
-    Nines\FeedbackBundle\Services\NotifierService:
-        arguments:
-            $sender: '%nines_feedback.sender%'
-            $recipient: '%nines_feedback.recipient%'
-            $subject: '%nines_feedback.subject%'
-            $service: '@feedback.comment'
-
-    Nines\FeedbackBundle\Controller\:
-        resource: '../../src/Nines/FeedbackBundle/Controller'
-        public: true
-        tags: ['controller.service_arguments']
-
-    Nines\UserBundle\:
-        resource: '../../src/Nines/UserBundle/*'
-        # you can exclude directories or files
-        # but if a service is unused, it's removed anyway
-        exclude: '../../src/Nines/UserBundle/{Entity,Repository,Resources,Tests}'
-
-    Nines\UserBundle\Menu\Builder:
-        tags:
-            - { name: knp_menu.menu_builder, method: userNavMenu, alias: user}
-
-    Nines\UtilBundle\:
-        resource: '../../src/Nines/UtilBundle/*'
-        exclude: '../../src/Nines/UtilBundle/{Entity,Repository,Resources,Tests}'
 
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

@@ -54,8 +54,8 @@ twig:
         '%kernel.root_dir%/../src/Nines/UtilBundle/Resources/views': NinesUtilBundle
     exception_controller:  NinesUtilBundle:Error:showException
     globals:
-        comment_service: "@feedback.comment"
-        text_service: "@nines.util.text"
+        comment_service: '@Nines\FeedbackBundle\Services\CommentService'
+        text_service: '@Nines\UtilBundle\Services\Text'
         environment: "%kernel.environment%"
         piwik_enabled: '%dhil.piwik_enabled%'
         piwik_url: '%dhil.piwik_url%'
