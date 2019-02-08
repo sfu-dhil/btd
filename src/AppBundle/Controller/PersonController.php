@@ -222,7 +222,7 @@ class PersonController extends Controller {
                 $mediaFile->addPerson($person);
                 $em->flush();
             }
-            $this->addFlash('success', 'The media file is associated with the artowrk.');
+            $this->addFlash('success', 'The media file is associated with the person.');
             return $this->redirectToRoute('person_add_media', array(
                         'id' => $person->getId(),
                         'q' => $q,
@@ -263,7 +263,7 @@ class PersonController extends Controller {
                 $mediaFile->removePerson($person);
                 $em->flush();
             }
-            $this->addFlash('success', 'The media file is associated with the artowrk.');
+            $this->addFlash('success', 'The media file is no longer associated with the person.');
             return $this->redirectToRoute('person_remove_media', array(
                         'id' => $person->getId(),
                         'page' => $request->query->getInt('page', 1)
