@@ -14,7 +14,7 @@ class MediaFileRepository extends \Doctrine\ORM\EntityRepository {
         $qb = $this->createQueryBuilder('e');
         $qb->distinct();
         $qb->innerJoin('e.metadataFields', 'f');
-        $qb->orWhere("MATCH_AGAINST(f.value) AGAINST (:q 'BOOLEAN') > 0");
+        $qb->orWhere("MATCH_AGAINST(f.value) AGAINST (:q BOOLEAN) > 0");
         $qb->setParameter('q', $q);
         return $qb->getQuery();
     }

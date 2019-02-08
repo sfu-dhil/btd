@@ -25,7 +25,7 @@ class PersonRepository extends \Doctrine\ORM\EntityRepository {
     
     public function searchQuery($q) {
         $qb = $this->createQueryBuilder('e');
-        $qb->where("MATCH_AGAINST(e.fullname, e.biography) AGAINST(:q 'BOOLEAN') > 0");
+        $qb->where("MATCH_AGAINST(e.fullname, e.biography) AGAINST(:q BOOLEAN) > 0");
         $qb->setParameter('q', $q);
         return $qb->getQuery();
     }

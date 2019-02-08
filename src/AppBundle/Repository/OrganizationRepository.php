@@ -12,8 +12,8 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository {
 
     public function fulltextQuery($q) {
         $qb = $this->createQueryBuilder('e');
-        $qb->addSelect("MATCH_AGAINST (e.name, e.address, e.description, e.url, e.contact) AGAINST(:q 'BOOLEAN') as HIDDEN score");
-        $qb->add('where', "MATCH_AGAINST (e.name, e.address, e.description, e.url, e.contact) AGAINST(:q 'BOOLEAN') > 0");
+        $qb->addSelect("MATCH_AGAINST (e.name, e.address, e.description, e.url, e.contact) AGAINST(:q BOOLEAN) as HIDDEN score");
+        $qb->add('where', "MATCH_AGAINST (e.name, e.address, e.description, e.url, e.contact) AGAINST(:q BOOLEAN) > 0");
         $qb->orderBy('score', 'desc');
         $qb->setParameter('q', $q);
         return $qb->getQuery();
