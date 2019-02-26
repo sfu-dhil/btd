@@ -19,6 +19,19 @@ class ProjectType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('title');
+        
+        $builder->add('parent', Select2EntityType::class, array(
+            'remote_route' => 'project_typeahead',
+            'class' => Project::class,
+            'multiple' => false,
+            'primary_key' => 'id',
+            'text_property' => 'title',
+            'page_limit' => 10,
+            'allow_clear' => true,
+            'delay' => 250,
+            'language' => 'en',            
+        ));
+        
         $builder->add('startDate', DateType::class, array(
             'widget' => 'single_text',
         ));

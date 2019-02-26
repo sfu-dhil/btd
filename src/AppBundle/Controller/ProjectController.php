@@ -8,8 +8,10 @@ use AppBundle\Form\Project\ContributionsType;
 use AppBundle\Form\Project\ProjectType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -37,6 +39,31 @@ class ProjectController extends Controller {
         return array(
             'projects' => $projects,
         );
+    }
+
+   /**
+     * @param Request $request
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     * @Route("/typeahead", name="project_typeahead")
+     * @Method("GET")
+     * @return JsonResponse
+     */
+    public function typeaheadAction(Request $request) {
+        $q = $request->query->get('q');
+        if (!$q) {
+            return new JsonResponse([]);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Project::class);
+        $data = [];
+        foreach ($repo->typeaheadQuery($q) as $result) {
+            $data[] = [
+                'id' => $result->getId(),
+                'text' => $result->getTitle(),
+            ];
+        }
+
+        return new JsonResponse($data);
     }
 
     /**
@@ -74,7 +101,7 @@ class ProjectController extends Controller {
      * @Template()
      * @param Request $request
      */
-    public function newAction(Request $request) {
+    public function newAction(Request $request, \Nines\UtilBundle\Services\Text $text) {
         if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
             return $this->redirect($this->generateUrl('fos_user_security_login'));
@@ -84,7 +111,6 @@ class ProjectController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $text = $this->get('nines.util.text');
             if (!$project->getExcerpt()) {
                 $project->setExcerpt($text->trim($project->getDescription(), $this->getParameter('nines_blog.excerpt_length')));
             }
@@ -126,7 +152,7 @@ class ProjectController extends Controller {
      * @param Request $request
      * @param Project $project
      */
-    public function editAction(Request $request, Project $project) {
+    public function editAction(Request $request, Project $project, \Nines\UtilBundle\Services\Text $text) {
         if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
             return $this->redirect($this->generateUrl('fos_user_security_login'));
@@ -135,7 +161,6 @@ class ProjectController extends Controller {
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $text = $this->get('nines.util.text');
             if (!$project->getExcerpt()) {
                 $project->setExcerpt($text->trim($project->getDescription(), $this->getParameter('nines_blog.excerpt_length')));
             }

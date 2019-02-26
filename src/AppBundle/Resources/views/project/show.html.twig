@@ -9,6 +9,9 @@
         <a href='{{ path('venue_show', {'id': venue.id}) }}'>{{ venue.name}}</a>,
         <a href='{{ path('location_show', {'id': venue.location.id}) }}'>{{venue.location}}</a><br/>
     {% endfor %}
+    {%  if project.parent %}
+        Part of <a href="{{ project.parent.id }}">{{ project.parent }}</a>.
+    {%  endif %}
 {% endblock %}
 
 {% block body %}
@@ -152,6 +155,21 @@
             {{ text_service.trim(artwork.description, 100) }}
         </p>
     {% endfor %}
+
+    <h2>Sub Projects</h2>
+    {% if project.children | length > 0 %}
+        <ul>
+            {% for child in project.children %}
+                <li>
+                    <a href="{{ path('project_show', {'id': child.id}) }}">
+                        {{ child }}
+                    </a>
+                </li>
+                {% endfor %}
+        </ul>
+        {% else %}
+            <p><i>No subprojects</i></p>
+    {%  endif %}
 
 
 {% endblock %}

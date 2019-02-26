@@ -23,7 +23,7 @@ class Project extends AbstractEntity {
      * @ORM\Column(type="string")
      */
     private $title;
-
+    
     /**
      * @var DateTime
      * @ORM\Column(type="date")
@@ -54,6 +54,18 @@ class Project extends AbstractEntity {
      */
     private $url;
 
+    /**
+     * @var Project
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="children")
+     */
+    private $parent;
+
+    /**
+     * @var Project[]|Collection
+     * @ORM\OneToMany(targetEntity="Project", mappedBy="parent")
+     */
+    private $children;    
+    
     /**
      * @var ProjectCategory
      * @ORM\ManyToOne(targetEntity="ProjectCategory", inversedBy="projects")
@@ -100,6 +112,7 @@ class Project extends AbstractEntity {
         $this->contributions = new ArrayCollection();
         $this->mediaFiles = new ArrayCollection();
         $this->artworks = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function __toString() {
@@ -442,5 +455,65 @@ class Project extends AbstractEntity {
     public function getArtworks()
     {
         return $this->artworks;
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param Project|null $parent
+     *
+     * @return Project
+     */
+    public function setParent(Project $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return Project|null
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add child.
+     *
+     * @param Project $child
+     *
+     * @return Project
+     */
+    public function addChild(Project $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param Project $child
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeChild(Project $child)
+    {
+        return $this->children->removeElement($child);
+    }
+
+    /**
+     * Get children.
+     *
+     * @return Collection
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }
