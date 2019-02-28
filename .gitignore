@@ -27,3 +27,4 @@ app/config/deploy.yml
 phpcs.xml
 /web/js
 web/images
+.idea
