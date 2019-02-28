@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Nines\UtilBundle\Entity\ContentEntityInterface;
+use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
 /**
  * ProjectPage
@@ -12,8 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectPageRepository")
  */
-class ProjectPage extends \Nines\UtilBundle\Entity\AbstractEntity
-{
+class ProjectPage extends \Nines\UtilBundle\Entity\AbstractEntity implements ContentEntityInterface {
+
+    use ContentExcerptTrait;
+
     /**
      * Blog post title.
      *
@@ -22,24 +26,6 @@ class ProjectPage extends \Nines\UtilBundle\Entity\AbstractEntity
      * @ORM\Column(name="title", type="string", nullable=false)
      */
     private $title;
-
-    /**
-     * An excerpt, to display in lists.
-     *
-     * @var string
-     * 
-     * @ORM\Column(name="excerpt", type="text", nullable=true)
-     */
-    private $excerpt;
-    
-    /**
-     * The content of the post, as HTML.
-     *
-     * @var string
-     * 
-     * @ORM\Column(name="content", type="text", nullable=false)
-     */
-    private $content;
 
     /**
      * @var Project
@@ -79,54 +65,6 @@ class ProjectPage extends \Nines\UtilBundle\Entity\AbstractEntity
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set excerpt
-     *
-     * @param string $excerpt
-     *
-     * @return ProjectPage
-     */
-    public function setExcerpt($excerpt)
-    {
-        $this->excerpt = $excerpt;
-
-        return $this;
-    }
-
-    /**
-     * Get excerpt
-     *
-     * @return string
-     */
-    public function getExcerpt()
-    {
-        return $this->excerpt;
-    }
-
-    /**
-     * Set content
-     *
-     * @param string $content
-     *
-     * @return ProjectPage
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get content
-     *
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
     }
 
     /**

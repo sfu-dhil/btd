@@ -6,28 +6,26 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
+use Nines\UtilBundle\Entity\ContentEntityInterface;
+use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
 /**
  * Artwork
  *
  * @ORM\Table(name="artwork", indexes={
- *  @ORM\Index(columns={"title", "description", "materials", "copyright"}, flags={"fulltext"}),
+ *  @ORM\Index(columns={"title", "content", "materials", "copyright"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtworkRepository")
  */
-class Artwork extends AbstractEntity {
+class Artwork extends AbstractEntity  implements ContentEntityInterface {
+
+    use ContentExcerptTrait;
 
     /**
      * @var string
      * @ORM\Column(type="string")
      */
     private $title;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $description;
 
     /**
      * @var string
@@ -97,28 +95,6 @@ class Artwork extends AbstractEntity {
      */
     public function getTitle() {
         return $this->title;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Artwork
-     */
-    public function setDescription($description) {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription() {
-        return $this->description;
     }
 
     /**

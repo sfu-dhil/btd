@@ -7,16 +7,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
+use Nines\UtilBundle\Entity\ContentEntityInterface;
+use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
 /**
  * Project
  *
  * @ORM\Table(name="project", indexes={
- *  @ORM\Index(columns={"title", "description"}, flags={"fulltext"}),
+ *  @ORM\Index(columns={"title", "content"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
  */
-class Project extends AbstractEntity {
+class Project extends AbstractEntity  implements ContentEntityInterface {
+
+    use ContentExcerptTrait;
 
     /**
      * @var string
@@ -35,18 +39,6 @@ class Project extends AbstractEntity {
      * @ORM\Column(type="date")
      */
     private $endDate;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $excerpt;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $description;
 
     /**
      * @var string
@@ -139,28 +131,6 @@ class Project extends AbstractEntity {
      */
     public function getTitle() {
         return $this->title;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Project
-     */
-    public function setDescription($description) {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription() {
-        return $this->description;
     }
 
     /**
@@ -359,30 +329,6 @@ class Project extends AbstractEntity {
     public function getEndDate()
     {
         return $this->endDate;
-    }
-
-    /**
-     * Set excerpt
-     *
-     * @param string $excerpt
-     *
-     * @return Project
-     */
-    public function setExcerpt($excerpt)
-    {
-        $this->excerpt = $excerpt;
-
-        return $this;
-    }
-
-    /**
-     * Get excerpt
-     *
-     * @return string
-     */
-    public function getExcerpt()
-    {
-        return $this->excerpt;
     }
 
     /**

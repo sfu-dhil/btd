@@ -12,8 +12,8 @@ class ArtworkRepository extends \Doctrine\ORM\EntityRepository {
 
     public function fulltextQuery($q) {
         $qb = $this->createQueryBuilder('e');
-        $qb->addSelect("MATCH_AGAINST (e.title, e.description, e.materials, e.copyright) AGAINST (:q BOOLEAN) as HIDDEN score");
-        $qb->add('where', "MATCH_AGAINST (e.title, e.description, e.materials, e.copyright) AGAINST (:q BOOLEAN) > 0");
+        $qb->addSelect("MATCH_AGAINST (e.title, e.content, e.materials, e.copyright) AGAINST (:q BOOLEAN) as HIDDEN score");
+        $qb->add('where', "MATCH_AGAINST (e.title, e.content, e.materials, e.copyright) AGAINST (:q BOOLEAN) > 0");
         $qb->orderBy('score', 'desc');
         $qb->setParameter('q', $q);
         return $qb->getQuery();

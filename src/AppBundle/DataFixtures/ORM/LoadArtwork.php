@@ -20,7 +20,7 @@ class LoadArtwork extends Fixture implements DependentFixtureInterface
         for($i = 0; $i < 4; $i++) {
             $fixture = new Artwork();
             $fixture->setTitle('Title ' . $i);
-            $fixture->setDescription('Description ' . $i);
+            $fixture->setContent('Description ' . $i);
             $fixture->setMaterials('Materials ' . $i);
             $fixture->setCopyright('Copyright ' . $i);
             $fixture->setArtworkCategory($this->getReference('artworkcategory.1'));

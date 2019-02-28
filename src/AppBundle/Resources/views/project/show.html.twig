@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_USER') %}
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2 class="panel-title">
@@ -48,7 +48,7 @@
         </div>
     {% endif %}
 
-    {{ project.description|raw }}
+    {{ project.content|raw }}
 
     <div class="text-right">
         Created {{ project.created|date('Y-m-d H:i:s') }}. Most recent update {{ project.updated|date }}.
@@ -152,7 +152,7 @@
             </a>
         </h3>
         <p>
-            {{ text_service.trim(artwork.description, 100) }}
+            {{ artwork.excerpt }}
         </p>
     {% endfor %}
 

@@ -23,7 +23,7 @@ class LoadProject extends Fixture implements DependentFixtureInterface
             $fixture->setStartDate(new \DateTime('2010-01-01'));
             $fixture->setEndDate(new \DateTime('2010-01-02'));
             $fixture->setExcerpt('Excerpt ' . $i);
-            $fixture->setDescription('Description ' . $i);
+            $fixture->setContent('Description ' . $i);
             $fixture->setUrl('http://example.com/project/' . $i);
             $fixture->setProjectCategory($this->getReference('projectcategory.1'));
             $fixture->addVenue($this->getReference('venue.1'));

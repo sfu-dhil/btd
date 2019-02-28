@@ -56,7 +56,7 @@ class ProjectType extends AbstractType {
                 . 'generated automatically.'
             ),
         ));
-        $builder->add('description', CKEditorType::class);
+        $builder->add('content', CKEditorType::class);
         $builder->add('url');
         $builder->add('projectCategory');
     }

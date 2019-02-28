@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection as Collection2;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Symfony\Component\Validator\Constraints\Collection;
+use Nines\UtilBundle\Entity\ContentEntityInterface;
+use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
 /**
  * ArtisticStatement
@@ -16,25 +18,15 @@ use Symfony\Component\Validator\Constraints\Collection;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PersonRepository")
  */
-class ArtisticStatement extends AbstractEntity {
-    
+class ArtisticStatement extends AbstractEntity implements ContentEntityInterface {
+
+    use ContentExcerptTrait;
+
     /**
      * @var string
      * @ORM\Column(type="string")
      */
     private $title;
-    
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $excerpt;
-    
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $content;
     
     /**
      * @var Artwork
@@ -81,54 +73,6 @@ class ArtisticStatement extends AbstractEntity {
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set excerpt
-     *
-     * @param string $excerpt
-     *
-     * @return ArtisticStatement
-     */
-    public function setExcerpt($excerpt)
-    {
-        $this->excerpt = $excerpt;
-
-        return $this;
-    }
-
-    /**
-     * Get excerpt
-     *
-     * @return string
-     */
-    public function getExcerpt()
-    {
-        return $this->excerpt;
-    }
-
-    /**
-     * Set content
-     *
-     * @param string $content
-     *
-     * @return ArtisticStatement
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get content
-     *
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
     }
 
     /**

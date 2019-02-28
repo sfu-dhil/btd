@@ -25,7 +25,13 @@
     <div class="clearfix"></div>
 
     <h1>{{ artwork.title }}</h1>
-    {{ artwork.description|raw }}
+    {% if is_granted('ROLE_USER') %}
+    <div class="panel">
+        <div class="panel-heading"><h3>Excerpt</h3></div>
+        <div class="panel-body">{{ artwork.excerpt }}</div>
+    </div>
+    {% endif %}
+    {{ artwork.content|raw }}
     {{ artwork.materials|raw }}
     {{ artwork.copyright|raw }}
 
