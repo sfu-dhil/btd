@@ -52,6 +52,12 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     private $contributions;
 
     /**
+     * @var Collection|ArtisticStatement[]
+     * @ORM\OneToMany(targetEntity="ArtisticStatement", mappedBy="artwork")
+     */
+    private $artisticStatements;
+
+    /**
      * @var Collection|MediaFile[]
      * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="artworks")
      * @ORM\JoinTable(name="artwork_mediafiles")
@@ -69,6 +75,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
         $this->contributions = new ArrayCollection();
         $this->mediaFiles = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->artisticStatements = new ArrayCollection();
     }
 
     public function __toString() {
@@ -266,5 +273,41 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     public function getArtworkCategory()
     {
         return $this->artworkCategory;
+    }
+
+    /**
+     * Add artisticStatement.
+     *
+     * @param \AppBundle\Entity\ArtisticStatement $artisticStatement
+     *
+     * @return Artwork
+     */
+    public function addArtisticStatement(\AppBundle\Entity\ArtisticStatement $artisticStatement)
+    {
+        $this->artisticStatements[] = $artisticStatement;
+
+        return $this;
+    }
+
+    /**
+     * Remove artisticStatement.
+     *
+     * @param \AppBundle\Entity\ArtisticStatement $artisticStatement
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeArtisticStatement(\AppBundle\Entity\ArtisticStatement $artisticStatement)
+    {
+        return $this->artisticStatements->removeElement($artisticStatement);
+    }
+
+    /**
+     * Get artisticStatements.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArtisticStatements()
+    {
+        return $this->artisticStatements;
     }
 }

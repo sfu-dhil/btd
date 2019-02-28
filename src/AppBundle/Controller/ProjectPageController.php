@@ -63,10 +63,6 @@ class ProjectPageController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $text = $this->get('nines.util.text');
-            if (!$projectPage->getExcerpt()) {
-                $projectPage->setExcerpt($text->trim($projectPage->getContent(), $this->getParameter('nines_blog.excerpt_length')));
-            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectPage);
             $em->flush();
@@ -124,10 +120,6 @@ class ProjectPageController extends Controller {
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $text = $this->get('nines.util.text');
-            if (!$projectPage->getExcerpt()) {
-                $projectPage->setExcerpt($text->trim($projectPage->getContent(), $this->getParameter('nines_blog.excerpt_length')));
-            }
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The projectPage has been updated.');

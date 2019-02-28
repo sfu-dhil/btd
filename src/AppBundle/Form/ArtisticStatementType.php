@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ArtisticStatementType extends AbstractType {
 
@@ -49,9 +50,15 @@ class ArtisticStatementType extends AbstractType {
             'class' => Artwork::class,
         ));
 
-        $builder->add('people', CollectionType::class, array(
-            'required' => true,
-            'label' => 'People',
+        $builder->add('people', Select2EntityType::class, array(
+            'remote_route' => 'person_typeahead',
+            'class' => Person::class,
+            'multiple' => true,
+            'primary_key' => 'id',
+            'page_limit' => 10,
+            'allow_clear' => true,
+            'delay' => 250,
+            'language' => 'en',
         ));
     }
 

@@ -4,7 +4,7 @@
     <h1>{{ project.title }}</h1>
     <a href="{{ path('project_category_show', {'id': project.projectCategory.id }) }}">
         {{ project.projectCategory }}
-    </a> {{ project.startDate|date }} to {{ project.endDate|date }}. <br/>
+    </a> {{ project.startDate|date("Y-m-d") }} to {{ project.endDate|date("Y-m-d") }}. <br/>
     {% for venue in project.venues %}
         <a href='{{ path('venue_show', {'id': venue.id}) }}'>{{ venue.name}}</a>,
         <a href='{{ path('location_show', {'id': venue.location.id}) }}'>{{venue.location}}</a><br/>

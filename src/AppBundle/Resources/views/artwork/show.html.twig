@@ -118,6 +118,17 @@
         {% endfor %}
     {% endif %}
 
+    <h2>Artists' Statements</h2>
+
+    {% for artisticStatement in artwork.artisticStatements%}
+        <h3>
+            <a href="{{ path('artwork_statement_show', { 'id': artisticStatement.id }) }}">
+                {{ artisticStatement }}
+            </a>
+        </h3>
+        {{ artisticStatement.excerpt|raw }}
+    {% endfor %}
+
     <h2>Projects</h2>
 
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
