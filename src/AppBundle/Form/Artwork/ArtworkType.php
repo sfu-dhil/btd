@@ -17,6 +17,7 @@ class ArtworkType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('title');
         $builder->add('artworkCategory');
+        $builder->add('excerpt', CKEditorType::class);
         $builder->add('content', CKEditorType::class);
         $builder->add('materials', CKEditorType::class);
         $builder->add('copyright', CKEditorType::class);
