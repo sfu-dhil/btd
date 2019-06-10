@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\MediaFileCategory;
 use AppBundle\Form\MediaFileCategoryType;
@@ -20,8 +20,8 @@ class MediaFileCategoryController extends Controller {
     /**
      * Lists all MediaFileCategory entities.
      *
-     * @Route("/", name="media_file_category_index")
-     * @Method("GET")
+     * @Route("/", name="media_file_category_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -40,8 +40,8 @@ class MediaFileCategoryController extends Controller {
     /**
      * Creates a new MediaFileCategory entity.
      *
-     * @Route("/new", name="media_file_category_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="media_file_category_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -72,8 +72,8 @@ class MediaFileCategoryController extends Controller {
     /**
      * Finds and displays a MediaFileCategory entity.
      *
-     * @Route("/{id}", name="media_file_category_show")
-     * @Method("GET")
+     * @Route("/{id}", name="media_file_category_show", methods={"GET"})
+
      * @Template()
      * @param MediaFileCategory $mediaFileCategory
      */
@@ -87,8 +87,8 @@ class MediaFileCategoryController extends Controller {
     /**
      * Displays a form to edit an existing MediaFileCategory entity.
      *
-     * @Route("/{id}/edit", name="media_file_category_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="media_file_category_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param MediaFileCategory $mediaFileCategory
@@ -117,8 +117,8 @@ class MediaFileCategoryController extends Controller {
     /**
      * Deletes a MediaFileCategory entity.
      *
-     * @Route("/{id}/delete", name="media_file_category_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="media_file_category_delete", methods={"GET"})
+
      * @param Request $request
      * @param MediaFileCategory $mediaFileCategory
      */

@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\ArtisticStatement;
 use AppBundle\Form\ArtisticStatementType;
@@ -20,8 +20,8 @@ class ArtisticStatementController extends Controller {
     /**
      * Lists all ArtisticStatement entities.
      *
-     * @Route("/", name="artwork_statement_index")
-     * @Method("GET")
+     * @Route("/", name="artwork_statement_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -53,8 +53,8 @@ class ArtisticStatementController extends Controller {
       //    }
      *
      *
-     * @Route("/search", name="artwork_statement_search")
-     * @Method("GET")
+     * @Route("/search", name="artwork_statement_search", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -98,8 +98,8 @@ class ArtisticStatementController extends Controller {
      *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
      *
      *
-     * @Route("/fulltext", name="artwork_statement_fulltext")
-     * @Method("GET")
+     * @Route("/fulltext", name="artwork_statement_fulltext", methods={"GET"})
+
      * @Template()
      * @param Request $request
      * @return array
@@ -125,8 +125,8 @@ class ArtisticStatementController extends Controller {
     /**
      * Creates a new ArtisticStatement entity.
      *
-     * @Route("/new", name="artwork_statement_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="artwork_statement_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -157,8 +157,8 @@ class ArtisticStatementController extends Controller {
     /**
      * Finds and displays a ArtisticStatement entity.
      *
-     * @Route("/{id}", name="artwork_statement_show")
-     * @Method("GET")
+     * @Route("/{id}", name="artwork_statement_show", methods={"GET"})
+
      * @Template()
      * @param ArtisticStatement $artisticStatement
      */
@@ -172,8 +172,8 @@ class ArtisticStatementController extends Controller {
     /**
      * Displays a form to edit an existing ArtisticStatement entity.
      *
-     * @Route("/{id}/edit", name="artwork_statement_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="artwork_statement_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param ArtisticStatement $artisticStatement
@@ -202,8 +202,8 @@ class ArtisticStatementController extends Controller {
     /**
      * Deletes a ArtisticStatement entity.
      *
-     * @Route("/{id}/delete", name="artwork_statement_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="artwork_statement_delete", methods={"GET"})
+
      * @param Request $request
      * @param ArtisticStatement $artisticStatement
      */

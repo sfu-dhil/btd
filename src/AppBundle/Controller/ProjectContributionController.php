@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +18,8 @@ class ProjectContributionController extends Controller {
     /**
      * Lists all ProjectContribution entities.
      *
-     * @Route("/", name="project_contribution_index")
-     * @Method("GET")
+     * @Route("/", name="project_contribution_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */

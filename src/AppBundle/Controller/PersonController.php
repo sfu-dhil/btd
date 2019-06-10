@@ -6,8 +6,8 @@ use AppBundle\Entity\Person;
 use AppBundle\Form\Person\ArtworkContributionsType;
 use AppBundle\Form\Person\PersonType;
 use AppBundle\Form\Person\ProjectContributionsType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,8 +23,8 @@ class PersonController extends Controller {
     /**
      * Lists all Person entities.
      *
-     * @Route("/", name="person_index")
-     * @Method("GET")
+     * @Route("/", name="person_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -42,8 +42,8 @@ class PersonController extends Controller {
 
     /**
      * @param Request $request
-     * @Route("/typeahead", name="person_typeahead")
-     * @Method("GET")
+     * @Route("/typeahead", name="person_typeahead", methods={"GET"})
+
      * @return JsonResponse
      */
     public function typeaheadAction(Request $request) {
@@ -71,8 +71,8 @@ class PersonController extends Controller {
     /**
      * Search for Person entities.
      *
-     * @Route("/search", name="person_search")
-     * @Method("GET")
+     * @Route("/search", name="person_search", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -97,8 +97,8 @@ class PersonController extends Controller {
     /**
      * Full text search for Person entities.
      *
-     * @Route("/fulltext", name="person_fulltext")
-     * @Method("GET")
+     * @Route("/fulltext", name="person_fulltext", methods={"GET"})
+
      * @Template()
      * @param Request $request
      * @return array
@@ -124,8 +124,8 @@ class PersonController extends Controller {
     /**
      * Creates a new Person entity.
      *
-     * @Route("/new", name="person_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="person_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -156,8 +156,8 @@ class PersonController extends Controller {
     /**
      * Finds and displays a Person entity.
      *
-     * @Route("/{id}", name="person_show")
-     * @Method("GET")
+     * @Route("/{id}", name="person_show", methods={"GET"})
+
      * @Template()
      * @param Person $person
      */
@@ -171,8 +171,8 @@ class PersonController extends Controller {
     /**
      * Displays a form to edit an existing Person entity.
      *
-     * @Route("/{id}/edit", name="person_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="person_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param Person $person
@@ -201,8 +201,8 @@ class PersonController extends Controller {
     /**
      * Deletes a Person entity.
      *
-     * @Route("/{id}/delete", name="person_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="person_delete", methods={"GET"})
+
      * @param Request $request
      * @param Person $person
      */
@@ -220,8 +220,8 @@ class PersonController extends Controller {
     }
 
     /**
-     * @Route("/{id}/add_media", name="person_add_media")
-     * @Method("GET")
+     * @Route("/{id}/add_media", name="person_add_media", methods={"GET"})
+
      * @Template()
      *
      * @param Request $request
@@ -267,8 +267,8 @@ class PersonController extends Controller {
     }
 
     /**
-     * @Route("/{id}/remove_media", name="person_remove_media")
-     * @Method("GET")
+     * @Route("/{id}/remove_media", name="person_remove_media", methods={"GET"})
+
      * @Template()
      *
      * @param Request $request
@@ -306,8 +306,8 @@ class PersonController extends Controller {
     }
 
     /**
-     * @Route("/{id}/project_contributions", name="person_project_contributions")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/project_contributions", name="person_project_contributions", methods={"GET","POST"})
+
      * @Template()
      *
      * @param Request $request
@@ -337,8 +337,8 @@ class PersonController extends Controller {
     }
 
     /**
-     * @Route("/{id}/artwork_contributions", name="person_artwork_contributions")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/artwork_contributions", name="person_artwork_contributions", methods={"GET","POST"})
+
      * @Template()
      *
      * @param Request $request

@@ -6,8 +6,8 @@ use AppBundle\Entity\Artwork;
 use AppBundle\Form\Artwork\ArtworkType;
 use AppBundle\Form\Artwork\ProjectsType;
 use AppBundle\Form\Artwork\ArtworkContributionsType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,8 +22,8 @@ class ArtworkController extends Controller {
     /**
      * Lists all Artwork entities.
      *
-     * @Route("/", name="artwork_index")
-     * @Method("GET")
+     * @Route("/", name="artwork_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -42,8 +42,8 @@ class ArtworkController extends Controller {
     /**
      * Full text search for Artwork entities.
      *
-     * @Route("/search", name="artwork_search")
-     * @Method("GET")
+     * @Route("/search", name="artwork_search", methods={"GET"})
+
      * @Template()
      * @param Request $request
      * @return array
@@ -69,8 +69,8 @@ class ArtworkController extends Controller {
     /**
      * Creates a new Artwork entity.
      *
-     * @Route("/new", name="artwork_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="artwork_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -101,8 +101,8 @@ class ArtworkController extends Controller {
     /**
      * Finds and displays a Artwork entity.
      *
-     * @Route("/{id}", name="artwork_show")
-     * @Method("GET")
+     * @Route("/{id}", name="artwork_show", methods={"GET"})
+
      * @Template()
      * @param Artwork $artwork
      */
@@ -116,8 +116,8 @@ class ArtworkController extends Controller {
     /**
      * Displays a form to edit an existing Artwork entity.
      *
-     * @Route("/{id}/edit", name="artwork_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="artwork_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param Artwork $artwork
@@ -146,8 +146,8 @@ class ArtworkController extends Controller {
     /**
      * Deletes a Artwork entity.
      *
-     * @Route("/{id}/delete", name="artwork_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="artwork_delete", methods={"GET"})
+
      * @param Request $request
      * @param Artwork $artwork
      */
@@ -165,8 +165,8 @@ class ArtworkController extends Controller {
     }
 
     /**
-     * @Route("/{id}/add_media", name="artwork_add_media")
-     * @Method("GET")
+     * @Route("/{id}/add_media", name="artwork_add_media", methods={"GET"})
+
      * @Template()
      *
      * @param Request $request
@@ -212,8 +212,8 @@ class ArtworkController extends Controller {
     }
 
     /**
-     * @Route("/{id}/remove_media", name="artwork_remove_media")
-     * @Method("GET")
+     * @Route("/{id}/remove_media", name="artwork_remove_media", methods={"GET"})
+
      * @Template()
      *
      * @param Request $request
@@ -251,8 +251,8 @@ class ArtworkController extends Controller {
     }
 
     /**
-     * @Route("/{id}/contributions", name="artwork_contributions")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/contributions", name="artwork_contributions", methods={"GET","POST"})
+
      * @Template()
      *
      * @param Request $request
@@ -282,8 +282,8 @@ class ArtworkController extends Controller {
     }
 
     /**
-     * @Route("/{id}/projects", name="artwork_projects")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/projects", name="artwork_projects", methods={"GET","POST"})
+
      * @Template()
      *
      * @param Request $request

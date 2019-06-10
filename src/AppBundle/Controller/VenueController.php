@@ -3,8 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Venue;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,8 +21,8 @@ class VenueController extends Controller {
     /**
      * Lists all Venue entities.
      *
-     * @Route("/", name="venue_index")
-     * @Method("GET")
+     * @Route("/", name="venue_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -41,8 +41,8 @@ class VenueController extends Controller {
    /**
      * @param Request $request
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/typeahead", name="venue_typeahead")
-     * @Method("GET")
+     * @Route("/typeahead", name="venue_typeahead", methods={"GET"})
+
      * @return JsonResponse
      */
     public function typeaheadAction(Request $request) {
@@ -66,8 +66,8 @@ class VenueController extends Controller {
     /**
      * Creates a new Venue entity.
      *
-     * @Route("/new", name="venue_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="venue_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -98,8 +98,8 @@ class VenueController extends Controller {
     /**
      * Finds and displays a Venue entity.
      *
-     * @Route("/{id}", name="venue_show")
-     * @Method("GET")
+     * @Route("/{id}", name="venue_show", methods={"GET"})
+
      * @Template()
      * @param Venue $venue
      */
@@ -113,8 +113,8 @@ class VenueController extends Controller {
     /**
      * Displays a form to edit an existing Venue entity.
      *
-     * @Route("/{id}/edit", name="venue_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="venue_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param Venue $venue
@@ -143,8 +143,8 @@ class VenueController extends Controller {
     /**
      * Deletes a Venue entity.
      *
-     * @Route("/{id}/delete", name="venue_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="venue_delete", methods={"GET"})
+
      * @param Request $request
      * @param Venue $venue
      */

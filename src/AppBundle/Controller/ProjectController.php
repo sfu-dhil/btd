@@ -6,8 +6,8 @@ use AppBundle\Entity\Project;
 use AppBundle\Form\Project\ArtworksType;
 use AppBundle\Form\Project\ContributionsType;
 use AppBundle\Form\Project\ProjectType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,8 +24,8 @@ class ProjectController extends Controller {
     /**
      * Lists all Project entities.
      *
-     * @Route("/", name="project_index")
-     * @Method("GET")
+     * @Route("/", name="project_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -44,8 +44,8 @@ class ProjectController extends Controller {
    /**
      * @param Request $request
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/typeahead", name="project_typeahead")
-     * @Method("GET")
+     * @Route("/typeahead", name="project_typeahead", methods={"GET"})
+
      * @return JsonResponse
      */
     public function typeaheadAction(Request $request) {
@@ -69,8 +69,8 @@ class ProjectController extends Controller {
     /**
      * Full text search for Project entities.
      *
-     * @Route("/fulltext", name="project_search")
-     * @Method("GET")
+     * @Route("/fulltext", name="project_search", methods={"GET"})
+
      * @Template()
      * @param Request $request
      * @return array
@@ -96,8 +96,8 @@ class ProjectController extends Controller {
     /**
      * Creates a new Project entity.
      *
-     * @Route("/new", name="project_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="project_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -128,8 +128,8 @@ class ProjectController extends Controller {
     /**
      * Finds and displays a Project entity.
      *
-     * @Route("/{id}", name="project_show")
-     * @Method("GET")
+     * @Route("/{id}", name="project_show", methods={"GET"})
+
      * @Template()
      * @param Project $project
      */
@@ -143,8 +143,8 @@ class ProjectController extends Controller {
     /**
      * Displays a form to edit an existing Project entity.
      *
-     * @Route("/{id}/edit", name="project_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="project_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param Project $project
@@ -173,8 +173,8 @@ class ProjectController extends Controller {
     /**
      * Deletes a Project entity.
      *
-     * @Route("/{id}/delete", name="project_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="project_delete", methods={"GET"})
+
      * @param Request $request
      * @param Project $project
      */
@@ -192,8 +192,8 @@ class ProjectController extends Controller {
     }
 
     /**
-     * @Route("/{id}/add_media", name="project_add_media")
-     * @Method("GET")
+     * @Route("/{id}/add_media", name="project_add_media", methods={"GET"})
+
      * @Template()
      * 
      * @param Request $request
@@ -240,8 +240,8 @@ class ProjectController extends Controller {
     }
 
     /**
-     * @Route("/{id}/remove_media", name="project_remove_media")
-     * @Method("GET")
+     * @Route("/{id}/remove_media", name="project_remove_media", methods={"GET"})
+
      * @Template()
      * 
      * @param Request $request
@@ -279,8 +279,8 @@ class ProjectController extends Controller {
     }
 
     /**
-     * @Route("/{id}/contributions", name="project_contributions")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/contributions", name="project_contributions", methods={"GET","POST"})
+
      * @Template()
      * 
      * @param Request $request
@@ -310,8 +310,8 @@ class ProjectController extends Controller {
     }
 
     /**
-     * @Route("/{id}/artworks", name="project_artworks")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/artworks", name="project_artworks", methods={"GET", "POST"})
+
      * @Template()
      * 
      * @param Request $request

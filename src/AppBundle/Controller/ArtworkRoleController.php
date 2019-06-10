@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ArtworkRole;
 use AppBundle\Form\Artwork\ArtworkRoleType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +20,8 @@ class ArtworkRoleController extends Controller {
     /**
      * Lists all ArtworkRole entities.
      *
-     * @Route("/", name="artwork_role_index")
-     * @Method("GET")
+     * @Route("/", name="artwork_role_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -40,8 +40,8 @@ class ArtworkRoleController extends Controller {
     /**
      * Creates a new ArtworkRole entity.
      *
-     * @Route("/new", name="artwork_role_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="artwork_role_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -72,8 +72,8 @@ class ArtworkRoleController extends Controller {
     /**
      * Finds and displays a ArtworkRole entity.
      *
-     * @Route("/{id}", name="artwork_role_show")
-     * @Method("GET")
+     * @Route("/{id}", name="artwork_role_show", methods={"GET"})
+
      * @Template()
      * @param ArtworkRole $artworkRole
      */
@@ -87,8 +87,8 @@ class ArtworkRoleController extends Controller {
     /**
      * Displays a form to edit an existing ArtworkRole entity.
      *
-     * @Route("/{id}/edit", name="artwork_role_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="artwork_role_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param ArtworkRole $artworkRole
@@ -117,8 +117,8 @@ class ArtworkRoleController extends Controller {
     /**
      * Deletes a ArtworkRole entity.
      *
-     * @Route("/{id}/delete", name="artwork_role_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="artwork_role_delete", methods={"GET"})
+
      * @param Request $request
      * @param ArtworkRole $artworkRole
      */

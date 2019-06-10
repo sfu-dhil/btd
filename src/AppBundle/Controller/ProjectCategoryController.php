@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ProjectCategory;
 use AppBundle\Form\Project\ProjectCategoryType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +20,8 @@ class ProjectCategoryController extends Controller {
     /**
      * Lists all ProjectCategory entities.
      *
-     * @Route("/", name="project_category_index")
-     * @Method("GET")
+     * @Route("/", name="project_category_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -40,8 +40,8 @@ class ProjectCategoryController extends Controller {
     /**
      * Creates a new ProjectCategory entity.
      *
-     * @Route("/new", name="project_category_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="project_category_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -72,8 +72,8 @@ class ProjectCategoryController extends Controller {
     /**
      * Finds and displays a ProjectCategory entity.
      *
-     * @Route("/{id}", name="project_category_show")
-     * @Method("GET")
+     * @Route("/{id}", name="project_category_show", methods={"GET"})
+
      * @Template()
      * @param ProjectCategory $projectCategory
      */
@@ -87,8 +87,8 @@ class ProjectCategoryController extends Controller {
     /**
      * Displays a form to edit an existing ProjectCategory entity.
      *
-     * @Route("/{id}/edit", name="project_category_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="project_category_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param ProjectCategory $projectCategory
@@ -117,8 +117,8 @@ class ProjectCategoryController extends Controller {
     /**
      * Deletes a ProjectCategory entity.
      *
-     * @Route("/{id}/delete", name="project_category_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="project_category_delete", methods={"GET"})
+
      * @param Request $request
      * @param ProjectCategory $projectCategory
      */

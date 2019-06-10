@@ -5,9 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectPage;
 use AppBundle\Form\Project\ProjectPageType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,9 +21,9 @@ class ProjectPageController extends Controller {
     /**
      * Lists all ProjectPage entities.
      *
-     * @Route("/project/{projectId}/page", name="project_page_index")
+     * @Route("/project/{projectId}/page", name="project_page_index", methods={"GET"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
-     * @Method("GET")
+
      * @Template()
      * @param Request $request
      * @param Project $project
@@ -45,9 +45,9 @@ class ProjectPageController extends Controller {
     /**
      * Creates a new ProjectPage entity.
      *
-     * @Route("/project/{projectId}/page/new", name="project_page_new")
+     * @Route("/project/{projectId}/page/new", name="project_page_new", methods={"GET","POST"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
-     * @Method({"GET", "POST"})
+
      * @Template()
      * @param Request $request
      * @param Project $project
@@ -81,9 +81,9 @@ class ProjectPageController extends Controller {
     /**
      * Finds and displays a ProjectPage entity.
      *
-     * @Route("/project/{projectId}/page/{id}", name="project_page_show")
+     * @Route("/project/{projectId}/page/{id}", name="project_page_show", methods={"GET"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
-     * @Method("GET")
+
      * @Template()
      * @param Project $project
      * @param ProjectPage $projectPage
@@ -101,9 +101,9 @@ class ProjectPageController extends Controller {
     /**
      * Displays a form to edit an existing ProjectPage entity.
      *
-     * @Route("/project/{projectId}/page/{id}/edit", name="project_page_edit")
+     * @Route("/project/{projectId}/page/{id}/edit", name="project_page_edit", methods={"GET","POST"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
-     * @Method({"GET", "POST"})
+
      * @Template()
      * @param Request $request
      * @param ProjectPage $projectPage
@@ -139,9 +139,9 @@ class ProjectPageController extends Controller {
     /**
      * Deletes a ProjectPage entity.
      *
-     * @Route("/project/{projectId}/page/{id}/delete", name="project_page_delete")
+     * @Route("/project/{projectId}/page/{id}/delete", name="project_page_delete", methods={"GET"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
-     * @Method("GET")
+
      * @param Request $request
      * @param ProjectPage $projectPage
      */

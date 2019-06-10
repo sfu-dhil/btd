@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\Location;
 use AppBundle\Form\LocationType;
@@ -20,8 +20,8 @@ class LocationController extends Controller {
     /**
      * Lists all Location entities.
      *
-     * @Route("/", name="location_index")
-     * @Method("GET")
+     * @Route("/", name="location_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -40,8 +40,8 @@ class LocationController extends Controller {
     /**
      * Full text search for Location entities.
      *
-     * @Route("/search", name="location_search")
-     * @Method("GET")
+     * @Route("/search", name="location_search", methods={"GET"})
+
      * @Template()
      * @param Request $request
      * @return array
@@ -67,8 +67,8 @@ class LocationController extends Controller {
     /**
      * Creates a new Location entity.
      *
-     * @Route("/new", name="location_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="location_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -99,8 +99,8 @@ class LocationController extends Controller {
     /**
      * Finds and displays a Location entity.
      *
-     * @Route("/{id}", name="location_show")
-     * @Method("GET")
+     * @Route("/{id}", name="location_show", methods={"GET"})
+
      * @Template()
      * @param Location $location
      */
@@ -114,8 +114,8 @@ class LocationController extends Controller {
     /**
      * Displays a form to edit an existing Location entity.
      *
-     * @Route("/{id}/edit", name="location_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="location_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param Location $location
@@ -144,8 +144,8 @@ class LocationController extends Controller {
     /**
      * Deletes a Location entity.
      *
-     * @Route("/{id}/delete", name="location_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="location_delete", methods={"GET"})
+
      * @param Request $request
      * @param Location $location
      */

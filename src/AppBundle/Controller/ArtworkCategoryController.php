@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ArtworkCategory;
 use AppBundle\Form\Artwork\ArtworkCategoryType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +20,8 @@ class ArtworkCategoryController extends Controller
     /**
      * Lists all ArtworkCategory entities.
      *
-     * @Route("/", name="artwork_category_index")
-     * @Method("GET")
+     * @Route("/", name="artwork_category_index", methods={"GET"})
+
      * @Template()
 	 * @param Request $request
      */
@@ -41,8 +41,8 @@ class ArtworkCategoryController extends Controller
     /**
      * Creates a new ArtworkCategory entity.
      *
-     * @Route("/new", name="artwork_category_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="artwork_category_new", methods={"GET","POST"})
+
      * @Template()
 	 * @param Request $request
      */
@@ -74,8 +74,8 @@ class ArtworkCategoryController extends Controller
     /**
      * Finds and displays a ArtworkCategory entity.
      *
-     * @Route("/{id}", name="artwork_category_show")
-     * @Method("GET")
+     * @Route("/{id}", name="artwork_category_show", methods={"GET"})
+
      * @Template()
 	 * @param ArtworkCategory $artworkCategory
      */
@@ -90,8 +90,8 @@ class ArtworkCategoryController extends Controller
     /**
      * Displays a form to edit an existing ArtworkCategory entity.
      *
-     * @Route("/{id}/edit", name="artwork_category_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="artwork_category_edit", methods={"GET","POST"})
+
      * @Template()
 	 * @param Request $request
 	 * @param ArtworkCategory $artworkCategory
@@ -121,8 +121,8 @@ class ArtworkCategoryController extends Controller
     /**
      * Deletes a ArtworkCategory entity.
      *
-     * @Route("/{id}/delete", name="artwork_category_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="artwork_category_delete", methods={"GET"})
+
 	 * @param Request $request
 	 * @param ArtworkCategory $artworkCategory
      */

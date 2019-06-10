@@ -8,8 +8,8 @@ use AppBundle\Form\MediaFileMetadataType;
 use AppBundle\Form\MediaFileType;
 use AppBundle\Services\FileUploader;
 use Nines\DublinCoreBundle\Entity\Element;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,8 +29,8 @@ class MediaFileController extends Controller {
     /**
      * Lists all MediaFile entities.
      *
-     * @Route("/", name="media_file_index")
-     * @Method("GET")
+     * @Route("/", name="media_file_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -61,8 +61,8 @@ class MediaFileController extends Controller {
       //    }
      *
      *
-     * @Route("/search", name="media_file_search")
-     * @Method("GET")
+     * @Route("/search", name="media_file_search", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -106,8 +106,8 @@ class MediaFileController extends Controller {
      *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
      *
      *
-     * @Route("/fulltext", name="media_file_fulltext")
-     * @Method("GET")
+     * @Route("/fulltext", name="media_file_fulltext", methods={"GET"})
+
      * @Template()
      * @param Request $request
      * @return array
@@ -133,8 +133,8 @@ class MediaFileController extends Controller {
     /**
      * Creates a new MediaFile entity.
      *
-     * @Route("/new", name="media_file_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="media_file_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -174,8 +174,8 @@ class MediaFileController extends Controller {
     /**
      * Finds and displays a MediaFile entity.
      *
-     * @Route("/{id}", name="media_file_show")
-     * @Method("GET")
+     * @Route("/{id}", name="media_file_show", methods={"GET"})
+
      * @Template()
      * @param MediaFile $mediaFile
      */
@@ -191,8 +191,8 @@ class MediaFileController extends Controller {
     /**
      * Finds and displays a media file.
      *
-     * @Route("/{id}/view", name="media_file_raw")
-     * @Method("GET")
+     * @Route("/{id}/view", name="media_file_raw", methods={"GET"})
+
      * @param MediaFile $mediaFile
      */
     public function mediaAction(MediaFile $mediaFile) {
@@ -202,8 +202,8 @@ class MediaFileController extends Controller {
     /**
      * Finds and displays a media file.
      *
-     * @Route("/{id}/tn", name="media_file_tn")
-     * @Method("GET")
+     * @Route("/{id}/tn", name="media_file_tn", methods={"GET"})
+
      * @param MediaFile $mediaFile
      */
     public function thumbnailAction(MediaFile $mediaFile) {
@@ -217,8 +217,8 @@ class MediaFileController extends Controller {
     /**
      * Displays a form to edit an existing MediaFile entity.
      *
-     * @Route("/{id}/edit", name="media_file_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="media_file_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param MediaFile $mediaFile
@@ -270,8 +270,8 @@ class MediaFileController extends Controller {
     /**
      * Deletes a MediaFile entity.
      *
-     * @Route("/{id}/delete", name="media_file_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="media_file_delete", methods={"GET"})
+
      * @param Request $request
      * @param MediaFile $mediaFile
      */
@@ -300,8 +300,8 @@ class MediaFileController extends Controller {
     /**
      * Edit metadata for a media file.
      *
-     * @Route("/{id}/metadata", name="media_file_metadata")
-     * @Method({"GET","POST"})
+     * @Route("/{id}/metadata", name="media_file_metadata", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param MediaFile $mediaFile

@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Form\Project\ProjectRoleType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +20,8 @@ class ProjectRoleController extends Controller {
     /**
      * Lists all ProjectRole entities.
      *
-     * @Route("/", name="project_role_index")
-     * @Method("GET")
+     * @Route("/", name="project_role_index", methods={"GET"})
+
      * @Template()
      * @param Request $request
      */
@@ -40,8 +40,8 @@ class ProjectRoleController extends Controller {
     /**
      * Creates a new ProjectRole entity.
      *
-     * @Route("/new", name="project_role_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="project_role_new", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      */
@@ -72,8 +72,8 @@ class ProjectRoleController extends Controller {
     /**
      * Finds and displays a ProjectRole entity.
      *
-     * @Route("/{id}", name="project_role_show")
-     * @Method("GET")
+     * @Route("/{id}", name="project_role_show", methods={"GET"})
+
      * @Template()
      * @param ProjectRole $projectRole
      */
@@ -87,8 +87,8 @@ class ProjectRoleController extends Controller {
     /**
      * Displays a form to edit an existing ProjectRole entity.
      *
-     * @Route("/{id}/edit", name="project_role_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="project_role_edit", methods={"GET","POST"})
+
      * @Template()
      * @param Request $request
      * @param ProjectRole $projectRole
@@ -117,8 +117,8 @@ class ProjectRoleController extends Controller {
     /**
      * Deletes a ProjectRole entity.
      *
-     * @Route("/{id}/delete", name="project_role_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="project_role_delete", methods={"GET"})
+
      * @param Request $request
      * @param ProjectRole $projectRole
      */
