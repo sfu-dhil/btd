@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use AppBundle\Entity\ArtisticStatement;
 use AppBundle\Form\ArtisticStatementType;
 
@@ -126,15 +127,12 @@ class ArtisticStatementController extends Controller {
      * Creates a new ArtisticStatement entity.
      *
      * @Route("/new", name="artwork_statement_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $artisticStatement = new ArtisticStatement();
         $form = $this->createForm(ArtisticStatementType::class, $artisticStatement);
         $form->handleRequest($request);
@@ -173,6 +171,7 @@ class ArtisticStatementController extends Controller {
      * Displays a form to edit an existing ArtisticStatement entity.
      *
      * @Route("/{id}/edit", name="artwork_statement_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
@@ -203,15 +202,12 @@ class ArtisticStatementController extends Controller {
      * Deletes a ArtisticStatement entity.
      *
      * @Route("/{id}/delete", name="artwork_statement_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param ArtisticStatement $artisticStatement
      */
     public function deleteAction(Request $request, ArtisticStatement $artisticStatement) {
-        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($artisticStatement);
         $em->flush();

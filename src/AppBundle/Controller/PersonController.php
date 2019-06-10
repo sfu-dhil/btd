@@ -7,6 +7,7 @@ use AppBundle\Form\Person\ArtworkContributionsType;
 use AppBundle\Form\Person\PersonType;
 use AppBundle\Form\Person\ProjectContributionsType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,14 +44,12 @@ class PersonController extends Controller {
     /**
      * @param Request $request
      * @Route("/typeahead", name="person_typeahead", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @return JsonResponse
      */
     public function typeaheadAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $q = $request->query->get('q');
         if (!$q) {
             return new JsonResponse([]);
@@ -125,15 +124,13 @@ class PersonController extends Controller {
      * Creates a new Person entity.
      *
      * @Route("/new", name="person_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $person = new Person();
         $form = $this->createForm(PersonType::class, $person);
         $form->handleRequest($request);
@@ -172,16 +169,14 @@ class PersonController extends Controller {
      * Displays a form to edit an existing Person entity.
      *
      * @Route("/{id}/edit", name="person_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      * @param Person $person
      */
     public function editAction(Request $request, Person $person) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $editForm = $this->createForm(PersonType::class, $person);
         $editForm->handleRequest($request);
 
@@ -202,15 +197,13 @@ class PersonController extends Controller {
      * Deletes a Person entity.
      *
      * @Route("/{id}/delete", name="person_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param Person $person
      */
     public function deleteAction(Request $request, Person $person) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($person);
         $em->flush();
@@ -221,6 +214,7 @@ class PersonController extends Controller {
 
     /**
      * @Route("/{id}/add_media", name="person_add_media", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      *
@@ -228,10 +222,7 @@ class PersonController extends Controller {
      * @param Person $person
      */
     public function addMediaAction(Request $request, Person $person) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:MediaFile');
         $q = $request->query->get('q');
@@ -268,6 +259,7 @@ class PersonController extends Controller {
 
     /**
      * @Route("/{id}/remove_media", name="person_remove_media", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      *
@@ -275,10 +267,7 @@ class PersonController extends Controller {
      * @param Person $person
      */
     public function removeMediaAction(Request $request, Person $person) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $paginator = $this->get('knp_paginator');
         $results = $paginator->paginate($person->getMediaFiles(), $request->query->getInt('page', 1), 25);
 
@@ -307,6 +296,7 @@ class PersonController extends Controller {
 
     /**
      * @Route("/{id}/project_contributions", name="person_project_contributions", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      *
@@ -314,10 +304,7 @@ class PersonController extends Controller {
      * @param Person $person
      */
     public function projectContributionsAction(Request $request, Person $person) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $form = $this->createForm(ProjectContributionsType::class, $person, array(
             'person' => $person,
         ));
@@ -338,6 +325,7 @@ class PersonController extends Controller {
 
     /**
      * @Route("/{id}/artwork_contributions", name="person_artwork_contributions", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      *
@@ -345,10 +333,7 @@ class PersonController extends Controller {
      * @param Person $person
      */
     public function artworkContributionsAction(Request $request, Person $person) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $form = $this->createForm(ArtworkContributionsType::class, $person, array(
             'person' => $person,
         ));

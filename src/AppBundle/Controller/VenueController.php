@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Venue;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -67,15 +68,13 @@ class VenueController extends Controller {
      * Creates a new Venue entity.
      *
      * @Route("/new", name="venue_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $venue = new Venue();
         $form = $this->createForm('AppBundle\Form\VenueType', $venue);
         $form->handleRequest($request);
@@ -114,16 +113,14 @@ class VenueController extends Controller {
      * Displays a form to edit an existing Venue entity.
      *
      * @Route("/{id}/edit", name="venue_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      * @param Venue $venue
      */
     public function editAction(Request $request, Venue $venue) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $editForm = $this->createForm('AppBundle\Form\VenueType', $venue);
         $editForm->handleRequest($request);
 
@@ -144,15 +141,13 @@ class VenueController extends Controller {
      * Deletes a Venue entity.
      *
      * @Route("/{id}/delete", name="venue_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param Venue $venue
      */
     public function deleteAction(Request $request, Venue $venue) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($venue);
         $em->flush();

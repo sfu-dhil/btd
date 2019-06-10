@@ -9,6 +9,7 @@ use AppBundle\Form\MediaFileType;
 use AppBundle\Services\FileUploader;
 use Nines\DublinCoreBundle\Entity\Element;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -134,6 +135,7 @@ class MediaFileController extends Controller {
      * Creates a new MediaFile entity.
      *
      * @Route("/new", name="media_file_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
@@ -218,6 +220,7 @@ class MediaFileController extends Controller {
      * Displays a form to edit an existing MediaFile entity.
      *
      * @Route("/{id}/edit", name="media_file_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
@@ -271,6 +274,7 @@ class MediaFileController extends Controller {
      * Deletes a MediaFile entity.
      *
      * @Route("/{id}/delete", name="media_file_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param MediaFile $mediaFile
@@ -301,6 +305,7 @@ class MediaFileController extends Controller {
      * Edit metadata for a media file.
      *
      * @Route("/{id}/metadata", name="media_file_metadata", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request

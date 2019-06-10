@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\ArtworkRole;
 use AppBundle\Form\Artwork\ArtworkRoleType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,15 +42,13 @@ class ArtworkRoleController extends Controller {
      * Creates a new ArtworkRole entity.
      *
      * @Route("/new", name="artwork_role_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $artworkRole = new ArtworkRole();
         $form = $this->createForm(ArtworkRoleType::class, $artworkRole);
         $form->handleRequest($request);
@@ -88,16 +87,14 @@ class ArtworkRoleController extends Controller {
      * Displays a form to edit an existing ArtworkRole entity.
      *
      * @Route("/{id}/edit", name="artwork_role_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      * @param ArtworkRole $artworkRole
      */
     public function editAction(Request $request, ArtworkRole $artworkRole) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $editForm = $this->createForm(ArtworkRoleType::class, $artworkRole);
         $editForm->handleRequest($request);
 
@@ -118,15 +115,13 @@ class ArtworkRoleController extends Controller {
      * Deletes a ArtworkRole entity.
      *
      * @Route("/{id}/delete", name="artwork_role_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param ArtworkRole $artworkRole
      */
     public function deleteAction(Request $request, ArtworkRole $artworkRole) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($artworkRole);
         $em->flush();

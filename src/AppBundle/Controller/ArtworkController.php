@@ -7,6 +7,7 @@ use AppBundle\Form\Artwork\ArtworkType;
 use AppBundle\Form\Artwork\ProjectsType;
 use AppBundle\Form\Artwork\ArtworkContributionsType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -70,15 +71,13 @@ class ArtworkController extends Controller {
      * Creates a new Artwork entity.
      *
      * @Route("/new", name="artwork_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $artwork = new Artwork();
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
@@ -117,16 +116,14 @@ class ArtworkController extends Controller {
      * Displays a form to edit an existing Artwork entity.
      *
      * @Route("/{id}/edit", name="artwork_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      * @param Artwork $artwork
      */
     public function editAction(Request $request, Artwork $artwork) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $editForm = $this->createForm(ArtworkType::class, $artwork);
         $editForm->handleRequest($request);
 
@@ -147,15 +144,13 @@ class ArtworkController extends Controller {
      * Deletes a Artwork entity.
      *
      * @Route("/{id}/delete", name="artwork_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param Artwork $artwork
      */
     public function deleteAction(Request $request, Artwork $artwork) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($artwork);
         $em->flush();
@@ -166,6 +161,7 @@ class ArtworkController extends Controller {
 
     /**
      * @Route("/{id}/add_media", name="artwork_add_media", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      *
@@ -173,10 +169,7 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function addMediaAction(Request $request, Artwork $artwork) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:MediaFile');
         $q = $request->query->get('q');
@@ -213,6 +206,7 @@ class ArtworkController extends Controller {
 
     /**
      * @Route("/{id}/remove_media", name="artwork_remove_media", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      *
@@ -220,10 +214,7 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function removeMediaAction(Request $request, Artwork $artwork) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $paginator = $this->get('knp_paginator');
         $results = $paginator->paginate($artwork->getMediaFiles(), $request->query->getInt('page', 1), 25);
 
@@ -252,6 +243,7 @@ class ArtworkController extends Controller {
 
     /**
      * @Route("/{id}/contributions", name="artwork_contributions", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      *
@@ -259,10 +251,7 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function contributionsAction(Request $request, Artwork $artwork) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $form = $this->createForm(ArtworkContributionsType::class, $artwork, array(
             'artwork' => $artwork,
         ));
@@ -283,6 +272,7 @@ class ArtworkController extends Controller {
 
     /**
      * @Route("/{id}/projects", name="artwork_projects", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      *
@@ -290,10 +280,7 @@ class ArtworkController extends Controller {
      * @param Artwork $artwork
      */
     public function projectsAction(Request $request, Artwork $artwork) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $oldProjects = $artwork->getProjects()->toArray();
         $form = $this->createForm(ProjectsType::class, $artwork);
         $form->handleRequest($request);

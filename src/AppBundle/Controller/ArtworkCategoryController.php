@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\ArtworkCategory;
 use AppBundle\Form\Artwork\ArtworkCategoryType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,16 +43,14 @@ class ArtworkCategoryController extends Controller
      * Creates a new ArtworkCategory entity.
      *
      * @Route("/new", name="artwork_category_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
 	 * @param Request $request
      */
     public function newAction(Request $request)
     {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $artworkCategory = new ArtworkCategory();
         $form = $this->createForm(ArtworkCategoryType::class, $artworkCategory);
         $form->handleRequest($request);
@@ -91,6 +90,7 @@ class ArtworkCategoryController extends Controller
      * Displays a form to edit an existing ArtworkCategory entity.
      *
      * @Route("/{id}/edit", name="artwork_category_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
 	 * @param Request $request
@@ -98,10 +98,7 @@ class ArtworkCategoryController extends Controller
      */
     public function editAction(Request $request, ArtworkCategory $artworkCategory)
     {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $editForm = $this->createForm(ArtworkCategoryType::class, $artworkCategory);
         $editForm->handleRequest($request);
 
@@ -122,16 +119,14 @@ class ArtworkCategoryController extends Controller
      * Deletes a ArtworkCategory entity.
      *
      * @Route("/{id}/delete", name="artwork_category_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
 	 * @param Request $request
 	 * @param ArtworkCategory $artworkCategory
      */
     public function deleteAction(Request $request, ArtworkCategory $artworkCategory)
     {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($artworkCategory);
         $em->flush();

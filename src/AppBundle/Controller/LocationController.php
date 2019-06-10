@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -68,15 +69,13 @@ class LocationController extends Controller {
      * Creates a new Location entity.
      *
      * @Route("/new", name="location_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $location = new Location();
         $form = $this->createForm('AppBundle\Form\LocationType', $location);
         $form->handleRequest($request);
@@ -115,16 +114,14 @@ class LocationController extends Controller {
      * Displays a form to edit an existing Location entity.
      *
      * @Route("/{id}/edit", name="location_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      * @param Location $location
      */
     public function editAction(Request $request, Location $location) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $editForm = $this->createForm('AppBundle\Form\LocationType', $location);
         $editForm->handleRequest($request);
 
@@ -145,15 +142,13 @@ class LocationController extends Controller {
      * Deletes a Location entity.
      *
      * @Route("/{id}/delete", name="location_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param Location $location
      */
     public function deleteAction(Request $request, Location $location) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($location);
         $em->flush();

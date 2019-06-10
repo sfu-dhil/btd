@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Form\Project\ProjectRoleType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,15 +42,13 @@ class ProjectRoleController extends Controller {
      * Creates a new ProjectRole entity.
      *
      * @Route("/new", name="project_role_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $projectRole = new ProjectRole();
         $form = $this->createForm(ProjectRoleType::class, $projectRole);
         $form->handleRequest($request);
@@ -88,16 +87,14 @@ class ProjectRoleController extends Controller {
      * Displays a form to edit an existing ProjectRole entity.
      *
      * @Route("/{id}/edit", name="project_role_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      * @param ProjectRole $projectRole
      */
     public function editAction(Request $request, ProjectRole $projectRole) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $editForm = $this->createForm(ProjectRoleType::class, $projectRole);
         $editForm->handleRequest($request);
 
@@ -118,15 +115,13 @@ class ProjectRoleController extends Controller {
      * Deletes a ProjectRole entity.
      *
      * @Route("/{id}/delete", name="project_role_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param ProjectRole $projectRole
      */
     public function deleteAction(Request $request, ProjectRole $projectRole) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectRole);
         $em->flush();

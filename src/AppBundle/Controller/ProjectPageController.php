@@ -6,6 +6,7 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectPage;
 use AppBundle\Form\Project\ProjectPageType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -47,16 +48,14 @@ class ProjectPageController extends Controller {
      *
      * @Route("/project/{projectId}/page/new", name="project_page_new", methods={"GET","POST"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      * @param Project $project
      */
     public function newAction(Request $request, Project $project) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $projectPage = new ProjectPage();
         $projectPage->setProject($project);
         $form = $this->createForm(ProjectPageType::class, $projectPage);
@@ -103,16 +102,14 @@ class ProjectPageController extends Controller {
      *
      * @Route("/project/{projectId}/page/{id}/edit", name="project_page_edit", methods={"GET","POST"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      * @param ProjectPage $projectPage
      */
     public function editAction(Request $request, Project $project, ProjectPage $projectPage) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         if($project->getId() !== $projectPage->getProject()->getId()) {
             throw new NotFoundHttpException();
         }
@@ -141,15 +138,13 @@ class ProjectPageController extends Controller {
      *
      * @Route("/project/{projectId}/page/{id}/delete", name="project_page_delete", methods={"GET"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param ProjectPage $projectPage
      */
     public function deleteAction(Request $request, Project $project, ProjectPage $projectPage) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectPage);
         $em->flush();

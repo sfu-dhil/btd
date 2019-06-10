@@ -65,14 +65,13 @@ class ArtworkControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/artwork/1/edit');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
 
     public function testUserEdit() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/artwork/1/edit');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testAdminEdit() {
@@ -99,14 +98,13 @@ class ArtworkControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/artwork/new');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
 
     public function testUserNew() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/artwork/new');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testAdminNew() {
@@ -133,14 +131,13 @@ class ArtworkControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/artwork/1/delete');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
 
     public function testUserDelete() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/artwork/1/delete');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testAdminDelete() {

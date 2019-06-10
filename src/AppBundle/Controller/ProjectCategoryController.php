@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\ProjectCategory;
 use AppBundle\Form\Project\ProjectCategoryType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,15 +42,13 @@ class ProjectCategoryController extends Controller {
      * Creates a new ProjectCategory entity.
      *
      * @Route("/new", name="project_category_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $projectCategory = new ProjectCategory();
         $form = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $form->handleRequest($request);
@@ -88,16 +87,14 @@ class ProjectCategoryController extends Controller {
      * Displays a form to edit an existing ProjectCategory entity.
      *
      * @Route("/{id}/edit", name="project_category_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @Template()
      * @param Request $request
      * @param ProjectCategory $projectCategory
      */
     public function editAction(Request $request, ProjectCategory $projectCategory) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $editForm = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $editForm->handleRequest($request);
 
@@ -118,15 +115,13 @@ class ProjectCategoryController extends Controller {
      * Deletes a ProjectCategory entity.
      *
      * @Route("/{id}/delete", name="project_category_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
 
      * @param Request $request
      * @param ProjectCategory $projectCategory
      */
     public function deleteAction(Request $request, ProjectCategory $projectCategory) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectCategory);
         $em->flush();
