@@ -38,6 +38,12 @@ services:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
 
+    AppBundle\EventListener\RequestListener:
+        arguments:
+            $allowLogins: '%dhil.allow_logins%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
     AppBundle\Services\FileUploader:
         arguments: ['%btd.media_upload_path%']
 
