@@ -62,7 +62,9 @@ task('dhil:sphinx', function(){
         $host = get('hostname');
         $become = get('become');
 
+        writeln("building sphinx docs.");
         runLocally('/usr/local/bin/sphinx-build docs/source web/docs/sphinx');
+        writeln("uploading sphinx docs.");
         runLocally("rsync -av -e 'ssh' --rsync-path='sudo -u $become rsync' ./web/docs/ $user@$host:{{release_path}}/web/docs", ['timeout' => null]);
     }
 })->desc('Build sphinx docs locally and upload to server.');
