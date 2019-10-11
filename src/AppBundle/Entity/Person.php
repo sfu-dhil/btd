@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
- * Person
+ * Person.
  *
  * @ORM\Table(name="person", indexes={
  *  @ORM\Index(columns={"fullname", "biography"}, flags={"fulltext"}),
@@ -16,7 +16,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PersonRepository")
  */
 class Person extends AbstractEntity {
-
     /**
      * @var string
      * @ORM\Column(type="string")
@@ -42,13 +41,13 @@ class Person extends AbstractEntity {
     private $urls;
 
     /**
-     * @var Collection|ArtworkContribution[]
+     * @var ArtworkContribution[]|Collection
      * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="person", cascade={"persist"}, orphanRemoval=true)
      */
     private $artworkContributions;
-    
+
     /**
-     * @var Collection|ArtisticStatement[]
+     * @var ArtisticStatement[]|Collection
      * @ORM\ManyToMany(targetEntity="ArtisticStatement", mappedBy="people")
      */
     private $artisticStatements;
@@ -58,13 +57,13 @@ class Person extends AbstractEntity {
      * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="person", cascade={"persist"}, orphanRemoval=true)
      */
     private $projectContributions;
-    
+
     /**
      * @var Collection|MediaFile[]
      * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="people")
      * @ORM\JoinTable(name="person_mediafiles")
      */
-    private $mediaFiles;    
+    private $mediaFiles;
 
     public function __construct() {
         parent::__construct();
@@ -80,7 +79,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Set fullname
+     * Set fullname.
      *
      * @param string $fullname
      *
@@ -93,7 +92,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Get fullname
+     * Get fullname.
      *
      * @return string
      */
@@ -102,7 +101,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Set sortableName
+     * Set sortableName.
      *
      * @param string $sortableName
      *
@@ -115,7 +114,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Get sortableName
+     * Get sortableName.
      *
      * @return string
      */
@@ -124,7 +123,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Set biography
+     * Set biography.
      *
      * @param string $biography
      *
@@ -137,7 +136,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Get biography
+     * Get biography.
      *
      * @return string
      */
@@ -146,7 +145,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Add artworkContribution
+     * Add artworkContribution.
      *
      * @param ArtworkContribution $artworkContribution
      *
@@ -159,7 +158,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Remove artworkContribution
+     * Remove artworkContribution.
      *
      * @param ArtworkContribution $artworkContribution
      */
@@ -168,7 +167,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Get artworkContributions
+     * Get artworkContributions.
      *
      * @return Collection
      */
@@ -177,7 +176,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Add projectContribution
+     * Add projectContribution.
      *
      * @param ProjectContribution $projectContribution
      *
@@ -190,7 +189,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Remove projectContribution
+     * Remove projectContribution.
      *
      * @param ProjectContribution $projectContribution
      */
@@ -199,7 +198,7 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Get projectContributions
+     * Get projectContributions.
      *
      * @return Collection
      */
@@ -209,59 +208,56 @@ class Person extends AbstractEntity {
 
     /**
      * Get the first URL. There may be more.
-     * 
-     * @return string|null
+     *
+     * @return null|string
      */
     public function getUrl() {
-        if(count($this->urls) > 0) {
+        if (count($this->urls) > 0) {
             return $this->urls[0];
         }
-        return null;
     }
 
     /**
-     * Set urls
+     * Set urls.
      *
      * @param array $urls
      *
      * @return Person
      */
-    public function setUrls($urls)
-    {
+    public function setUrls($urls) {
         $this->urls = $urls;
 
         return $this;
     }
 
     /**
-     * Get urls
+     * Get urls.
      *
      * @return array
      */
-    public function getUrls()
-    {
+    public function getUrls() {
         return $this->urls;
     }
 
     /**
      * Check if a media file is associated with this person.
-     * 
+     *
      * @param \AppBundle\Entity\MediaFile $mediaFile
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasMediaFile(MediaFile $mediaFile) {
         return $this->mediaFiles->contains($mediaFile);
     }
-    
+
     /**
-     * Add mediaFile
+     * Add mediaFile.
      *
      * @param \AppBundle\Entity\MediaFile $mediaFile
      *
      * @return Person
      */
-    public function addMediaFile(\AppBundle\Entity\MediaFile $mediaFile)
-    {
+    public function addMediaFile(MediaFile $mediaFile) {
         if ( ! $this->mediaFiles->contains($mediaFile)) {
             $this->mediaFiles[] = $mediaFile;
         }
@@ -270,91 +266,82 @@ class Person extends AbstractEntity {
     }
 
     /**
-     * Remove mediaFile
+     * Remove mediaFile.
      *
      * @param \AppBundle\Entity\MediaFile $mediaFile
      */
-    public function removeMediaFile(\AppBundle\Entity\MediaFile $mediaFile)
-    {
+    public function removeMediaFile(MediaFile $mediaFile) {
         $this->mediaFiles->removeElement($mediaFile);
     }
 
     /**
-     * Get mediaFiles
+     * Get mediaFiles.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getMediaFiles()
-    {
+    public function getMediaFiles() {
         return $this->mediaFiles;
     }
 
     /**
-     * Add affiliation
+     * Add affiliation.
      *
      * @param Organization $affiliation
      *
      * @return Person
      */
-    public function addAffiliation(Organization $affiliation)
-    {
+    public function addAffiliation(Organization $affiliation) {
         $this->affiliations[] = $affiliation;
 
         return $this;
     }
 
     /**
-     * Remove affiliation
+     * Remove affiliation.
      *
      * @param Organization $affiliation
      */
-    public function removeAffiliation(Organization $affiliation)
-    {
+    public function removeAffiliation(Organization $affiliation) {
         $this->affiliations->removeElement($affiliation);
     }
 
     /**
-     * Get affiliations
+     * Get affiliations.
      *
      * @return Collection
      */
-    public function getAffiliations()
-    {
+    public function getAffiliations() {
         return $this->affiliations;
     }
 
     /**
-     * Add artisticStatement
+     * Add artisticStatement.
      *
      * @param \AppBundle\Entity\ArtisticStatement $artisticStatement
      *
      * @return Person
      */
-    public function addArtisticStatement(\AppBundle\Entity\ArtisticStatement $artisticStatement)
-    {
+    public function addArtisticStatement(ArtisticStatement $artisticStatement) {
         $this->artisticStatements[] = $artisticStatement;
 
         return $this;
     }
 
     /**
-     * Remove artisticStatement
+     * Remove artisticStatement.
      *
      * @param \AppBundle\Entity\ArtisticStatement $artisticStatement
      */
-    public function removeArtisticStatement(\AppBundle\Entity\ArtisticStatement $artisticStatement)
-    {
+    public function removeArtisticStatement(ArtisticStatement $artisticStatement) {
         $this->artisticStatements->removeElement($artisticStatement);
     }
 
     /**
-     * Get artisticStatements
+     * Get artisticStatements.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getArtisticStatements()
-    {
+    public function getArtisticStatements() {
         return $this->artisticStatements;
     }
-
 }

@@ -10,14 +10,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadOrganization form.
  */
-class LoadOrganization extends Fixture implements DependentFixtureInterface
-{
+class LoadOrganization extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new Organization();
             $fixture->setName('Name ' . $i);
             $fixture->setAddress('Address ' . $i);
@@ -33,7 +31,6 @@ class LoadOrganization extends Fixture implements DependentFixtureInterface
         }
 
         $em->flush();
-
     }
 
     /**
@@ -42,10 +39,8 @@ class LoadOrganization extends Fixture implements DependentFixtureInterface
     public function getDependencies() {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
-        return [
+        return array(
             LoadLocation::class,
-        ];
+        );
     }
-
-
 }

@@ -2,19 +2,17 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\VenueCategory;
 use AppBundle\DataFixtures\ORM\LoadVenueCategory;
+use AppBundle\Entity\VenueCategory;
 use Nines\UserBundle\DataFixtures\ORM\LoadUser;
 use Nines\UtilBundle\Tests\Util\BaseTestCase;
 
-class VenueCategoryControllerTest extends BaseTestCase
-{
-
+class VenueCategoryControllerTest extends BaseTestCase {
     protected function getFixtures() {
-        return [
+        return array(
             LoadUser::class,
-            LoadVenueCategory::class
-        ];
+            LoadVenueCategory::class,
+        );
     }
 
     public function testAnonIndex() {
@@ -61,6 +59,7 @@ class VenueCategoryControllerTest extends BaseTestCase
         $this->assertEquals(1, $crawler->selectLink('Edit')->count());
         $this->assertEquals(1, $crawler->selectLink('Delete')->count());
     }
+
     public function testAnonEdit() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/venue_category/1/edit');
@@ -80,12 +79,12 @@ class VenueCategoryControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Update')->form([
+        $form = $formCrawler->selectButton('Update')->form(array(
             // DO STUFF HERE.
             // 'venue_categorys[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect('/venue_category/1'));
@@ -113,12 +112,12 @@ class VenueCategoryControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Create')->form([
+        $form = $formCrawler->selectButton('Create')->form(array(
             // DO STUFF HERE.
             // 'venue_categorys[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect());
@@ -153,5 +152,4 @@ class VenueCategoryControllerTest extends BaseTestCase
         $postCount = count($this->em->getRepository(VenueCategory::class)->findAll());
         $this->assertEquals($preCount - 1, $postCount);
     }
-
 }

@@ -4,12 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Form\Project\ProjectRoleType;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ProjectRole controller.
@@ -17,13 +16,13 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("/project_role")
  */
 class ProjectRoleController extends Controller {
-
     /**
      * Lists all ProjectRole entities.
      *
      * @Route("/", name="project_role_index", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -43,12 +42,12 @@ class ProjectRoleController extends Controller {
      *
      * @Route("/new", name="project_role_new", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function newAction(Request $request) {
-
         $projectRole = new ProjectRole();
         $form = $this->createForm(ProjectRoleType::class, $projectRole);
         $form->handleRequest($request);
@@ -59,6 +58,7 @@ class ProjectRoleController extends Controller {
             $em->flush();
 
             $this->addFlash('success', 'The new projectRole was created.');
+
             return $this->redirectToRoute('project_role_show', array('id' => $projectRole->getId()));
         }
 
@@ -72,12 +72,12 @@ class ProjectRoleController extends Controller {
      * Finds and displays a ProjectRole entity.
      *
      * @Route("/{id}", name="project_role_show", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param ProjectRole $projectRole
      */
     public function showAction(ProjectRole $projectRole) {
-
         return array(
             'projectRole' => $projectRole,
         );
@@ -88,13 +88,13 @@ class ProjectRoleController extends Controller {
      *
      * @Route("/{id}/edit", name="project_role_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param ProjectRole $projectRole
      */
     public function editAction(Request $request, ProjectRole $projectRole) {
-
         $editForm = $this->createForm(ProjectRoleType::class, $projectRole);
         $editForm->handleRequest($request);
 
@@ -102,6 +102,7 @@ class ProjectRoleController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The projectRole has been updated.');
+
             return $this->redirectToRoute('project_role_show', array('id' => $projectRole->getId()));
         }
 
@@ -116,12 +117,12 @@ class ProjectRoleController extends Controller {
      *
      * @Route("/{id}/delete", name="project_role_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
+     *
      * @param Request $request
      * @param ProjectRole $projectRole
      */
     public function deleteAction(Request $request, ProjectRole $projectRole) {
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectRole);
         $em->flush();
@@ -129,5 +130,4 @@ class ProjectRoleController extends Controller {
 
         return $this->redirectToRoute('project_role_index');
     }
-
 }

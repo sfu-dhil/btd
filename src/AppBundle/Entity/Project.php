@@ -11,15 +11,14 @@ use Nines\UtilBundle\Entity\ContentEntityInterface;
 use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
 /**
- * Project
+ * Project.
  *
  * @ORM\Table(name="project", indexes={
  *  @ORM\Index(columns={"title", "content"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
  */
-class Project extends AbstractEntity  implements ContentEntityInterface {
-
+class Project extends AbstractEntity implements ContentEntityInterface {
     use ContentExcerptTrait;
 
     /**
@@ -27,7 +26,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
      * @ORM\Column(type="string")
      */
     private $title;
-    
+
     /**
      * @var DateTime
      * @ORM\Column(type="date")
@@ -53,11 +52,11 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     private $parent;
 
     /**
-     * @var Project[]|Collection
+     * @var Collection|Project[]
      * @ORM\OneToMany(targetEntity="Project", mappedBy="parent")
      */
-    private $children;    
-    
+    private $children;
+
     /**
      * @var ProjectCategory
      * @ORM\ManyToOne(targetEntity="ProjectCategory", inversedBy="projects")
@@ -92,7 +91,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     private $mediaFiles;
 
     /**
-     * @var Collection|Artwork[]
+     * @var Artwork[]|Collection
      * @ORM\ManyToMany(targetEntity="Artwork", inversedBy="projects")
      * @ORM\JoinTable(name="project_artworks")
      */
@@ -112,7 +111,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -125,7 +124,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -134,7 +133,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Set url
+     * Set url.
      *
      * @param string $url
      *
@@ -147,7 +146,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get url
+     * Get url.
      *
      * @return string
      */
@@ -156,7 +155,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Set projectCategory
+     * Set projectCategory.
      *
      * @param ProjectCategory $projectCategory
      *
@@ -169,7 +168,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get projectCategory
+     * Get projectCategory.
      *
      * @return ProjectCategory
      */
@@ -178,7 +177,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Add venue
+     * Add venue.
      *
      * @param Venue $venue
      *
@@ -191,7 +190,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Remove venue
+     * Remove venue.
      *
      * @param Venue $venue
      */
@@ -200,7 +199,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get venues
+     * Get venues.
      *
      * @return Collection
      */
@@ -209,7 +208,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Add contribution
+     * Add contribution.
      *
      * @param ProjectContribution $contribution
      *
@@ -222,7 +221,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Remove contribution
+     * Remove contribution.
      *
      * @param ProjectContribution $contribution
      */
@@ -231,7 +230,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get contributions
+     * Get contributions.
      *
      * @return Collection
      */
@@ -243,14 +242,15 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
      * Check if a media file is associated with this project.
      *
      * @param MediaFile $mediaFile
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasMediaFile(MediaFile $mediaFile) {
         return $this->mediaFiles->contains($mediaFile);
     }
 
     /**
-     * Add mediaFile
+     * Add mediaFile.
      *
      * @param MediaFile $mediaFile
      *
@@ -265,7 +265,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Remove mediaFile
+     * Remove mediaFile.
      *
      * @param MediaFile $mediaFile
      */
@@ -274,7 +274,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get mediaFiles
+     * Get mediaFiles.
      *
      * @return Collection
      */
@@ -282,98 +282,89 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
         return $this->mediaFiles;
     }
 
-
     /**
-     * Set startDate
+     * Set startDate.
      *
      * @param DateTime $startDate
      *
      * @return Project
      */
-    public function setStartDate($startDate)
-    {
+    public function setStartDate($startDate) {
         $this->startDate = $startDate;
 
         return $this;
     }
 
     /**
-     * Get startDate
+     * Get startDate.
      *
      * @return DateTime
      */
-    public function getStartDate()
-    {
+    public function getStartDate() {
         return $this->startDate;
     }
 
     /**
-     * Set endDate
+     * Set endDate.
      *
      * @param DateTime $endDate
      *
      * @return Project
      */
-    public function setEndDate($endDate)
-    {
+    public function setEndDate($endDate) {
         $this->endDate = $endDate;
 
         return $this;
     }
 
     /**
-     * Get endDate
+     * Get endDate.
      *
      * @return DateTime
      */
-    public function getEndDate()
-    {
+    public function getEndDate() {
         return $this->endDate;
     }
 
     /**
-     * Add projectPage
+     * Add projectPage.
      *
      * @param ProjectPage $projectPage
      *
      * @return Project
      */
-    public function addProjectPage(ProjectPage $projectPage)
-    {
+    public function addProjectPage(ProjectPage $projectPage) {
         $this->projectPages[] = $projectPage;
 
         return $this;
     }
 
     /**
-     * Remove projectPage
+     * Remove projectPage.
      *
      * @param ProjectPage $projectPage
      */
-    public function removeProjectPage(ProjectPage $projectPage)
-    {
+    public function removeProjectPage(ProjectPage $projectPage) {
         $this->projectPages->removeElement($projectPage);
     }
 
     /**
-     * Get projectPages
+     * Get projectPages.
      *
      * @return Collection
      */
-    public function getProjectPages()
-    {
+    public function getProjectPages() {
         return $this->projectPages;
     }
 
     /**
-     * Add artwork
+     * Add artwork.
      *
      * @param Artwork $artwork
      *
      * @return Project
      */
-    public function addArtwork(Artwork $artwork)
-    {
+    public function addArtwork(Artwork $artwork) {
         $this->artworks[] = $artwork;
 
         return $this;
@@ -384,34 +375,31 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Remove artwork
+     * Remove artwork.
      *
      * @param Artwork $artwork
      */
-    public function removeArtwork(Artwork $artwork)
-    {
+    public function removeArtwork(Artwork $artwork) {
         $this->artworks->removeElement($artwork);
     }
 
     /**
-     * Get artworks
+     * Get artworks.
      *
      * @return Collection
      */
-    public function getArtworks()
-    {
+    public function getArtworks() {
         return $this->artworks;
     }
 
     /**
      * Set parent.
      *
-     * @param Project|null $parent
+     * @param null|Project $parent
      *
      * @return Project
      */
-    public function setParent(Project $parent = null)
-    {
+    public function setParent(Project $parent = null) {
         $this->parent = $parent;
 
         return $this;
@@ -420,10 +408,9 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
     /**
      * Get parent.
      *
-     * @return Project|null
+     * @return null|Project
      */
-    public function getParent()
-    {
+    public function getParent() {
         return $this->parent;
     }
 
@@ -434,8 +421,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
      *
      * @return Project
      */
-    public function addChild(Project $child)
-    {
+    public function addChild(Project $child) {
         $this->children[] = $child;
 
         return $this;
@@ -446,10 +432,9 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
      *
      * @param Project $child
      *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeChild(Project $child)
-    {
+    public function removeChild(Project $child) {
         return $this->children->removeElement($child);
     }
 
@@ -458,8 +443,7 @@ class Project extends AbstractEntity  implements ContentEntityInterface {
      *
      * @return Collection
      */
-    public function getChildren()
-    {
+    public function getChildren() {
         return $this->children;
     }
 }

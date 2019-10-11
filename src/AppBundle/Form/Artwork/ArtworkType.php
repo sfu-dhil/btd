@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArtworkType extends AbstractType {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -31,5 +30,4 @@ class ArtworkType extends AbstractType {
             'data_class' => Artwork::class,
         ));
     }
-
 }

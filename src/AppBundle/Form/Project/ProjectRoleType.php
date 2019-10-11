@@ -4,12 +4,10 @@ namespace AppBundle\Form\Project;
 
 use AppBundle\Entity\ProjectRole;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProjectRoleType extends AbstractType {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -28,5 +26,4 @@ class ProjectRoleType extends AbstractType {
             'data_class' => ProjectRole::class,
         ));
     }
-
 }

@@ -8,55 +8,51 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
- * ArtworkCategory
+ * ArtworkCategory.
  *
  * @ORM\Table(name="artwork_category")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtworkCategoryRepository")
  */
-class ArtworkCategory extends AbstractTerm
-{
+class ArtworkCategory extends AbstractTerm {
     /**
-     * @var Collection|Artwork[]
+     * @var Artwork[]|Collection
      * @ORM\OneToMany(targetEntity="Artwork", mappedBy="artworkCategory")
      */
     private $artworks;
-    
+
     public function __construct() {
         parent::__construct();
         $this->artworks = new ArrayCollection();
     }
 
     /**
-     * Add artwork
+     * Add artwork.
      *
      * @param Artwork $artwork
      *
      * @return ArtworkCategory
      */
-    public function addArtwork(Artwork $artwork)
-    {
+    public function addArtwork(Artwork $artwork) {
         $this->artworks[] = $artwork;
 
         return $this;
     }
 
     /**
-     * Remove artwork
+     * Remove artwork.
      *
      * @param Artwork $artwork
      */
-    public function removeArtwork(Artwork $artwork)
-    {
+    public function removeArtwork(Artwork $artwork) {
         $this->artworks->removeElement($artwork);
     }
 
     /**
-     * Get artworks
+     * Get artworks.
      *
      * @return Collection
      */
-    public function getArtworks()
-    {
+    public function getArtworks() {
         return $this->artworks;
     }
 }

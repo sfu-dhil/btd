@@ -4,20 +4,17 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ArtworkCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * LoadArtworkCategory form.
  */
-class LoadArtworkCategory extends Fixture
-{
+class LoadArtworkCategory extends Fixture {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new ArtworkCategory();
             $fixture->setName('artwork-category-' . $i);
             $fixture->setLabel('Artwork Category ' . $i);
@@ -26,7 +23,5 @@ class LoadArtworkCategory extends Fixture
         }
 
         $em->flush();
-
     }
-
 }

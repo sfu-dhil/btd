@@ -46,9 +46,10 @@ class Builder implements ContainerAwareInterface {
     }
 
     private function hasRole($role) {
-        if (!$this->tokenStorage->getToken()) {
+        if ( ! $this->tokenStorage->getToken()) {
             return false;
         }
+
         return $this->authChecker->isGranted($role);
     }
 
@@ -56,6 +57,7 @@ class Builder implements ContainerAwareInterface {
      * Build a menu for blog posts.
      *
      * @param array $options
+     *
      * @return ItemInterface
      */
     public function mainMenu(array $options) {
@@ -162,5 +164,4 @@ class Builder implements ContainerAwareInterface {
 
         return $menu;
     }
-
 }

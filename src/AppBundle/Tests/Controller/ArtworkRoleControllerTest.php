@@ -2,19 +2,17 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\ArtworkRole;
 use AppBundle\DataFixtures\ORM\LoadArtworkRole;
+use AppBundle\Entity\ArtworkRole;
 use Nines\UserBundle\DataFixtures\ORM\LoadUser;
 use Nines\UtilBundle\Tests\Util\BaseTestCase;
 
-class ArtworkRoleControllerTest extends BaseTestCase
-{
-
+class ArtworkRoleControllerTest extends BaseTestCase {
     protected function getFixtures() {
-        return [
+        return array(
             LoadUser::class,
-            LoadArtworkRole::class
-        ];
+            LoadArtworkRole::class,
+        );
     }
 
     public function testAnonIndex() {
@@ -61,6 +59,7 @@ class ArtworkRoleControllerTest extends BaseTestCase
         $this->assertEquals(1, $crawler->selectLink('Edit')->count());
         $this->assertEquals(1, $crawler->selectLink('Delete')->count());
     }
+
     public function testAnonEdit() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/artwork_role/1/edit');
@@ -80,12 +79,12 @@ class ArtworkRoleControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Update')->form([
+        $form = $formCrawler->selectButton('Update')->form(array(
             // DO STUFF HERE.
             // 'artwork_roles[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect('/artwork_role/1'));
@@ -113,12 +112,12 @@ class ArtworkRoleControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Create')->form([
+        $form = $formCrawler->selectButton('Create')->form(array(
             // DO STUFF HERE.
             // 'artwork_roles[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect());
@@ -153,5 +152,4 @@ class ArtworkRoleControllerTest extends BaseTestCase
         $postCount = count($this->em->getRepository(ArtworkRole::class)->findAll());
         $this->assertEquals($preCount - 1, $postCount);
     }
-
 }

@@ -18,12 +18,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Description of ArtworkContribution
+ * Description of ArtworkContribution.
  *
  * @author michael
  */
 class ArtworkContributionType extends AbstractType {
-
     /**
      * @var EntityManagerInterface
      */
@@ -32,7 +31,7 @@ class ArtworkContributionType extends AbstractType {
     public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
     }
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $person = $options['person'];
         $builder->add('person', HiddenType::class, array(
@@ -41,7 +40,7 @@ class ArtworkContributionType extends AbstractType {
         ));
         $builder->add('artworkRole');
         $builder->add('artwork');
-        
+
         $builder->get('person')->addModelTransformer(new HiddenEntityTransformer($this->em, Person::class));
     }
 
@@ -51,5 +50,4 @@ class ArtworkContributionType extends AbstractType {
             'person' => null,
         ));
     }
-
 }

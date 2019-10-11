@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MediaFileMetadataType extends AbstractType {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -22,9 +21,9 @@ class MediaFileMetadataType extends AbstractType {
 
         foreach ($em->getRepository(Element::class)->findAll() as $element) {
             $fields = $mediaFile->getMetadataFields($element->getName());
-            $values = $fields->map(function(AbstractField $field) {
-                    return $field->getValue();
-                })->toArray();
+            $values = $fields->map(function (AbstractField $field) {
+                return $field->getValue();
+            })->toArray();
 
             $builder->add($element->getName(), CollectionType::class, array(
                 'label' => $element->getLabel(),
@@ -52,5 +51,4 @@ class MediaFileMetadataType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setRequired(array('mediaFile', 'entityManager'));
     }
-
 }

@@ -5,27 +5,26 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectPage;
 use AppBundle\Form\Project\ProjectPageType;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ProjectPage controller.
  */
 class ProjectPageController extends Controller {
-
     /**
      * Lists all ProjectPage entities.
      *
      * @Route("/project/{projectId}/page", name="project_page_index", methods={"GET"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param Project $project
      */
@@ -49,13 +48,13 @@ class ProjectPageController extends Controller {
      * @Route("/project/{projectId}/page/new", name="project_page_new", methods={"GET","POST"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param Project $project
      */
     public function newAction(Request $request, Project $project) {
-
         $projectPage = new ProjectPage();
         $projectPage->setProject($project);
         $form = $this->createForm(ProjectPageType::class, $projectPage);
@@ -67,6 +66,7 @@ class ProjectPageController extends Controller {
             $em->flush();
 
             $this->addFlash('success', 'The new projectPage was created.');
+
             return $this->redirectToRoute('project_page_show', array('projectId' => $project->getId(), 'id' => $projectPage->getId()));
         }
 
@@ -82,15 +82,17 @@ class ProjectPageController extends Controller {
      *
      * @Route("/project/{projectId}/page/{id}", name="project_page_show", methods={"GET"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
-
+     *
      * @Template()
+     *
      * @param Project $project
      * @param ProjectPage $projectPage
      */
     public function showAction(Project $project, ProjectPage $projectPage) {
-        if($project->getId() !== $projectPage->getProject()->getId()) {
+        if ($project->getId() !== $projectPage->getProject()->getId()) {
             throw new NotFoundHttpException();
         }
+
         return array(
             'project' => $project,
             'projectPage' => $projectPage,
@@ -103,14 +105,15 @@ class ProjectPageController extends Controller {
      * @Route("/project/{projectId}/page/{id}/edit", name="project_page_edit", methods={"GET","POST"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param ProjectPage $projectPage
+     * @param Project $project
      */
     public function editAction(Request $request, Project $project, ProjectPage $projectPage) {
-
-        if($project->getId() !== $projectPage->getProject()->getId()) {
+        if ($project->getId() !== $projectPage->getProject()->getId()) {
             throw new NotFoundHttpException();
         }
         $editForm = $this->createForm(ProjectPageType::class, $projectPage);
@@ -120,9 +123,10 @@ class ProjectPageController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The projectPage has been updated.');
+
             return $this->redirectToRoute('project_page_show', array(
                 'projectId' => $project->getId(),
-                'id' => $projectPage->getId()
+                'id' => $projectPage->getId(),
             ));
         }
 
@@ -139,12 +143,13 @@ class ProjectPageController extends Controller {
      * @Route("/project/{projectId}/page/{id}/delete", name="project_page_delete", methods={"GET"})
      * @ParamConverter("project", class="AppBundle:Project", options={"id": "projectId"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
+     *
      * @param Request $request
      * @param ProjectPage $projectPage
+     * @param Project $project
      */
     public function deleteAction(Request $request, Project $project, ProjectPage $projectPage) {
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectPage);
         $em->flush();
@@ -154,5 +159,4 @@ class ProjectPageController extends Controller {
             'projectId' => $project->getId(),
         ));
     }
-
 }

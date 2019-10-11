@@ -10,14 +10,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadProjectContribution form.
  */
-class LoadProjectContribution extends Fixture implements DependentFixtureInterface
-{
+class LoadProjectContribution extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new ProjectContribution();
             $fixture->setProject($this->getReference('project.1'));
             $fixture->setPerson($this->getReference('person.1'));
@@ -29,7 +27,6 @@ class LoadProjectContribution extends Fixture implements DependentFixtureInterfa
         }
 
         $em->flush();
-
     }
 
     /**
@@ -38,13 +35,11 @@ class LoadProjectContribution extends Fixture implements DependentFixtureInterfa
     public function getDependencies() {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
-        return [
+        return array(
             LoadPerson::class,
             LoadProject::class,
             LoadOrganization::class,
             LoadProjectRole::class,
-        ];
+        );
     }
-
-
 }

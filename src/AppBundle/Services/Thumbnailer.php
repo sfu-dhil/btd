@@ -12,12 +12,11 @@ use AppBundle\Entity\MediaFile;
 use Imagick;
 
 /**
- * Description of Thumbnailer
+ * Description of Thumbnailer.
  *
  * @author michael
  */
 class Thumbnailer {
-
     private $width;
 
     private $height;
@@ -59,18 +58,17 @@ class Thumbnailer {
 
     public function generateThumbnail(MediaFile $mediaFile) {
         $mime = $mediaFile->getMimeType();
-        if (substr($mime, 0, 6) === 'image/') {
+        if ('image/' === substr($mime, 0, 6)) {
             $this->thumbnailImage($mediaFile);
         }
-        if (substr($mime, 0, 6) === 'video/') {
+        if ('video/' === substr($mime, 0, 6)) {
             $this->thumbnailVideo($mediaFile);
         }
-        if (substr($mime, 0, 6) === 'audio/') {
+        if ('audio/' === substr($mime, 0, 6)) {
             $this->thumbnailAudio($mediaFile);
         }
-        if ($mime === 'application/pdf') {
+        if ('application/pdf' === $mime) {
             $this->thumbnailPdf($mediaFile);
         }
     }
-
 }

@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArtworkRoleType extends AbstractType {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -27,5 +26,4 @@ class ArtworkRoleType extends AbstractType {
             'data_class' => ArtworkRole::class,
         ));
     }
-
 }

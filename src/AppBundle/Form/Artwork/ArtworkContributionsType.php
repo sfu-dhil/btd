@@ -15,12 +15,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Description of ArtworkContributions
+ * Description of ArtworkContributions.
  *
  * @author michael
  */
 class ArtworkContributionsType extends AbstractType {
-
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $artwork = $options['artwork'];
         $builder->add('contributions', CollectionType::class, array(
@@ -50,5 +49,4 @@ class ArtworkContributionsType extends AbstractType {
             'artwork' => null,
         ));
     }
-
 }

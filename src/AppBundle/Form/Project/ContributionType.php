@@ -12,7 +12,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContributionType extends AbstractType {
-
     /**
      * @var EntityManagerInterface
      */
@@ -48,5 +47,4 @@ class ContributionType extends AbstractType {
             'project' => null,
         ));
     }
-
 }

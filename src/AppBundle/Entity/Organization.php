@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
- * Organization
+ * Organization.
  *
  * @ORM\Table(name="organization", indexes={
  *  @ORM\Index(columns={"name", "address", "description", "contact"}, flags={"fulltext"}),
@@ -16,7 +16,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrganizationRepository")
  */
 class Organization extends AbstractEntity {
-
     /**
      * @var string
      * @ORM\Column(type="string")
@@ -55,7 +54,7 @@ class Organization extends AbstractEntity {
     private $location;
 
     /**
-     * @var Collection|ArtworkContribution[]
+     * @var ArtworkContribution[]|Collection
      * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="organization", cascade={"persist"}, orphanRemoval=true)
      */
     private $artworkContributions;
@@ -77,7 +76,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -90,7 +89,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -99,7 +98,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Set address
+     * Set address.
      *
      * @param string $address
      *
@@ -112,7 +111,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Get address
+     * Get address.
      *
      * @return string
      */
@@ -121,7 +120,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -134,7 +133,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -143,7 +142,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Set contact
+     * Set contact.
      *
      * @param string $contact
      *
@@ -156,7 +155,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Get contact
+     * Get contact.
      *
      * @return string
      */
@@ -165,7 +164,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Set location
+     * Set location.
      *
      * @param Location $location
      *
@@ -178,7 +177,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Get location
+     * Get location.
      *
      * @return Location
      */
@@ -187,7 +186,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Add artworkContribution
+     * Add artworkContribution.
      *
      * @param ArtworkContribution $artworkContribution
      *
@@ -200,7 +199,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Remove artworkContribution
+     * Remove artworkContribution.
      *
      * @param ArtworkContribution $artworkContribution
      */
@@ -209,7 +208,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Get artworkContributions
+     * Get artworkContributions.
      *
      * @return Collection
      */
@@ -218,7 +217,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Add projectContribution
+     * Add projectContribution.
      *
      * @param ProjectContribution $projectContribution
      *
@@ -231,7 +230,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Remove projectContribution
+     * Remove projectContribution.
      *
      * @param ProjectContribution $projectContribution
      */
@@ -240,7 +239,7 @@ class Organization extends AbstractEntity {
     }
 
     /**
-     * Get projectContributions
+     * Get projectContributions.
      *
      * @return Collection
      */
@@ -248,28 +247,25 @@ class Organization extends AbstractEntity {
         return $this->projectContributions;
     }
 
-
     /**
-     * Set urls
+     * Set urls.
      *
      * @param array $urls
      *
      * @return Organization
      */
-    public function setUrls($urls)
-    {
+    public function setUrls($urls) {
         $this->urls = $urls;
 
         return $this;
     }
 
     /**
-     * Get urls
+     * Get urls.
      *
      * @return array
      */
-    public function getUrls()
-    {
+    public function getUrls() {
         return $this->urls;
     }
 }

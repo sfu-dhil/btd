@@ -11,14 +11,12 @@ use Nines\DublinCoreBundle\DataFixtures\ORM\LoadElement;
 /**
  * LoadMediaFileField form.
  */
-class LoadMediaFileField extends Fixture implements DependentFixtureInterface
-{
+class LoadMediaFileField extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new MediaFileField();
             $fixture->setValue('Media file field value ' . $i);
             $fixture->setElement($this->getReference('dc_title'));
@@ -29,7 +27,6 @@ class LoadMediaFileField extends Fixture implements DependentFixtureInterface
         }
 
         $em->flush();
-
     }
 
     /**
@@ -38,11 +35,9 @@ class LoadMediaFileField extends Fixture implements DependentFixtureInterface
     public function getDependencies() {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
-        return [
+        return array(
             LoadMediaFile::class,
             LoadElement::class,
-        ];
+        );
     }
-
-
 }

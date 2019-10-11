@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
- * Venue
+ * Venue.
  *
  * @ORM\Table(name="venue", indexes={
  *  @ORM\Index(columns={"name", "address", "description", "url"}, flags={"fulltext"}),
@@ -16,7 +16,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VenueRepository")
  */
 class Venue extends AbstractEntity {
-
     /**
      * @var string
      * @ORM\Column(type="string")
@@ -71,7 +70,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -84,7 +83,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -93,7 +92,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Set address
+     * Set address.
      *
      * @param string $address
      *
@@ -106,7 +105,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Get address
+     * Get address.
      *
      * @return string
      */
@@ -115,7 +114,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -128,7 +127,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -137,7 +136,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Set url
+     * Set url.
      *
      * @param string $url
      *
@@ -150,7 +149,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Get url
+     * Get url.
      *
      * @return string
      */
@@ -159,7 +158,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Set location
+     * Set location.
      *
      * @param Location $location
      *
@@ -172,7 +171,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Get location
+     * Get location.
      *
      * @return Location
      */
@@ -181,7 +180,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Set venueCategory
+     * Set venueCategory.
      *
      * @param VenueCategory $venueCategory
      *
@@ -194,7 +193,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Get venueCategory
+     * Get venueCategory.
      *
      * @return VenueCategory
      */
@@ -203,7 +202,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Add project
+     * Add project.
      *
      * @param Project $project
      *
@@ -216,7 +215,7 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Remove project
+     * Remove project.
      *
      * @param Project $project
      */
@@ -225,12 +224,11 @@ class Venue extends AbstractEntity {
     }
 
     /**
-     * Get projects
+     * Get projects.
      *
      * @return Collection
      */
     public function getProjects() {
         return $this->projects;
     }
-
 }

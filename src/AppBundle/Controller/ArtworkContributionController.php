@@ -2,13 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\ArtworkContribution;
-use AppBundle\Form\Artwork\ArtworkContributionType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ArtworkContribution controller.
@@ -16,13 +14,13 @@ use AppBundle\Form\Artwork\ArtworkContributionType;
  * @Route("/artwork_contribution")
  */
 class ArtworkContributionController extends Controller {
-
     /**
      * Lists all ArtworkContribution entities.
      *
      * @Route("/", name="artwork_contribution_index", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -36,5 +34,4 @@ class ArtworkContributionController extends Controller {
             'artworkContributions' => $artworkContributions,
         );
     }
-
 }

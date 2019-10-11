@@ -4,20 +4,17 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Person;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * LoadPerson form.
  */
-class LoadPerson extends Fixture
-{
+class LoadPerson extends Fixture {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new Person();
             $fixture->setFullname('Fullname ' . $i);
             $fixture->setSortableName('SortableName ' . $i);
@@ -31,7 +28,5 @@ class LoadPerson extends Fixture
         }
 
         $em->flush();
-
     }
-
 }

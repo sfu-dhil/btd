@@ -3,11 +3,10 @@
 namespace AppBundle\Services;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader {
-
     private $uploadDir;
 
     public function __construct($uploadDir) {
@@ -18,10 +17,11 @@ class FileUploader {
         $fileName = md5(uniqid()) . '.' . $file->guessExtension();
         $fs = new Filesystem();
         $path = $this->uploadDir . '/' . $fileName[0];
-        if (!$fs->exists($path)) {
+        if ( ! $fs->exists($path)) {
             $fs->mkdir($path);
         }
         $file->move($path, $fileName);
+
         return $fileName[0] . '/' . $fileName;
     }
 
@@ -40,12 +40,11 @@ class FileUploader {
         $maxBytes = UploadedFile::getMaxFilesize();
         if ($asBytes) {
             return $maxBytes;
-        } else {
-            $units = ['b', 'Kb', 'Mb', 'Gb', 'Tb'];
-            $exp = floor(log($maxBytes, 1024));
-            $est = round($maxBytes / pow(1024, $exp), 1);
-            return $est . $units[$exp];
         }
-    }
+        $units = array('b', 'Kb', 'Mb', 'Gb', 'Tb');
+        $exp = floor(log($maxBytes, 1024));
+        $est = round($maxBytes / pow(1024, $exp), 1);
 
+        return $est . $units[$exp];
+    }
 }

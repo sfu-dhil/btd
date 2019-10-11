@@ -16,7 +16,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProjectsType extends AbstractType {
-    
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('projects', EntityType::class, array(
             'expanded' => true,
@@ -25,11 +24,10 @@ class ProjectsType extends AbstractType {
             'required' => false,
         ));
     }
-    
+
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => Artwork::class,
         ));
     }
-    
 }

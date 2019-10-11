@@ -2,18 +2,16 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
- * ProjectContribution
+ * ProjectContribution.
  *
  * @ORM\Table(name="project_contribution")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectContributionRepository")
  */
 class ProjectContribution extends AbstractEntity {
-
     /**
      * @var Project
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="contributions")
@@ -45,7 +43,7 @@ class ProjectContribution extends AbstractEntity {
     }
 
     /**
-     * Set project
+     * Set project.
      *
      * @param Project $project
      *
@@ -58,7 +56,7 @@ class ProjectContribution extends AbstractEntity {
     }
 
     /**
-     * Get project
+     * Get project.
      *
      * @return Project
      */
@@ -67,7 +65,7 @@ class ProjectContribution extends AbstractEntity {
     }
 
     /**
-     * Set person
+     * Set person.
      *
      * @param Person $person
      *
@@ -80,7 +78,7 @@ class ProjectContribution extends AbstractEntity {
     }
 
     /**
-     * Get person
+     * Get person.
      *
      * @return Person
      */
@@ -89,7 +87,7 @@ class ProjectContribution extends AbstractEntity {
     }
 
     /**
-     * Set organization
+     * Set organization.
      *
      * @param Organization $organization
      *
@@ -102,7 +100,7 @@ class ProjectContribution extends AbstractEntity {
     }
 
     /**
-     * Get organization
+     * Get organization.
      *
      * @return Organization
      */
@@ -111,7 +109,7 @@ class ProjectContribution extends AbstractEntity {
     }
 
     /**
-     * Set projectRole
+     * Set projectRole.
      *
      * @param ProjectRole $projectRole
      *
@@ -124,12 +122,11 @@ class ProjectContribution extends AbstractEntity {
     }
 
     /**
-     * Get projectRole
+     * Get projectRole.
      *
      * @return ProjectRole
      */
     public function getProjectRole() {
         return $this->projectRole;
     }
-
 }

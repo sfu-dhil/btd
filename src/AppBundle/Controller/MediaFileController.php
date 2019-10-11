@@ -8,10 +8,7 @@ use AppBundle\Form\MediaFileMetadataType;
 use AppBundle\Form\MediaFileType;
 use AppBundle\Services\FileUploader;
 use Nines\DublinCoreBundle\Entity\Element;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -19,6 +16,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * MediaFile controller.
@@ -26,13 +24,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @Route("/media_file")
  */
 class MediaFileController extends Controller {
-
     /**
      * Lists all MediaFile entities.
      *
      * @Route("/", name="media_file_index", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -55,16 +53,10 @@ class MediaFileController extends Controller {
      * something appropriate, and adjust the generated search.html.twig
      * template.
      *
-      //    public function searchQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->where("e.fieldName like '%$q%'");
-      //        return $qb->getQuery();
-      //    }
-     *
-     *
      * @Route("/search", name="media_file_search", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function searchAction(Request $request) {
@@ -93,24 +85,25 @@ class MediaFileController extends Controller {
      * something appropriate, and adjust the generated fulltext.html.twig
      * template.
      *
-      //    public function fulltextQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-      //        $qb->orderBy('score', 'desc');
-      //        $qb->setParameter('q', $q);
-      //        return $qb->getQuery();
-      //    }
+     * //    public function fulltextQuery($q) {
+     * //        $qb = $this->createQueryBuilder('e');
+     * //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
+     * //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
+     * //        $qb->orderBy('score', 'desc');
+     * //        $qb->setParameter('q', $q);
+     * //        return $qb->getQuery();
+     * //    }
      *
      * Requires a MatchAgainst function be added to doctrine, and appropriate
      * fulltext indexes on your MediaFile entity.
      *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
      *
-     *
      * @Route("/fulltext", name="media_file_fulltext", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
+     *
      * @return array
      */
     public function fulltextAction(Request $request) {
@@ -136,18 +129,20 @@ class MediaFileController extends Controller {
      *
      * @Route("/new", name="media_file_new", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
+        if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
+
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $mediaFile = new MediaFile();
         $form = $this->createForm('AppBundle\Form\MediaFileType', $mediaFile, array(
-            'max_file_upload' => UploadedFile::getMaxFilesize()
+            'max_file_upload' => UploadedFile::getMaxFilesize(),
         ));
         $form->handleRequest($request);
 
@@ -164,6 +159,7 @@ class MediaFileController extends Controller {
 
             $em->flush();
             $this->addFlash('success', 'The new mediaFile was created');
+
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
         }
 
@@ -177,13 +173,15 @@ class MediaFileController extends Controller {
      * Finds and displays a MediaFile entity.
      *
      * @Route("/{id}", name="media_file_show", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param MediaFile $mediaFile
      */
     public function showAction(MediaFile $mediaFile) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Element::class);
+
         return array(
             'elements' => $repo->findAll(),
             'mediaFile' => $mediaFile,
@@ -194,7 +192,8 @@ class MediaFileController extends Controller {
      * Finds and displays a media file.
      *
      * @Route("/{id}/view", name="media_file_raw", methods={"GET"})
-
+     *
+     *
      * @param MediaFile $mediaFile
      */
     public function mediaAction(MediaFile $mediaFile) {
@@ -205,7 +204,8 @@ class MediaFileController extends Controller {
      * Finds and displays a media file.
      *
      * @Route("/{id}/tn", name="media_file_tn", methods={"GET"})
-
+     *
+     *
      * @param MediaFile $mediaFile
      */
     public function thumbnailAction(MediaFile $mediaFile) {
@@ -213,7 +213,8 @@ class MediaFileController extends Controller {
         if ($tn) {
             return new BinaryFileResponse($tn);
         }
-        throw new NotFoundHttpException("Cannot find thumbnail.");
+
+        throw new NotFoundHttpException('Cannot find thumbnail.');
     }
 
     /**
@@ -221,14 +222,17 @@ class MediaFileController extends Controller {
      *
      * @Route("/{id}/edit", name="media_file_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param MediaFile $mediaFile
+     * @param FileUploader $uploader
      */
     public function editAction(Request $request, MediaFile $mediaFile, FileUploader $uploader) {
-        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
+        if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
+
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $max = $uploader->getMaxUploadSize();
@@ -240,7 +244,7 @@ class MediaFileController extends Controller {
             'label' => 'New File',
             'required' => false,
             'attr' => array(
-                'help_block' => "Select a file to replace the current one. Optional. Maximum file upload size is {$max}."
+                'help_block' => "Select a file to replace the current one. Optional. Maximum file upload size is {$max}.",
             ),
             'mapped' => false,
         ));
@@ -261,6 +265,7 @@ class MediaFileController extends Controller {
             }
             $em->flush();
             $this->addFlash('success', 'The mediaFile has been updated.');
+
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
         }
 
@@ -275,13 +280,16 @@ class MediaFileController extends Controller {
      *
      * @Route("/{id}/delete", name="media_file_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
+     *
      * @param Request $request
      * @param MediaFile $mediaFile
+     * @param FileUploader $uploader
      */
     public function deleteAction(Request $request, MediaFile $mediaFile, FileUploader $uploader) {
-        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
+        if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
+
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $em = $this->getDoctrine()->getManager();
@@ -306,20 +314,22 @@ class MediaFileController extends Controller {
      *
      * @Route("/{id}/metadata", name="media_file_metadata", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param MediaFile $mediaFile
      */
     public function metadataAction(Request $request, MediaFile $mediaFile) {
-        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
+        if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
+
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(MediaFileMetadataType::class, null, array(
             'mediaFile' => $mediaFile,
-            'entityManager' => $em
+            'entityManager' => $em,
         ));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -339,6 +349,7 @@ class MediaFileController extends Controller {
             }
             $em->flush();
             $this->addFlash('success', 'The metadata has been updated.');
+
             return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
         }
 
@@ -347,5 +358,4 @@ class MediaFileController extends Controller {
             'mediaFile' => $mediaFile,
         );
     }
-
 }

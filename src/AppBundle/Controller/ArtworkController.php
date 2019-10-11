@@ -3,15 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Artwork;
+use AppBundle\Form\Artwork\ArtworkContributionsType;
 use AppBundle\Form\Artwork\ArtworkType;
 use AppBundle\Form\Artwork\ProjectsType;
-use AppBundle\Form\Artwork\ArtworkContributionsType;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Artwork controller.
@@ -19,13 +18,13 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("/artwork")
  */
 class ArtworkController extends Controller {
-
     /**
      * Lists all Artwork entities.
      *
      * @Route("/", name="artwork_index", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -44,9 +43,11 @@ class ArtworkController extends Controller {
      * Full text search for Artwork entities.
      *
      * @Route("/search", name="artwork_search", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
+     *
      * @return array
      */
     public function searchAction(Request $request) {
@@ -72,12 +73,12 @@ class ArtworkController extends Controller {
      *
      * @Route("/new", name="artwork_new", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function newAction(Request $request) {
-
         $artwork = new Artwork();
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
@@ -88,6 +89,7 @@ class ArtworkController extends Controller {
             $em->flush();
 
             $this->addFlash('success', 'The new artwork was created.');
+
             return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
         }
 
@@ -101,12 +103,12 @@ class ArtworkController extends Controller {
      * Finds and displays a Artwork entity.
      *
      * @Route("/{id}", name="artwork_show", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Artwork $artwork
      */
     public function showAction(Artwork $artwork) {
-
         return array(
             'artwork' => $artwork,
         );
@@ -117,13 +119,13 @@ class ArtworkController extends Controller {
      *
      * @Route("/{id}/edit", name="artwork_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param Artwork $artwork
      */
     public function editAction(Request $request, Artwork $artwork) {
-
         $editForm = $this->createForm(ArtworkType::class, $artwork);
         $editForm->handleRequest($request);
 
@@ -131,6 +133,7 @@ class ArtworkController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The artwork has been updated.');
+
             return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
         }
 
@@ -145,12 +148,12 @@ class ArtworkController extends Controller {
      *
      * @Route("/{id}/delete", name="artwork_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
+     *
      * @param Request $request
      * @param Artwork $artwork
      */
     public function deleteAction(Request $request, Artwork $artwork) {
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($artwork);
         $em->flush();
@@ -162,14 +165,13 @@ class ArtworkController extends Controller {
     /**
      * @Route("/{id}/add_media", name="artwork_add_media", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
      *
      * @param Request $request
      * @param Artwork $artwork
      */
     public function addMediaAction(Request $request, Artwork $artwork) {
-
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:MediaFile');
         $q = $request->query->get('q');
@@ -184,16 +186,17 @@ class ArtworkController extends Controller {
         $addId = $request->query->get('addId');
         if ($addId) {
             $mediaFile = $repo->find($addId);
-            if (!$artwork->hasMediaFile($mediaFile)) {
+            if ( ! $artwork->hasMediaFile($mediaFile)) {
                 $artwork->addMediaFile($mediaFile);
                 $mediaFile->addArtwork($artwork);
                 $em->flush();
             }
             $this->addFlash('success', 'The media file is associated with the artowrk.');
+
             return $this->redirectToRoute('artwork_add_media', array(
-                        'id' => $artwork->getId(),
-                        'q' => $q,
-                        'page' => $request->query->getInt('page', 1)
+                'id' => $artwork->getId(),
+                'q' => $q,
+                'page' => $request->query->getInt('page', 1),
             ));
         }
 
@@ -207,14 +210,13 @@ class ArtworkController extends Controller {
     /**
      * @Route("/{id}/remove_media", name="artwork_remove_media", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
      *
      * @param Request $request
      * @param Artwork $artwork
      */
     public function removeMediaAction(Request $request, Artwork $artwork) {
-
         $paginator = $this->get('knp_paginator');
         $results = $paginator->paginate($artwork->getMediaFiles(), $request->query->getInt('page', 1), 25);
 
@@ -229,9 +231,10 @@ class ArtworkController extends Controller {
                 $em->flush();
             }
             $this->addFlash('success', 'The media file is associated with the artowrk.');
+
             return $this->redirectToRoute('artwork_remove_media', array(
                 'id' => $artwork->getId(),
-                'page' => $request->query->getInt('page', 1)
+                'page' => $request->query->getInt('page', 1),
             ));
         }
 
@@ -244,23 +247,23 @@ class ArtworkController extends Controller {
     /**
      * @Route("/{id}/contributions", name="artwork_contributions", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
      *
      * @param Request $request
      * @param Artwork $artwork
      */
     public function contributionsAction(Request $request, Artwork $artwork) {
-
         $form = $this->createForm(ArtworkContributionsType::class, $artwork, array(
             'artwork' => $artwork,
         ));
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
+
             return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
         }
 
@@ -273,24 +276,23 @@ class ArtworkController extends Controller {
     /**
      * @Route("/{id}/projects", name="artwork_projects", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
      *
      * @param Request $request
      * @param Artwork $artwork
      */
     public function projectsAction(Request $request, Artwork $artwork) {
-
         $oldProjects = $artwork->getProjects()->toArray();
         $form = $this->createForm(ProjectsType::class, $artwork);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
-            foreach($oldProjects as $project) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($oldProjects as $project) {
                 $project->removeArtwork($artwork);
             }
-            foreach($artwork->getProjects() as $project) {
-                if( ! $project->hasArtwork($artwork)) {
+            foreach ($artwork->getProjects() as $project) {
+                if ( ! $project->hasArtwork($artwork)) {
                     $project->addArtwork($artwork);
                 }
             }

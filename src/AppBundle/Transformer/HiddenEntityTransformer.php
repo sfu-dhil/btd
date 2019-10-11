@@ -6,8 +6,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
- * Description of HiddenEntityTransformer
- * 
+ * Description of HiddenEntityTransformer.
+ *
  * Configure the form as a service:
  * services:
  *     app.form.date_year_type:
@@ -21,15 +21,14 @@ use Symfony\Component\Form\DataTransformerInterface;
  *             'data' => $work,
  *             'data_class' => null,
  *         ));
- *         $builder->add('dateCategory');     
- *         $builder->add('value');     
- *         
+ *         $builder->add('dateCategory');
+ *         $builder->add('value');
+ *
  *         $builder->get('work')->addModelTransformer(new HiddenEntityTransformer($this->em, Work::class));
  *
  * @author michael
  */
 class HiddenEntityTransformer implements DataTransformerInterface {
-    
     /**
      * @var ObjectManager
      */
@@ -39,10 +38,10 @@ class HiddenEntityTransformer implements DataTransformerInterface {
      * @var string
      */
     private $class;
-    
+
     /**
      * Build and configure the transformer.
-     * 
+     *
      * @param ObjectManager $em
      * @param type $class
      */
@@ -50,32 +49,34 @@ class HiddenEntityTransformer implements DataTransformerInterface {
         $this->em = $em;
         $this->class = $class;
     }
-    
+
     /**
      * Transform an entity to a string.
-     * 
-     * @param object|null $entity
+     *
+     * @param null|object $entity
+     *
      * @return string
      */
     public function transform($entity) {
-        if($entity === null) {
-            return null;
+        if (null === $entity) {
+            return;
         }
+
         return $entity->getId();
     }
 
     /**
      * Transforms  string into an entity.
-     * 
+     *
      * @param string $value
+     *
      * @return null|object
      */
     public function reverseTransform($value) {
-        if( ! $value) {
-            return null;
+        if ( ! $value) {
+            return;
         }
-        
+
         return $this->em->find($this->class, $value);
     }
-
 }

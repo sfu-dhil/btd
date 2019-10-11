@@ -2,14 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use AppBundle\Entity\ArtisticStatement;
 use AppBundle\Form\ArtisticStatementType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ArtisticStatement controller.
@@ -17,13 +16,13 @@ use AppBundle\Form\ArtisticStatementType;
  * @Route("/artistic_statement")
  */
 class ArtisticStatementController extends Controller {
-
     /**
      * Lists all ArtisticStatement entities.
      *
      * @Route("/", name="artwork_statement_index", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -42,21 +41,15 @@ class ArtisticStatementController extends Controller {
     /**
      * Search for ArtisticStatement entities.
      *
-     * To make this work, add a method like this one to the 
+     * To make this work, add a method like this one to the
      * AppBundle:ArtisticStatement repository. Replace the fieldName with
      * something appropriate, and adjust the generated search.html.twig
      * template.
-     * 
-      //    public function searchQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->where("e.fieldName like '%$q%'");
-      //        return $qb->getQuery();
-      //    }
-     *
      *
      * @Route("/search", name="artwork_statement_search", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function searchAction(Request $request) {
@@ -80,29 +73,30 @@ class ArtisticStatementController extends Controller {
     /**
      * Full text search for ArtisticStatement entities.
      *
-     * To make this work, add a method like this one to the 
+     * To make this work, add a method like this one to the
      * AppBundle:ArtisticStatement repository. Replace the fieldName with
      * something appropriate, and adjust the generated fulltext.html.twig
      * template.
-     * 
-      //    public function fulltextQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-      //        $qb->orderBy('score', 'desc');
-      //        $qb->setParameter('q', $q);
-      //        return $qb->getQuery();
-      //    }
-     * 
+     *
+     * //    public function fulltextQuery($q) {
+     * //        $qb = $this->createQueryBuilder('e');
+     * //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
+     * //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
+     * //        $qb->orderBy('score', 'desc');
+     * //        $qb->setParameter('q', $q);
+     * //        return $qb->getQuery();
+     * //    }
+     *
      * Requires a MatchAgainst function be added to doctrine, and appropriate
      * fulltext indexes on your ArtisticStatement entity.
      *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
      *
-     *
      * @Route("/fulltext", name="artwork_statement_fulltext", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
+     *
      * @return array
      */
     public function fulltextAction(Request $request) {
@@ -128,8 +122,9 @@ class ArtisticStatementController extends Controller {
      *
      * @Route("/new", name="artwork_statement_new", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function newAction(Request $request) {
@@ -143,6 +138,7 @@ class ArtisticStatementController extends Controller {
             $em->flush();
 
             $this->addFlash('success', 'The new artisticStatement was created.');
+
             return $this->redirectToRoute('artwork_statement_show', array('id' => $artisticStatement->getId()));
         }
 
@@ -156,12 +152,12 @@ class ArtisticStatementController extends Controller {
      * Finds and displays a ArtisticStatement entity.
      *
      * @Route("/{id}", name="artwork_statement_show", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param ArtisticStatement $artisticStatement
      */
     public function showAction(ArtisticStatement $artisticStatement) {
-
         return array(
             'artisticStatement' => $artisticStatement,
         );
@@ -172,14 +168,16 @@ class ArtisticStatementController extends Controller {
      *
      * @Route("/{id}/edit", name="artwork_statement_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param ArtisticStatement $artisticStatement
      */
     public function editAction(Request $request, ArtisticStatement $artisticStatement) {
-        if (!$this->isGranted('ROLE_CONTENT_ADMIN')) {
+        if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
+
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $editForm = $this->createForm(ArtisticStatementType::class, $artisticStatement);
@@ -189,6 +187,7 @@ class ArtisticStatementController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The artisticStatement has been updated.');
+
             return $this->redirectToRoute('artwork_statement_show', array('id' => $artisticStatement->getId()));
         }
 
@@ -203,7 +202,8 @@ class ArtisticStatementController extends Controller {
      *
      * @Route("/{id}/delete", name="artwork_statement_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
+     *
      * @param Request $request
      * @param ArtisticStatement $artisticStatement
      */
@@ -215,5 +215,4 @@ class ArtisticStatementController extends Controller {
 
         return $this->redirectToRoute('artwork_statement_index');
     }
-
 }

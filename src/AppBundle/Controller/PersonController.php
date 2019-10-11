@@ -6,13 +6,12 @@ use AppBundle\Entity\Person;
 use AppBundle\Form\Person\ArtworkContributionsType;
 use AppBundle\Form\Person\PersonType;
 use AppBundle\Form\Person\ProjectContributionsType;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Person controller.
@@ -20,13 +19,13 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("/person")
  */
 class PersonController extends Controller {
-
     /**
      * Lists all Person entities.
      *
      * @Route("/", name="person_index", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -45,23 +44,23 @@ class PersonController extends Controller {
      * @param Request $request
      * @Route("/typeahead", name="person_typeahead", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
+     *
      * @return JsonResponse
      */
     public function typeaheadAction(Request $request) {
-
         $q = $request->query->get('q');
-        if (!$q) {
-            return new JsonResponse([]);
+        if ( ! $q) {
+            return new JsonResponse(array());
         }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Person::class);
-        $data = [];
+        $data = array();
         foreach ($repo->typeaheadQuery($q) as $result) {
-            $data[] = [
+            $data[] = array(
                 'id' => $result->getId(),
-                'text' => (string)$result,
-            ];
+                'text' => (string) $result,
+            );
         }
 
         return new JsonResponse($data);
@@ -71,8 +70,9 @@ class PersonController extends Controller {
      * Search for Person entities.
      *
      * @Route("/search", name="person_search", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function searchAction(Request $request) {
@@ -97,9 +97,11 @@ class PersonController extends Controller {
      * Full text search for Person entities.
      *
      * @Route("/fulltext", name="person_fulltext", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
+     *
      * @return array
      */
     public function fulltextAction(Request $request) {
@@ -125,12 +127,12 @@ class PersonController extends Controller {
      *
      * @Route("/new", name="person_new", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function newAction(Request $request) {
-
         $person = new Person();
         $form = $this->createForm(PersonType::class, $person);
         $form->handleRequest($request);
@@ -141,6 +143,7 @@ class PersonController extends Controller {
             $em->flush();
 
             $this->addFlash('success', 'The new person was created.');
+
             return $this->redirectToRoute('person_show', array('id' => $person->getId()));
         }
 
@@ -154,12 +157,12 @@ class PersonController extends Controller {
      * Finds and displays a Person entity.
      *
      * @Route("/{id}", name="person_show", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Person $person
      */
     public function showAction(Person $person) {
-
         return array(
             'person' => $person,
         );
@@ -170,13 +173,13 @@ class PersonController extends Controller {
      *
      * @Route("/{id}/edit", name="person_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param Person $person
      */
     public function editAction(Request $request, Person $person) {
-
         $editForm = $this->createForm(PersonType::class, $person);
         $editForm->handleRequest($request);
 
@@ -184,6 +187,7 @@ class PersonController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The person has been updated.');
+
             return $this->redirectToRoute('person_show', array('id' => $person->getId()));
         }
 
@@ -198,12 +202,12 @@ class PersonController extends Controller {
      *
      * @Route("/{id}/delete", name="person_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
+     *
      * @param Request $request
      * @param Person $person
      */
     public function deleteAction(Request $request, Person $person) {
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($person);
         $em->flush();
@@ -215,14 +219,13 @@ class PersonController extends Controller {
     /**
      * @Route("/{id}/add_media", name="person_add_media", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
      *
      * @param Request $request
      * @param Person $person
      */
     public function addMediaAction(Request $request, Person $person) {
-
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:MediaFile');
         $q = $request->query->get('q');
@@ -237,16 +240,17 @@ class PersonController extends Controller {
         $addId = $request->query->get('addId');
         if ($addId) {
             $mediaFile = $repo->find($addId);
-            if (!$person->hasMediaFile($mediaFile)) {
+            if ( ! $person->hasMediaFile($mediaFile)) {
                 $person->addMediaFile($mediaFile);
                 $mediaFile->addPerson($person);
                 $em->flush();
             }
             $this->addFlash('success', 'The media file is associated with the person.');
+
             return $this->redirectToRoute('person_add_media', array(
-                        'id' => $person->getId(),
-                        'q' => $q,
-                        'page' => $request->query->getInt('page', 1)
+                'id' => $person->getId(),
+                'q' => $q,
+                'page' => $request->query->getInt('page', 1),
             ));
         }
 
@@ -260,14 +264,13 @@ class PersonController extends Controller {
     /**
      * @Route("/{id}/remove_media", name="person_remove_media", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
      *
      * @param Request $request
      * @param Person $person
      */
     public function removeMediaAction(Request $request, Person $person) {
-
         $paginator = $this->get('knp_paginator');
         $results = $paginator->paginate($person->getMediaFiles(), $request->query->getInt('page', 1), 25);
 
@@ -282,9 +285,10 @@ class PersonController extends Controller {
                 $em->flush();
             }
             $this->addFlash('success', 'The media file is no longer associated with the person.');
+
             return $this->redirectToRoute('person_remove_media', array(
-                        'id' => $person->getId(),
-                        'page' => $request->query->getInt('page', 1)
+                'id' => $person->getId(),
+                'page' => $request->query->getInt('page', 1),
             ));
         }
 
@@ -297,23 +301,23 @@ class PersonController extends Controller {
     /**
      * @Route("/{id}/project_contributions", name="person_project_contributions", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
      *
      * @param Request $request
      * @param Person $person
      */
     public function projectContributionsAction(Request $request, Person $person) {
-
         $form = $this->createForm(ProjectContributionsType::class, $person, array(
             'person' => $person,
         ));
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
+
             return $this->redirectToRoute('person_show', array('id' => $person->getId()));
         }
 
@@ -326,23 +330,23 @@ class PersonController extends Controller {
     /**
      * @Route("/{id}/artwork_contributions", name="person_artwork_contributions", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
      *
      * @param Request $request
      * @param Person $person
      */
     public function artworkContributionsAction(Request $request, Person $person) {
-
         $form = $this->createForm(ArtworkContributionsType::class, $person, array(
             'person' => $person,
         ));
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
+
             return $this->redirectToRoute('person_show', array('id' => $person->getId()));
         }
 

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
- * Location
+ * Location.
  *
  * @ORM\Table(name="location", indexes={
  *  @ORM\Index(columns={"city", "region", "country"}, flags={"fulltext"}),
@@ -16,7 +16,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LocationRepository")
  */
 class Location extends AbstractEntity {
-
     /**
      * @var string
      * @ORM\Column(type="string")
@@ -58,7 +57,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Set city
+     * Set city.
      *
      * @param string $city
      *
@@ -71,7 +70,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Get city
+     * Get city.
      *
      * @return string
      */
@@ -80,7 +79,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Set region
+     * Set region.
      *
      * @param string $region
      *
@@ -93,7 +92,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Get region
+     * Get region.
      *
      * @return string
      */
@@ -102,7 +101,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Set country
+     * Set country.
      *
      * @param string $country
      *
@@ -115,7 +114,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Get country
+     * Get country.
      *
      * @return string
      */
@@ -124,7 +123,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Add venue
+     * Add venue.
      *
      * @param Venue $venue
      *
@@ -137,7 +136,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Remove venue
+     * Remove venue.
      *
      * @param Venue $venue
      */
@@ -146,7 +145,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Get venues
+     * Get venues.
      *
      * @return Collection
      */
@@ -155,7 +154,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Add organization
+     * Add organization.
      *
      * @param Organization $organization
      *
@@ -168,7 +167,7 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Remove organization
+     * Remove organization.
      *
      * @param Organization $organization
      */
@@ -177,12 +176,11 @@ class Location extends AbstractEntity {
     }
 
     /**
-     * Get organizations
+     * Get organizations.
      *
      * @return Collection
      */
     public function getOrganizations() {
         return $this->organizations;
     }
-
 }

@@ -10,15 +10,14 @@ use Nines\UtilBundle\Entity\ContentEntityInterface;
 use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
 /**
- * Artwork
+ * Artwork.
  *
  * @ORM\Table(name="artwork", indexes={
  *  @ORM\Index(columns={"title", "content", "materials", "copyright"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtworkRepository")
  */
-class Artwork extends AbstractEntity  implements ContentEntityInterface {
-
+class Artwork extends AbstractEntity implements ContentEntityInterface {
     use ContentExcerptTrait;
 
     /**
@@ -44,15 +43,15 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
      * @ORM\ManyToOne(targetEntity="ArtworkCategory", inversedBy="artworks")
      */
     private $artworkCategory;
-    
+
     /**
-     * @var Collection|ArtworkContribution[]
+     * @var ArtworkContribution[]|Collection
      * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="artwork", cascade={"persist"}, orphanRemoval=true)
      */
     private $contributions;
 
     /**
-     * @var Collection|ArtisticStatement[]
+     * @var ArtisticStatement[]|Collection
      * @ORM\OneToMany(targetEntity="ArtisticStatement", mappedBy="artwork")
      */
     private $artisticStatements;
@@ -69,7 +68,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
      * @ORM\ManyToMany(targetEntity="Project", mappedBy="artworks")
      */
     private $projects;
-    
+
     public function __construct() {
         parent::__construct();
         $this->contributions = new ArrayCollection();
@@ -83,7 +82,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -96,7 +95,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -105,7 +104,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Set materials
+     * Set materials.
      *
      * @param string $materials
      *
@@ -118,7 +117,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get materials
+     * Get materials.
      *
      * @return string
      */
@@ -127,7 +126,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Set copyright
+     * Set copyright.
      *
      * @param string $copyright
      *
@@ -140,7 +139,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get copyright
+     * Get copyright.
      *
      * @return string
      */
@@ -149,7 +148,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Add contribution
+     * Add contribution.
      *
      * @param ArtworkContribution $contribution
      *
@@ -162,7 +161,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Remove contribution
+     * Remove contribution.
      *
      * @param ArtworkContribution $contribution
      */
@@ -171,7 +170,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get contributions
+     * Get contributions.
      *
      * @return Collection
      */
@@ -184,14 +183,14 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Add mediaFile
+     * Add mediaFile.
      *
      * @param MediaFile $mediaFile
      *
      * @return Artwork
      */
     public function addMediaFile(MediaFile $mediaFile) {
-        if (!$this->mediaFiles->contains($mediaFile)) {
+        if ( ! $this->mediaFiles->contains($mediaFile)) {
             $this->mediaFiles[] = $mediaFile;
         }
 
@@ -199,7 +198,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Remove mediaFile
+     * Remove mediaFile.
      *
      * @param MediaFile $mediaFile
      */
@@ -208,7 +207,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
     }
 
     /**
-     * Get mediaFiles
+     * Get mediaFiles.
      *
      * @return Collection
      */
@@ -216,62 +215,56 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
         return $this->mediaFiles;
     }
 
-
     /**
-     * Add project
+     * Add project.
      *
      * @param \AppBundle\Entity\Project $project
      *
      * @return Artwork
      */
-    public function addProject(\AppBundle\Entity\Project $project)
-    {
+    public function addProject(Project $project) {
         $this->projects[] = $project;
 
         return $this;
     }
 
     /**
-     * Remove project
+     * Remove project.
      *
      * @param \AppBundle\Entity\Project $project
      */
-    public function removeProject(\AppBundle\Entity\Project $project)
-    {
+    public function removeProject(Project $project) {
         $this->projects->removeElement($project);
     }
 
     /**
-     * Get projects
+     * Get projects.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProjects()
-    {
+    public function getProjects() {
         return $this->projects;
     }
 
     /**
-     * Set artworkCategory
+     * Set artworkCategory.
      *
      * @param \AppBundle\Entity\ArtworkCategory $artworkCategory
      *
      * @return Artwork
      */
-    public function setArtworkCategory(\AppBundle\Entity\ArtworkCategory $artworkCategory = null)
-    {
+    public function setArtworkCategory(ArtworkCategory $artworkCategory = null) {
         $this->artworkCategory = $artworkCategory;
 
         return $this;
     }
 
     /**
-     * Get artworkCategory
+     * Get artworkCategory.
      *
      * @return \AppBundle\Entity\ArtworkCategory
      */
-    public function getArtworkCategory()
-    {
+    public function getArtworkCategory() {
         return $this->artworkCategory;
     }
 
@@ -282,8 +275,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
      *
      * @return Artwork
      */
-    public function addArtisticStatement(\AppBundle\Entity\ArtisticStatement $artisticStatement)
-    {
+    public function addArtisticStatement(ArtisticStatement $artisticStatement) {
         $this->artisticStatements[] = $artisticStatement;
 
         return $this;
@@ -294,10 +286,9 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
      *
      * @param \AppBundle\Entity\ArtisticStatement $artisticStatement
      *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeArtisticStatement(\AppBundle\Entity\ArtisticStatement $artisticStatement)
-    {
+    public function removeArtisticStatement(ArtisticStatement $artisticStatement) {
         return $this->artisticStatements->removeElement($artisticStatement);
     }
 
@@ -306,8 +297,7 @@ class Artwork extends AbstractEntity  implements ContentEntityInterface {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getArtisticStatements()
-    {
+    public function getArtisticStatements() {
         return $this->artisticStatements;
     }
 }

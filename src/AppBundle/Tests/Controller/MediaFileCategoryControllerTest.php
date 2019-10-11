@@ -2,19 +2,17 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\MediaFileCategory;
 use AppBundle\DataFixtures\ORM\LoadMediaFileCategory;
+use AppBundle\Entity\MediaFileCategory;
 use Nines\UserBundle\DataFixtures\ORM\LoadUser;
 use Nines\UtilBundle\Tests\Util\BaseTestCase;
 
-class MediaFileCategoryControllerTest extends BaseTestCase
-{
-
+class MediaFileCategoryControllerTest extends BaseTestCase {
     protected function getFixtures() {
-        return [
+        return array(
             LoadUser::class,
-            LoadMediaFileCategory::class
-        ];
+            LoadMediaFileCategory::class,
+        );
     }
 
     public function testAnonIndex() {
@@ -61,6 +59,7 @@ class MediaFileCategoryControllerTest extends BaseTestCase
         $this->assertEquals(1, $crawler->selectLink('Edit')->count());
         $this->assertEquals(1, $crawler->selectLink('Delete')->count());
     }
+
     public function testAnonEdit() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/media_file_category/1/edit');
@@ -80,12 +79,12 @@ class MediaFileCategoryControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Update')->form([
+        $form = $formCrawler->selectButton('Update')->form(array(
             // DO STUFF HERE.
             // 'media_file_categorys[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect('/media_file_category/1'));
@@ -113,12 +112,12 @@ class MediaFileCategoryControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Create')->form([
+        $form = $formCrawler->selectButton('Create')->form(array(
             // DO STUFF HERE.
             // 'media_file_categorys[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect());
@@ -153,5 +152,4 @@ class MediaFileCategoryControllerTest extends BaseTestCase
         $postCount = count($this->em->getRepository(MediaFileCategory::class)->findAll());
         $this->assertEquals($preCount - 1, $postCount);
     }
-
 }

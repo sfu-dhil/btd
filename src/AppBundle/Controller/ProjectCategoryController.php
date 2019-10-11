@@ -4,12 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ProjectCategory;
 use AppBundle\Form\Project\ProjectCategoryType;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ProjectCategory controller.
@@ -17,13 +16,13 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("/project_category")
  */
 class ProjectCategoryController extends Controller {
-
     /**
      * Lists all ProjectCategory entities.
      *
      * @Route("/", name="project_category_index", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -43,12 +42,12 @@ class ProjectCategoryController extends Controller {
      *
      * @Route("/new", name="project_category_new", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function newAction(Request $request) {
-
         $projectCategory = new ProjectCategory();
         $form = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $form->handleRequest($request);
@@ -59,6 +58,7 @@ class ProjectCategoryController extends Controller {
             $em->flush();
 
             $this->addFlash('success', 'The new projectCategory was created.');
+
             return $this->redirectToRoute('project_category_show', array('id' => $projectCategory->getId()));
         }
 
@@ -72,12 +72,12 @@ class ProjectCategoryController extends Controller {
      * Finds and displays a ProjectCategory entity.
      *
      * @Route("/{id}", name="project_category_show", methods={"GET"})
-
+     *
      * @Template()
+     *
      * @param ProjectCategory $projectCategory
      */
     public function showAction(ProjectCategory $projectCategory) {
-
         return array(
             'projectCategory' => $projectCategory,
         );
@@ -88,13 +88,13 @@ class ProjectCategoryController extends Controller {
      *
      * @Route("/{id}/edit", name="project_category_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
      * @Template()
+     *
      * @param Request $request
      * @param ProjectCategory $projectCategory
      */
     public function editAction(Request $request, ProjectCategory $projectCategory) {
-
         $editForm = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $editForm->handleRequest($request);
 
@@ -102,6 +102,7 @@ class ProjectCategoryController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The projectCategory has been updated.');
+
             return $this->redirectToRoute('project_category_show', array('id' => $projectCategory->getId()));
         }
 
@@ -116,12 +117,12 @@ class ProjectCategoryController extends Controller {
      *
      * @Route("/{id}/delete", name="project_category_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-
+     *
+     *
      * @param Request $request
      * @param ProjectCategory $projectCategory
      */
     public function deleteAction(Request $request, ProjectCategory $projectCategory) {
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectCategory);
         $em->flush();
@@ -129,5 +130,4 @@ class ProjectCategoryController extends Controller {
 
         return $this->redirectToRoute('project_category_index');
     }
-
 }

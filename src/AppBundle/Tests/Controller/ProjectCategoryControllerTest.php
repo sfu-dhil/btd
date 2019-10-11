@@ -2,19 +2,17 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\ProjectCategory;
 use AppBundle\DataFixtures\ORM\LoadProjectCategory;
+use AppBundle\Entity\ProjectCategory;
 use Nines\UserBundle\DataFixtures\ORM\LoadUser;
 use Nines\UtilBundle\Tests\Util\BaseTestCase;
 
-class ProjectCategoryControllerTest extends BaseTestCase
-{
-
+class ProjectCategoryControllerTest extends BaseTestCase {
     protected function getFixtures() {
-        return [
+        return array(
             LoadUser::class,
-            LoadProjectCategory::class
-        ];
+            LoadProjectCategory::class,
+        );
     }
 
     public function testAnonIndex() {
@@ -61,6 +59,7 @@ class ProjectCategoryControllerTest extends BaseTestCase
         $this->assertEquals(1, $crawler->selectLink('Edit')->count());
         $this->assertEquals(1, $crawler->selectLink('Delete')->count());
     }
+
     public function testAnonEdit() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/project_category/1/edit');
@@ -80,12 +79,12 @@ class ProjectCategoryControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Update')->form([
+        $form = $formCrawler->selectButton('Update')->form(array(
             // DO STUFF HERE.
             // 'project_categorys[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect('/project_category/1'));
@@ -113,12 +112,12 @@ class ProjectCategoryControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Create')->form([
+        $form = $formCrawler->selectButton('Create')->form(array(
             // DO STUFF HERE.
             // 'project_categorys[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect());
@@ -153,5 +152,4 @@ class ProjectCategoryControllerTest extends BaseTestCase
         $postCount = count($this->em->getRepository(ProjectCategory::class)->findAll());
         $this->assertEquals($preCount - 1, $postCount);
     }
-
 }

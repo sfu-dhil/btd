@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploadListener {
-
     /**
      * @var FileUploader
      */
@@ -27,6 +26,20 @@ class FileUploadListener {
         $this->thumbnailer = $thumbnailer;
     }
 
+    private function uploadFile($entity) {
+        if ( ! $entity instanceof MediaFile) {
+            return;
+        }
+        $uploadedFile = $entity->getFile();
+        if ( ! $uploadedFile instanceof UploadedFile) {
+            return;
+        }
+        $filename = $this->uploader->upload($uploadedFile);
+        $entity->setFilename($filename);
+        $entity->setFile(new File($this->uploader->getUploadDir() . '/' . $filename));
+        $this->thumbnailer->generateThumbnail($entity);
+    }
+
     public function prePersist(LifecycleEventArgs $args) {
         $this->uploadFile($args->getEntity());
     }
@@ -37,7 +50,7 @@ class FileUploadListener {
 
     public function postLoad(LifecycleEventArgs $args) {
         $entity = $args->getEntity();
-        if (!$entity instanceof MediaFile) {
+        if ( ! $entity instanceof MediaFile) {
             return;
         }
         $filename = $entity->getFilename();
@@ -48,19 +61,4 @@ class FileUploadListener {
             $entity->setFile(new File($this->uploader->getUploadDir() . '/../misc/missing-file.jpg'));
         }
     }
-
-    private function uploadFile($entity) {
-        if (!$entity instanceof MediaFile) {
-            return;
-        }
-        $uploadedFile = $entity->getFile();
-        if (!$uploadedFile instanceof UploadedFile) {
-            return;
-        }
-        $filename = $this->uploader->upload($uploadedFile);
-        $entity->setFilename($filename);
-        $entity->setFile(new File($this->uploader->getUploadDir() . '/' . $filename));
-        $this->thumbnailer->generateThumbnail($entity);
-    }
-
 }
