@@ -4,20 +4,17 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Location;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * LoadLocation form.
  */
-class LoadLocation extends Fixture
-{
+class LoadLocation extends Fixture {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new Location();
             $fixture->setCity('City ' . $i);
             $fixture->setRegion('Region ' . $i);
@@ -28,7 +25,5 @@ class LoadLocation extends Fixture
         }
 
         $em->flush();
-
     }
-
 }

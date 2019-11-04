@@ -6,28 +6,25 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
+use Nines\UtilBundle\Entity\ContentEntityInterface;
+use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
 /**
- * Artwork
+ * Artwork.
  *
  * @ORM\Table(name="artwork", indexes={
- *  @ORM\Index(columns={"title", "description", "materials", "copyright"}, flags={"fulltext"}),
+ *  @ORM\Index(columns={"title", "content", "materials", "copyright"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtworkRepository")
  */
-class Artwork extends AbstractEntity {
+class Artwork extends AbstractEntity implements ContentEntityInterface {
+    use ContentExcerptTrait;
 
     /**
      * @var string
      * @ORM\Column(type="string")
      */
     private $title;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $description;
 
     /**
      * @var string
@@ -46,12 +43,18 @@ class Artwork extends AbstractEntity {
      * @ORM\ManyToOne(targetEntity="ArtworkCategory", inversedBy="artworks")
      */
     private $artworkCategory;
-    
+
     /**
-     * @var Collection|ArtworkContribution[]
+     * @var ArtworkContribution[]|Collection
      * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="artwork", cascade={"persist"}, orphanRemoval=true)
      */
     private $contributions;
+
+    /**
+     * @var ArtisticStatement[]|Collection
+     * @ORM\OneToMany(targetEntity="ArtisticStatement", mappedBy="artwork")
+     */
+    private $artisticStatements;
 
     /**
      * @var Collection|MediaFile[]
@@ -65,12 +68,13 @@ class Artwork extends AbstractEntity {
      * @ORM\ManyToMany(targetEntity="Project", mappedBy="artworks")
      */
     private $projects;
-    
+
     public function __construct() {
         parent::__construct();
         $this->contributions = new ArrayCollection();
         $this->mediaFiles = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->artisticStatements = new ArrayCollection();
     }
 
     public function __toString() {
@@ -78,7 +82,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -91,7 +95,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -100,29 +104,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Artwork
-     */
-    public function setDescription($description) {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription() {
-        return $this->description;
-    }
-
-    /**
-     * Set materials
+     * Set materials.
      *
      * @param string $materials
      *
@@ -135,7 +117,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Get materials
+     * Get materials.
      *
      * @return string
      */
@@ -144,7 +126,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Set copyright
+     * Set copyright.
      *
      * @param string $copyright
      *
@@ -157,7 +139,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Get copyright
+     * Get copyright.
      *
      * @return string
      */
@@ -166,7 +148,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Add contribution
+     * Add contribution.
      *
      * @param ArtworkContribution $contribution
      *
@@ -179,7 +161,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Remove contribution
+     * Remove contribution.
      *
      * @param ArtworkContribution $contribution
      */
@@ -188,7 +170,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Get contributions
+     * Get contributions.
      *
      * @return Collection
      */
@@ -201,14 +183,14 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Add mediaFile
+     * Add mediaFile.
      *
      * @param MediaFile $mediaFile
      *
      * @return Artwork
      */
     public function addMediaFile(MediaFile $mediaFile) {
-        if (!$this->mediaFiles->contains($mediaFile)) {
+        if ( ! $this->mediaFiles->contains($mediaFile)) {
             $this->mediaFiles[] = $mediaFile;
         }
 
@@ -216,7 +198,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Remove mediaFile
+     * Remove mediaFile.
      *
      * @param MediaFile $mediaFile
      */
@@ -225,7 +207,7 @@ class Artwork extends AbstractEntity {
     }
 
     /**
-     * Get mediaFiles
+     * Get mediaFiles.
      *
      * @return Collection
      */
@@ -233,62 +215,89 @@ class Artwork extends AbstractEntity {
         return $this->mediaFiles;
     }
 
-
     /**
-     * Add project
+     * Add project.
      *
      * @param \AppBundle\Entity\Project $project
      *
      * @return Artwork
      */
-    public function addProject(\AppBundle\Entity\Project $project)
-    {
+    public function addProject(Project $project) {
         $this->projects[] = $project;
 
         return $this;
     }
 
     /**
-     * Remove project
+     * Remove project.
      *
      * @param \AppBundle\Entity\Project $project
      */
-    public function removeProject(\AppBundle\Entity\Project $project)
-    {
+    public function removeProject(Project $project) {
         $this->projects->removeElement($project);
     }
 
     /**
-     * Get projects
+     * Get projects.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProjects()
-    {
+    public function getProjects() {
         return $this->projects;
     }
 
     /**
-     * Set artworkCategory
+     * Set artworkCategory.
      *
      * @param \AppBundle\Entity\ArtworkCategory $artworkCategory
      *
      * @return Artwork
      */
-    public function setArtworkCategory(\AppBundle\Entity\ArtworkCategory $artworkCategory = null)
-    {
+    public function setArtworkCategory(ArtworkCategory $artworkCategory = null) {
         $this->artworkCategory = $artworkCategory;
 
         return $this;
     }
 
     /**
-     * Get artworkCategory
+     * Get artworkCategory.
      *
      * @return \AppBundle\Entity\ArtworkCategory
      */
-    public function getArtworkCategory()
-    {
+    public function getArtworkCategory() {
         return $this->artworkCategory;
+    }
+
+    /**
+     * Add artisticStatement.
+     *
+     * @param \AppBundle\Entity\ArtisticStatement $artisticStatement
+     *
+     * @return Artwork
+     */
+    public function addArtisticStatement(ArtisticStatement $artisticStatement) {
+        $this->artisticStatements[] = $artisticStatement;
+
+        return $this;
+    }
+
+    /**
+     * Remove artisticStatement.
+     *
+     * @param \AppBundle\Entity\ArtisticStatement $artisticStatement
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeArtisticStatement(ArtisticStatement $artisticStatement) {
+        return $this->artisticStatements->removeElement($artisticStatement);
+    }
+
+    /**
+     * Get artisticStatements.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArtisticStatements() {
+        return $this->artisticStatements;
     }
 }

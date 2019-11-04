@@ -12,13 +12,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ProjectType extends AbstractType {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('title');
+
+        $builder->add('parent', Select2EntityType::class, array(
+            'remote_route' => 'project_typeahead',
+            'class' => Project::class,
+            'multiple' => false,
+            'primary_key' => 'id',
+            'text_property' => 'title',
+            'page_limit' => 10,
+            'allow_clear' => true,
+            'delay' => 250,
+            'language' => 'en',
+        ));
+
         $builder->add('startDate', DateType::class, array(
             'widget' => 'single_text',
         ));
@@ -40,10 +52,10 @@ class ProjectType extends AbstractType {
             'attr' => array(
                 'help_block' => 'Excerpts will be shown on the home page and in '
                 . 'lists of pages. Leave this field blank and one will be '
-                . 'generated automatically.'
+                . 'generated automatically.',
             ),
         ));
-        $builder->add('description', CKEditorType::class);
+        $builder->add('content', CKEditorType::class);
         $builder->add('url');
         $builder->add('projectCategory');
     }
@@ -56,5 +68,4 @@ class ProjectType extends AbstractType {
             'data_class' => Project::class,
         ));
     }
-
 }

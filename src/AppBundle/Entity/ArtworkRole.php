@@ -8,15 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
- * ArtworkRole
+ * ArtworkRole.
  *
  * @ORM\Table(name="artwork_role")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtworkRoleRepository")
  */
 class ArtworkRole extends AbstractTerm {
-
     /**
-     * @var Collection|ArtworkContribution[]
+     * @var ArtworkContribution[]|Collection
      * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="artworkRole")
      */
     private $contributions;
@@ -27,7 +26,7 @@ class ArtworkRole extends AbstractTerm {
     }
 
     /**
-     * Add contribution
+     * Add contribution.
      *
      * @param ArtworkContribution $contribution
      *
@@ -40,7 +39,7 @@ class ArtworkRole extends AbstractTerm {
     }
 
     /**
-     * Remove contribution
+     * Remove contribution.
      *
      * @param ArtworkContribution $contribution
      */
@@ -49,12 +48,11 @@ class ArtworkRole extends AbstractTerm {
     }
 
     /**
-     * Get contributions
+     * Get contributions.
      *
      * @return Collection
      */
     public function getContributions() {
         return $this->contributions;
     }
-
 }

@@ -10,14 +10,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadVenue form.
  */
-class LoadVenue extends Fixture implements DependentFixtureInterface
-{
+class LoadVenue extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new Venue();
             $fixture->setName('Name ' . $i);
             $fixture->setAddress('Address ' . $i);
@@ -31,7 +29,6 @@ class LoadVenue extends Fixture implements DependentFixtureInterface
         }
 
         $em->flush();
-
     }
 
     /**
@@ -40,11 +37,9 @@ class LoadVenue extends Fixture implements DependentFixtureInterface
     public function getDependencies() {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
-        return [
+        return array(
             LoadLocation::class,
             LoadVenueCategory::class,
-        ];
+        );
     }
-
-
 }

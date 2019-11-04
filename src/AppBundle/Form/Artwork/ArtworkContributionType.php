@@ -12,7 +12,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArtworkContributionType extends AbstractType {
-
     /**
      * @var EntityManagerInterface
      */
@@ -48,5 +47,4 @@ class ArtworkContributionType extends AbstractType {
             'artwork' => null,
         ));
     }
-
 }

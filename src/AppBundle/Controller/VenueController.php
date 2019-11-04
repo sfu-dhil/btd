@@ -3,13 +3,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Venue;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Venue controller.
@@ -17,13 +17,13 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("/venue")
  */
 class VenueController extends Controller {
-
     /**
      * Lists all Venue entities.
      *
-     * @Route("/", name="venue_index")
-     * @Method("GET")
+     * @Route("/", name="venue_index", methods={"GET"})
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -38,26 +38,27 @@ class VenueController extends Controller {
         );
     }
 
-   /**
+    /**
      * @param Request $request
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/typeahead", name="venue_typeahead")
-     * @Method("GET")
+     * @Route("/typeahead", name="venue_typeahead", methods={"GET"})
+     *
+     *
      * @return JsonResponse
      */
     public function typeaheadAction(Request $request) {
         $q = $request->query->get('q');
-        if (!$q) {
-            return new JsonResponse([]);
+        if ( ! $q) {
+            return new JsonResponse(array());
         }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Venue::class);
-        $data = [];
+        $data = array();
         foreach ($repo->typeaheadQuery($q) as $result) {
-            $data[] = [
+            $data[] = array(
                 'id' => $result->getId(),
                 'text' => $result->getName(),
-            ];
+            );
         }
 
         return new JsonResponse($data);
@@ -66,16 +67,14 @@ class VenueController extends Controller {
     /**
      * Creates a new Venue entity.
      *
-     * @Route("/new", name="venue_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="venue_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $venue = new Venue();
         $form = $this->createForm('AppBundle\Form\VenueType', $venue);
         $form->handleRequest($request);
@@ -86,6 +85,7 @@ class VenueController extends Controller {
             $em->flush();
 
             $this->addFlash('success', 'The new venue was created.');
+
             return $this->redirectToRoute('venue_show', array('id' => $venue->getId()));
         }
 
@@ -98,13 +98,13 @@ class VenueController extends Controller {
     /**
      * Finds and displays a Venue entity.
      *
-     * @Route("/{id}", name="venue_show")
-     * @Method("GET")
+     * @Route("/{id}", name="venue_show", methods={"GET"})
+     *
      * @Template()
+     *
      * @param Venue $venue
      */
     public function showAction(Venue $venue) {
-
         return array(
             'venue' => $venue,
         );
@@ -113,17 +113,15 @@ class VenueController extends Controller {
     /**
      * Displays a form to edit an existing Venue entity.
      *
-     * @Route("/{id}/edit", name="venue_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="venue_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
      * @Template()
+     *
      * @param Request $request
      * @param Venue $venue
      */
     public function editAction(Request $request, Venue $venue) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $editForm = $this->createForm('AppBundle\Form\VenueType', $venue);
         $editForm->handleRequest($request);
 
@@ -131,6 +129,7 @@ class VenueController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The venue has been updated.');
+
             return $this->redirectToRoute('venue_show', array('id' => $venue->getId()));
         }
 
@@ -143,16 +142,14 @@ class VenueController extends Controller {
     /**
      * Deletes a Venue entity.
      *
-     * @Route("/{id}/delete", name="venue_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="venue_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     *
      * @param Request $request
      * @param Venue $venue
      */
     public function deleteAction(Request $request, Venue $venue) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($venue);
         $em->flush();
@@ -160,5 +157,4 @@ class VenueController extends Controller {
 
         return $this->redirectToRoute('venue_index');
     }
-
 }

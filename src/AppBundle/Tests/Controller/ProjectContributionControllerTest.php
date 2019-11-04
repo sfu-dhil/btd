@@ -2,19 +2,16 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\ProjectContribution;
 use AppBundle\DataFixtures\ORM\LoadProjectContribution;
 use Nines\UserBundle\DataFixtures\ORM\LoadUser;
 use Nines\UtilBundle\Tests\Util\BaseTestCase;
 
-class ProjectContributionControllerTest extends BaseTestCase
-{
-
+class ProjectContributionControllerTest extends BaseTestCase {
     protected function getFixtures() {
-        return [
+        return array(
             LoadUser::class,
-            LoadProjectContribution::class
-        ];
+            LoadProjectContribution::class,
+        );
     }
 
     public function testAnonIndex() {
@@ -37,5 +34,4 @@ class ProjectContributionControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('New')->count());
     }
-
 }

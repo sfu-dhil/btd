@@ -10,14 +10,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadArtworkContribution form.
  */
-class LoadArtworkContribution extends Fixture implements DependentFixtureInterface
-{
+class LoadArtworkContribution extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new ArtworkContribution();
             $fixture->setArtwork($this->getReference('artwork.1'));
             $fixture->setPerson($this->getReference('person.1'));
@@ -29,7 +27,6 @@ class LoadArtworkContribution extends Fixture implements DependentFixtureInterfa
         }
 
         $em->flush();
-
     }
 
     /**
@@ -38,13 +35,11 @@ class LoadArtworkContribution extends Fixture implements DependentFixtureInterfa
     public function getDependencies() {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
-        return [
+        return array(
             LoadArtwork::class,
             LoadPerson::class,
             LoadOrganization::class,
             LoadArtworkRole::class,
-        ];
+        );
     }
-
-
 }

@@ -132,4 +132,15 @@
         </table>
     {% endif %}
 
+    <h2>Artists' Statements</h2>
+
+    {% for artisticStatement in person.artisticStatements%}
+        <h3>
+            <a href="{{ path('artwork_statement_show', { 'id': artisticStatement.id }) }}">
+                {{ artisticStatement }}
+            </a>
+        </h3>
+        {{ artisticStatement.excerpt|raw }}
+    {% endfor %}
+
 {% endblock %}

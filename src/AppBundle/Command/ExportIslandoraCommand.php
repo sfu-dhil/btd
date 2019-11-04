@@ -18,7 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ExportIslandoraCommand extends ContainerAwareCommand {
-
     /**
      * @var ObjectManager
      */
@@ -31,11 +30,18 @@ class ExportIslandoraCommand extends ContainerAwareCommand {
 
     protected function configure() {
         $this
-                ->setName('app:export:islandora')
-                ->setDescription('Export a project as an islandora collection.')
-                ->addArgument('project-id', InputArgument::REQUIRED, 'Database ID of the project to export.')
-                ->addArgument('path', InputArgument::REQUIRED, 'File system path to export to.');
+            ->setName('app:export:islandora')
+            ->setDescription('Export a project as an islandora collection.')
+            ->addArgument('project-id', InputArgument::REQUIRED, 'Database ID of the project to export.')
+            ->addArgument('path', InputArgument::REQUIRED, 'File system path to export to.')
         ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output) {
+        $project = $this->em->find(Project::class, $input->getArgument('project-id'));
+        $dh = $this->getDirHandle($input->getArgument('path'));
+        $output->writeln("exporting {$project} to {$dh->getRealPath()}");
+        $this->exportProject($project, $dh);
     }
 
     public function setContainer(ContainerInterface $container = null) {
@@ -46,20 +52,23 @@ class ExportIslandoraCommand extends ContainerAwareCommand {
 
     /**
      * @param string $path
-     * @return SplFileInfo
+     *
      * @throws Exception
+     *
+     * @return SplFileInfo
      */
     public function getDirHandle($path) {
-        if (!file_exists($path)) {
+        if ( ! file_exists($path)) {
             mkdir($path);
         }
         $dh = new SplFileInfo($path);
-        if (!$dh->isDir()) {
+        if ( ! $dh->isDir()) {
             throw new Exception("{$path} is not a directory.");
         }
-        if (!$dh->isWritable()) {
+        if ( ! $dh->isWritable()) {
             throw new Exception("{$path} is not writable.");
         }
+
         return $dh;
     }
 
@@ -71,36 +80,36 @@ class ExportIslandoraCommand extends ContainerAwareCommand {
     }
 
     public function exportPage(ProjectPage $page, SplFileInfo $dh) {
-        $dcHandle = fopen($dh->getRealPath() . "/page_{$page->getId()}_DC.xml" , 'w');
+        $dcHandle = fopen($dh->getRealPath() . "/page_{$page->getId()}_DC.xml", 'w');
         $xml = $this->twig->render('AppBundle:ProjectPage:dc.xml.twig', array(
-            'page' => $page
+            'page' => $page,
         ));
         fwrite($dcHandle, $xml);
         fclose($dcHandle);
-        
+
         $contentHandle = fopen($dh->getRealPath() . "/page_{$page->getId()}.html", 'w');
         fwrite($contentHandle, $page->getContent());
     }
 
     public function exportMediaFile(MediaFile $mediaFile, SplFileInfo $dh) {
-        $dcHandle = fopen($dh->getRealPath() . "/media_{$mediaFile->getBasename()}_DC.xml" , 'w');
+        $dcHandle = fopen($dh->getRealPath() . "/media_{$mediaFile->getBasename()}_DC.xml", 'w');
         $xml = $this->twig->render('AppBundle:MediaFile:dc.xml.twig', array(
-            'mediaFile' => $mediaFile
+            'mediaFile' => $mediaFile,
         ));
         fwrite($dcHandle, $xml);
         fclose($dcHandle);
-        
+
         copy($mediaFile->getRealPath(), "{$dh->getRealPath()}/media_{$mediaFile->getFilename()}");
     }
 
     public function exportContribution(ProjectContribution $contribution, SplFileInfo $dh) {
-        $dcHandle = fopen($dh->getRealPath() . "/{$contribution->getProjectRole()->getName()}_{$contribution->getId()}_DC.xml" , 'w');
+        $dcHandle = fopen($dh->getRealPath() . "/{$contribution->getProjectRole()->getName()}_{$contribution->getId()}_DC.xml", 'w');
         $xml = $this->twig->render('AppBundle:ProjectContribution:dc.xml.twig', array(
             'contribution' => $contribution,
         ));
         fwrite($dcHandle, $xml);
         fclose($dcHandle);
-        
+
         $contentHandle = fopen($dh->getRealPath() . "/{$contribution->getProjectRole()->getName()}_{$contribution->getId()}.html", 'w');
         if ($contribution->getPerson()) {
             fwrite($contentHandle, $contribution->getPerson()->getBiography());
@@ -108,11 +117,11 @@ class ExportIslandoraCommand extends ContainerAwareCommand {
         if ($contribution->getOrganization()) {
             fwrite($contentHandle, $contribution->getOrganization()->getDescription());
         }
-        print "\n";
+        echo "\n";
     }
 
     public function exportVenue(Venue $venue) {
-        print $venue . "\n";
+        echo $venue . "\n";
     }
 
     public function exportProject(Project $project, SplFileInfo $dh) {
@@ -131,12 +140,4 @@ class ExportIslandoraCommand extends ContainerAwareCommand {
             $this->exportVenue($venue);
         }
     }
-
-    protected function execute(InputInterface $input, OutputInterface $output) {
-        $project = $this->em->find(Project::class, $input->getArgument('project-id'));
-        $dh = $this->getDirHandle($input->getArgument('path'));
-        $output->writeln("exporting $project to {$dh->getRealPath()}");
-        $this->exportProject($project, $dh);
-    }
-
 }

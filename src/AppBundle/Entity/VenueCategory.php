@@ -8,13 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
- * VenueCategory
+ * VenueCategory.
  *
  * @ORM\Table(name="venue_category")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VenueCategoryRepository")
  */
 class VenueCategory extends AbstractTerm {
-
     /**
      * @var Collection|Venue[]
      * @ORM\OneToMany(targetEntity="Venue", mappedBy="venueCategory")
@@ -27,7 +26,7 @@ class VenueCategory extends AbstractTerm {
     }
 
     /**
-     * Add venue
+     * Add venue.
      *
      * @param Venue $venue
      *
@@ -40,7 +39,7 @@ class VenueCategory extends AbstractTerm {
     }
 
     /**
-     * Remove venue
+     * Remove venue.
      *
      * @param Venue $venue
      */
@@ -49,12 +48,11 @@ class VenueCategory extends AbstractTerm {
     }
 
     /**
-     * Get venues
+     * Get venues.
      *
      * @return Collection
      */
     public function getVenues() {
         return $this->venues;
     }
-
 }

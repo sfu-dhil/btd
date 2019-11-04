@@ -8,13 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
- * MediaFileCategory
+ * MediaFileCategory.
  *
  * @ORM\Table(name="media_file_category")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MediaFileCategoryRepository")
  */
 class MediaFileCategory extends AbstractTerm {
-
     /**
      * @var Collection|MediaFile[]
      * @ORM\OneToMany(targetEntity="MediaFile", mappedBy="mediaFileCategory")
@@ -27,7 +26,7 @@ class MediaFileCategory extends AbstractTerm {
     }
 
     /**
-     * Add mediaFile
+     * Add mediaFile.
      *
      * @param MediaFile $mediaFile
      *
@@ -40,7 +39,7 @@ class MediaFileCategory extends AbstractTerm {
     }
 
     /**
-     * Remove mediaFile
+     * Remove mediaFile.
      *
      * @param MediaFile $mediaFile
      */
@@ -49,12 +48,11 @@ class MediaFileCategory extends AbstractTerm {
     }
 
     /**
-     * Get mediaFiles
+     * Get mediaFiles.
      *
      * @return Collection
      */
     public function getMediaFiles() {
         return $this->mediaFiles;
     }
-
 }

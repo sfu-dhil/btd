@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VenueType extends AbstractType {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -32,5 +31,4 @@ class VenueType extends AbstractType {
             'data_class' => Venue::class,
         ));
     }
-
 }

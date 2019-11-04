@@ -34,6 +34,8 @@ parameters:
     nines_feedback.recipient: notify@example.com
     nines_feedback.subject: New feedback received
 
+    nines_text.trim_length: 25
+
     btd.homepage_entries: 5
 
     # path to the uploaded files, relative to the app directory.
@@ -57,3 +59,6 @@ parameters:
     # Where the application lives
     # eg. "*.example.com/application"
     dhil.piwik_domain: ~
+
+    # Prevent logins by setting this to false
+    dhil.allow_logins: true

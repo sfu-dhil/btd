@@ -10,14 +10,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadArtisticStatement form.
  */
-class LoadArtisticStatement extends Fixture implements DependentFixtureInterface
-{
+class LoadArtisticStatement extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new ArtisticStatement();
             $fixture->setTitle('Title ' . $i);
             $fixture->setExcerpt('Excerpt ' . $i);
@@ -30,7 +28,6 @@ class LoadArtisticStatement extends Fixture implements DependentFixtureInterface
         }
 
         $em->flush();
-
     }
 
     /**
@@ -39,11 +36,9 @@ class LoadArtisticStatement extends Fixture implements DependentFixtureInterface
     public function getDependencies() {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
-        return [
+        return array(
             LoadArtwork::class,
             LoadPerson::class,
-        ];
+        );
     }
-
-
 }

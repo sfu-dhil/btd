@@ -8,13 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
- * ProjectRole
+ * ProjectRole.
  *
  * @ORM\Table(name="project_role")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRoleRepository")
  */
 class ProjectRole extends AbstractTerm {
-
     /**
      * @var Collection|ProjectContribution[]
      * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="projectRole")
@@ -27,7 +26,7 @@ class ProjectRole extends AbstractTerm {
     }
 
     /**
-     * Add contribution
+     * Add contribution.
      *
      * @param ProjectContribution $contribution
      *
@@ -40,7 +39,7 @@ class ProjectRole extends AbstractTerm {
     }
 
     /**
-     * Remove contribution
+     * Remove contribution.
      *
      * @param ProjectContribution $contribution
      */
@@ -49,12 +48,11 @@ class ProjectRole extends AbstractTerm {
     }
 
     /**
-     * Get contributions
+     * Get contributions.
      *
      * @return Collection
      */
     public function getContributions() {
         return $this->contributions;
     }
-
 }

@@ -39,7 +39,7 @@
                     {{ artwork.title }}
                 </a>
             </h2>
-            {{ text_service.trim(artwork.description, 100) }}
+            {{ artwork.excerpt }}
             <p class='text-right'>
                 Created {{ artwork.created|date }}. Most recently updated {{ artwork.updated|date }}
             </p>

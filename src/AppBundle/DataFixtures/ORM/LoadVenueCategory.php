@@ -9,14 +9,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadVenueCategory form.
  */
-class LoadVenueCategory extends Fixture
-{
+class LoadVenueCategory extends Fixture {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new VenueCategory();
             $fixture->setName('venue-category-' . $i);
             $fixture->setLabel('Venue Category ' . $i);
@@ -25,7 +23,5 @@ class LoadVenueCategory extends Fixture
         }
 
         $em->flush();
-
     }
-
 }

@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrganizationType extends AbstractType {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -21,7 +20,7 @@ class OrganizationType extends AbstractType {
         $builder->add('address');
         $builder->add('description', CKEditorType::class);
         $builder->add('urls', CollectionType::class, array(
-            'label' => "Websites",
+            'label' => 'Websites',
             'entry_type' => UrlType::class,
             'required' => false,
             'allow_add' => true,
@@ -46,5 +45,4 @@ class OrganizationType extends AbstractType {
             'data_class' => Organization::class,
         ));
     }
-
 }

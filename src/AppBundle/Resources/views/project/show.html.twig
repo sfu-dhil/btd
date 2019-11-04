@@ -4,11 +4,14 @@
     <h1>{{ project.title }}</h1>
     <a href="{{ path('project_category_show', {'id': project.projectCategory.id }) }}">
         {{ project.projectCategory }}
-    </a> {{ project.startDate|date }} to {{ project.endDate|date }}. <br/>
+    </a> {{ project.startDate|date("Y-m-d") }} to {{ project.endDate|date("Y-m-d") }}. <br/>
     {% for venue in project.venues %}
         <a href='{{ path('venue_show', {'id': venue.id}) }}'>{{ venue.name}}</a>,
         <a href='{{ path('location_show', {'id': venue.location.id}) }}'>{{venue.location}}</a><br/>
     {% endfor %}
+    {%  if project.parent %}
+        Part of <a href="{{ project.parent.id }}">{{ project.parent }}</a>.
+    {%  endif %}
 {% endblock %}
 
 {% block body %}
@@ -32,7 +35,7 @@
         </div>
     </div>
 
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_USER') %}
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2 class="panel-title">
@@ -45,7 +48,7 @@
         </div>
     {% endif %}
 
-    {{ project.description|raw }}
+    {{ project.content|raw }}
 
     <div class="text-right">
         Created {{ project.created|date('Y-m-d H:i:s') }}. Most recent update {{ project.updated|date }}.
@@ -149,9 +152,24 @@
             </a>
         </h3>
         <p>
-            {{ text_service.trim(artwork.description, 100) }}
+            {{ artwork.excerpt }}
         </p>
     {% endfor %}
+
+    <h2>Sub Projects</h2>
+    {% if project.children | length > 0 %}
+        <ul>
+            {% for child in project.children %}
+                <li>
+                    <a href="{{ path('project_show', {'id': child.id}) }}">
+                        {{ child }}
+                    </a>
+                </li>
+                {% endfor %}
+        </ul>
+        {% else %}
+            <p><i>No subprojects</i></p>
+    {%  endif %}
 
 
 {% endblock %}

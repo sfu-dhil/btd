@@ -5,48 +5,40 @@
 {% block pageheader %}
     <h1>ArtisticStatement List</h1>
     <p class="count">
-        Displaying {{ artisticStatements|length }} artisticStatements of {{ artisticStatements.getTotalItemCount }} total.
+        Displaying {{ artisticStatements|length }} artisticStatements of {{ artisticStatements.getTotalItemCount }}
+        total.
     </p>
- {% endblock %} 
+{% endblock %}
 
 {% block body %}
 
-        <div class='btn-toolbar pull-right'>
+    <div class='btn-toolbar pull-right'>
         <div class='btn-group'>
             {% if is_granted('ROLE_CONTENT_ADMIN') %}
-            <a href="{{ path('artwork_statement_new') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus"></span> New
-            </a>
+                <a href="{{ path('artwork_statement_new') }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span> New
+                </a>
             {% endif %}
             <a href="{{ path('artwork_statement_search') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-search"></span> Search
             </a>
         </div>
     </div>
-        
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Excerpt</th>
-                <th>Content</th>
-                </tr>
-        </thead>
-        <tbody>
-        {% for artisticStatement in artisticStatements %}
-            <tr>
-                <td>
-                    <a href="{{ path('artwork_statement_show', { 'id': artisticStatement.id }) }}">
-                        {{ artisticStatement.title }}
-                    </a>
-                </td>
-                <td>{{ artisticStatement.excerpt }}</td>
-                <td>{{ artisticStatement.content }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-        
+
+    <div class="clearfix"></div>
+
+    {% for artisticStatement in artisticStatements %}
+        <h2>
+            <a href="{{ path('artwork_statement_show', { 'id': artisticStatement.id }) }}">
+                {{ artisticStatement.title }}
+            </a>
+        </h2>
+        {{ artisticStatement.excerpt|raw }}
+        <p class='text-right'>
+            Created {{ artisticStatement.created|date }}. Most recently updated {{ artisticStatement.updated|date }}
+        </p>
+    {% endfor %}
+
     <div class="navigation">
         {{ knp_pagination_render(artisticStatements) }}
     </div>

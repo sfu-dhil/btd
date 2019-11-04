@@ -2,19 +2,16 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\ArtworkContribution;
 use AppBundle\DataFixtures\ORM\LoadArtworkContribution;
 use Nines\UserBundle\DataFixtures\ORM\LoadUser;
 use Nines\UtilBundle\Tests\Util\BaseTestCase;
 
-class ArtworkContributionControllerTest extends BaseTestCase
-{
-
+class ArtworkContributionControllerTest extends BaseTestCase {
     protected function getFixtures() {
-        return [
+        return array(
             LoadUser::class,
-            LoadArtworkContribution::class
-        ];
+            LoadArtworkContribution::class,
+        );
     }
 
     public function testAnonIndex() {
@@ -37,5 +34,4 @@ class ArtworkContributionControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('New')->count());
     }
-
 }

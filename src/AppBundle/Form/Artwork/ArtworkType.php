@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArtworkType extends AbstractType {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -17,7 +16,8 @@ class ArtworkType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('title');
         $builder->add('artworkCategory');
-        $builder->add('description', CKEditorType::class);
+        $builder->add('excerpt', CKEditorType::class);
+        $builder->add('content', CKEditorType::class);
         $builder->add('materials', CKEditorType::class);
         $builder->add('copyright', CKEditorType::class);
     }
@@ -30,5 +30,4 @@ class ArtworkType extends AbstractType {
             'data_class' => Artwork::class,
         ));
     }
-
 }

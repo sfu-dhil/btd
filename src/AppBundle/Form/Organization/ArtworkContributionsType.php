@@ -15,7 +15,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArtworkContributionsType extends AbstractType {
-
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $organization = $options['organization'];
         $builder->add('artworkContributions', CollectionType::class, array(
@@ -41,5 +40,4 @@ class ArtworkContributionsType extends AbstractType {
             'organization' => null,
         ));
     }
-
 }

@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\MediaFileCategory;
 use AppBundle\Form\MediaFileCategoryType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * MediaFileCategory controller.
@@ -16,13 +16,13 @@ use AppBundle\Form\MediaFileCategoryType;
  * @Route("/media_file_category")
  */
 class MediaFileCategoryController extends Controller {
-
     /**
      * Lists all MediaFileCategory entities.
      *
-     * @Route("/", name="media_file_category_index")
-     * @Method("GET")
+     * @Route("/", name="media_file_category_index", methods={"GET"})
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -40,16 +40,14 @@ class MediaFileCategoryController extends Controller {
     /**
      * Creates a new MediaFileCategory entity.
      *
-     * @Route("/new", name="media_file_category_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="media_file_category_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $mediaFileCategory = new MediaFileCategory();
         $form = $this->createForm(MediaFileCategoryType::class, $mediaFileCategory);
         $form->handleRequest($request);
@@ -60,6 +58,7 @@ class MediaFileCategoryController extends Controller {
             $em->flush();
 
             $this->addFlash('success', 'The new mediaFileCategory was created.');
+
             return $this->redirectToRoute('media_file_category_show', array('id' => $mediaFileCategory->getId()));
         }
 
@@ -72,13 +71,13 @@ class MediaFileCategoryController extends Controller {
     /**
      * Finds and displays a MediaFileCategory entity.
      *
-     * @Route("/{id}", name="media_file_category_show")
-     * @Method("GET")
+     * @Route("/{id}", name="media_file_category_show", methods={"GET"})
+     *
      * @Template()
+     *
      * @param MediaFileCategory $mediaFileCategory
      */
     public function showAction(MediaFileCategory $mediaFileCategory) {
-
         return array(
             'mediaFileCategory' => $mediaFileCategory,
         );
@@ -87,17 +86,15 @@ class MediaFileCategoryController extends Controller {
     /**
      * Displays a form to edit an existing MediaFileCategory entity.
      *
-     * @Route("/{id}/edit", name="media_file_category_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="media_file_category_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
      * @Template()
+     *
      * @param Request $request
      * @param MediaFileCategory $mediaFileCategory
      */
     public function editAction(Request $request, MediaFileCategory $mediaFileCategory) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $editForm = $this->createForm('AppBundle\Form\MediaFileCategoryType', $mediaFileCategory);
         $editForm->handleRequest($request);
 
@@ -105,6 +102,7 @@ class MediaFileCategoryController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The mediaFileCategory has been updated.');
+
             return $this->redirectToRoute('media_file_category_show', array('id' => $mediaFileCategory->getId()));
         }
 
@@ -117,16 +115,14 @@ class MediaFileCategoryController extends Controller {
     /**
      * Deletes a MediaFileCategory entity.
      *
-     * @Route("/{id}/delete", name="media_file_category_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="media_file_category_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     *
      * @param Request $request
      * @param MediaFileCategory $mediaFileCategory
      */
     public function deleteAction(Request $request, MediaFileCategory $mediaFileCategory) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($mediaFileCategory);
         $em->flush();
@@ -134,5 +130,4 @@ class MediaFileCategoryController extends Controller {
 
         return $this->redirectToRoute('media_file_category_index');
     }
-
 }

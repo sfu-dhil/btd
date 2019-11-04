@@ -7,16 +7,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
+use Nines\UtilBundle\Entity\ContentEntityInterface;
+use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
 /**
- * Project
+ * Project.
  *
  * @ORM\Table(name="project", indexes={
- *  @ORM\Index(columns={"title", "description"}, flags={"fulltext"}),
+ *  @ORM\Index(columns={"title", "content"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
  */
-class Project extends AbstractEntity {
+class Project extends AbstractEntity implements ContentEntityInterface {
+    use ContentExcerptTrait;
 
     /**
      * @var string
@@ -38,21 +41,21 @@ class Project extends AbstractEntity {
 
     /**
      * @var string
-     * @ORM\Column(type="text")
-     */
-    private $excerpt;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $description;
-
-    /**
-     * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     private $url;
+
+    /**
+     * @var Project
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="children")
+     */
+    private $parent;
+
+    /**
+     * @var Collection|Project[]
+     * @ORM\OneToMany(targetEntity="Project", mappedBy="parent")
+     */
+    private $children;
 
     /**
      * @var ProjectCategory
@@ -88,7 +91,7 @@ class Project extends AbstractEntity {
     private $mediaFiles;
 
     /**
-     * @var Collection|Artwork[]
+     * @var Artwork[]|Collection
      * @ORM\ManyToMany(targetEntity="Artwork", inversedBy="projects")
      * @ORM\JoinTable(name="project_artworks")
      */
@@ -100,6 +103,7 @@ class Project extends AbstractEntity {
         $this->contributions = new ArrayCollection();
         $this->mediaFiles = new ArrayCollection();
         $this->artworks = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function __toString() {
@@ -107,7 +111,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -120,7 +124,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -129,29 +133,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Project
-     */
-    public function setDescription($description) {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription() {
-        return $this->description;
-    }
-
-    /**
-     * Set url
+     * Set url.
      *
      * @param string $url
      *
@@ -164,7 +146,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Get url
+     * Get url.
      *
      * @return string
      */
@@ -173,7 +155,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Set projectCategory
+     * Set projectCategory.
      *
      * @param ProjectCategory $projectCategory
      *
@@ -186,7 +168,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Get projectCategory
+     * Get projectCategory.
      *
      * @return ProjectCategory
      */
@@ -195,7 +177,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Add venue
+     * Add venue.
      *
      * @param Venue $venue
      *
@@ -208,7 +190,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Remove venue
+     * Remove venue.
      *
      * @param Venue $venue
      */
@@ -217,7 +199,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Get venues
+     * Get venues.
      *
      * @return Collection
      */
@@ -226,7 +208,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Add contribution
+     * Add contribution.
      *
      * @param ProjectContribution $contribution
      *
@@ -239,7 +221,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Remove contribution
+     * Remove contribution.
      *
      * @param ProjectContribution $contribution
      */
@@ -248,7 +230,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Get contributions
+     * Get contributions.
      *
      * @return Collection
      */
@@ -260,14 +242,15 @@ class Project extends AbstractEntity {
      * Check if a media file is associated with this project.
      *
      * @param MediaFile $mediaFile
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasMediaFile(MediaFile $mediaFile) {
         return $this->mediaFiles->contains($mediaFile);
     }
 
     /**
-     * Add mediaFile
+     * Add mediaFile.
      *
      * @param MediaFile $mediaFile
      *
@@ -282,7 +265,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Remove mediaFile
+     * Remove mediaFile.
      *
      * @param MediaFile $mediaFile
      */
@@ -291,7 +274,7 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Get mediaFiles
+     * Get mediaFiles.
      *
      * @return Collection
      */
@@ -299,122 +282,89 @@ class Project extends AbstractEntity {
         return $this->mediaFiles;
     }
 
-
     /**
-     * Set startDate
+     * Set startDate.
      *
      * @param DateTime $startDate
      *
      * @return Project
      */
-    public function setStartDate($startDate)
-    {
+    public function setStartDate($startDate) {
         $this->startDate = $startDate;
 
         return $this;
     }
 
     /**
-     * Get startDate
+     * Get startDate.
      *
      * @return DateTime
      */
-    public function getStartDate()
-    {
+    public function getStartDate() {
         return $this->startDate;
     }
 
     /**
-     * Set endDate
+     * Set endDate.
      *
      * @param DateTime $endDate
      *
      * @return Project
      */
-    public function setEndDate($endDate)
-    {
+    public function setEndDate($endDate) {
         $this->endDate = $endDate;
 
         return $this;
     }
 
     /**
-     * Get endDate
+     * Get endDate.
      *
      * @return DateTime
      */
-    public function getEndDate()
-    {
+    public function getEndDate() {
         return $this->endDate;
     }
 
     /**
-     * Set excerpt
-     *
-     * @param string $excerpt
-     *
-     * @return Project
-     */
-    public function setExcerpt($excerpt)
-    {
-        $this->excerpt = $excerpt;
-
-        return $this;
-    }
-
-    /**
-     * Get excerpt
-     *
-     * @return string
-     */
-    public function getExcerpt()
-    {
-        return $this->excerpt;
-    }
-
-    /**
-     * Add projectPage
+     * Add projectPage.
      *
      * @param ProjectPage $projectPage
      *
      * @return Project
      */
-    public function addProjectPage(ProjectPage $projectPage)
-    {
+    public function addProjectPage(ProjectPage $projectPage) {
         $this->projectPages[] = $projectPage;
 
         return $this;
     }
 
     /**
-     * Remove projectPage
+     * Remove projectPage.
      *
      * @param ProjectPage $projectPage
      */
-    public function removeProjectPage(ProjectPage $projectPage)
-    {
+    public function removeProjectPage(ProjectPage $projectPage) {
         $this->projectPages->removeElement($projectPage);
     }
 
     /**
-     * Get projectPages
+     * Get projectPages.
      *
      * @return Collection
      */
-    public function getProjectPages()
-    {
+    public function getProjectPages() {
         return $this->projectPages;
     }
 
     /**
-     * Add artwork
+     * Add artwork.
      *
      * @param Artwork $artwork
      *
      * @return Project
      */
-    public function addArtwork(Artwork $artwork)
-    {
+    public function addArtwork(Artwork $artwork) {
         $this->artworks[] = $artwork;
 
         return $this;
@@ -425,22 +375,75 @@ class Project extends AbstractEntity {
     }
 
     /**
-     * Remove artwork
+     * Remove artwork.
      *
      * @param Artwork $artwork
      */
-    public function removeArtwork(Artwork $artwork)
-    {
+    public function removeArtwork(Artwork $artwork) {
         $this->artworks->removeElement($artwork);
     }
 
     /**
-     * Get artworks
+     * Get artworks.
      *
      * @return Collection
      */
-    public function getArtworks()
-    {
+    public function getArtworks() {
         return $this->artworks;
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param null|Project $parent
+     *
+     * @return Project
+     */
+    public function setParent(Project $parent = null) {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return null|Project
+     */
+    public function getParent() {
+        return $this->parent;
+    }
+
+    /**
+     * Add child.
+     *
+     * @param Project $child
+     *
+     * @return Project
+     */
+    public function addChild(Project $child) {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param Project $child
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeChild(Project $child) {
+        return $this->children->removeElement($child);
+    }
+
+    /**
+     * Get children.
+     *
+     * @return Collection
+     */
+    public function getChildren() {
+        return $this->children;
     }
 }

@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MediaFileType extends AbstractType {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -19,7 +18,7 @@ class MediaFileType extends AbstractType {
             'label' => 'Media file',
             'attr' => array(
                 'help_block' => "Maximum file upload size is {$options['max_file_upload']}.",
-            )
+            ),
         ));
         $builder->add('mediaFileCategory');
     }
@@ -33,5 +32,4 @@ class MediaFileType extends AbstractType {
         ));
         $resolver->setRequired(array('max_file_upload'));
     }
-
 }

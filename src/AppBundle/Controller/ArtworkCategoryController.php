@@ -4,29 +4,28 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ArtworkCategory;
 use AppBundle\Form\Artwork\ArtworkCategoryType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ArtworkCategory controller.
  *
  * @Route("/artwork_category")
  */
-class ArtworkCategoryController extends Controller
-{
+class ArtworkCategoryController extends Controller {
     /**
      * Lists all ArtworkCategory entities.
      *
-     * @Route("/", name="artwork_category_index")
-     * @Method("GET")
+     * @Route("/", name="artwork_category_index", methods={"GET"})
+     *
      * @Template()
-	 * @param Request $request
+     *
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:ArtworkCategory e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -37,21 +36,18 @@ class ArtworkCategoryController extends Controller
             'artworkCategories' => $artworkCategories,
         );
     }
-    
+
     /**
      * Creates a new ArtworkCategory entity.
      *
-     * @Route("/new", name="artwork_category_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="artwork_category_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
      * @Template()
-	 * @param Request $request
+     *
+     * @param Request $request
      */
-    public function newAction(Request $request)
-    {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+    public function newAction(Request $request) {
         $artworkCategory = new ArtworkCategory();
         $form = $this->createForm(ArtworkCategoryType::class, $artworkCategory);
         $form->handleRequest($request);
@@ -62,6 +58,7 @@ class ArtworkCategoryController extends Controller
             $em->flush();
 
             $this->addFlash('success', 'The new artworkCategory was created.');
+
             return $this->redirectToRoute('artwork_category_show', array('id' => $artworkCategory->getId()));
         }
 
@@ -74,14 +71,13 @@ class ArtworkCategoryController extends Controller
     /**
      * Finds and displays a ArtworkCategory entity.
      *
-     * @Route("/{id}", name="artwork_category_show")
-     * @Method("GET")
+     * @Route("/{id}", name="artwork_category_show", methods={"GET"})
+     *
      * @Template()
-	 * @param ArtworkCategory $artworkCategory
+     *
+     * @param ArtworkCategory $artworkCategory
      */
-    public function showAction(ArtworkCategory $artworkCategory)
-    {
-
+    public function showAction(ArtworkCategory $artworkCategory) {
         return array(
             'artworkCategory' => $artworkCategory,
         );
@@ -90,18 +86,15 @@ class ArtworkCategoryController extends Controller
     /**
      * Displays a form to edit an existing ArtworkCategory entity.
      *
-     * @Route("/{id}/edit", name="artwork_category_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="artwork_category_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
      * @Template()
-	 * @param Request $request
-	 * @param ArtworkCategory $artworkCategory
+     *
+     * @param Request $request
+     * @param ArtworkCategory $artworkCategory
      */
-    public function editAction(Request $request, ArtworkCategory $artworkCategory)
-    {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+    public function editAction(Request $request, ArtworkCategory $artworkCategory) {
         $editForm = $this->createForm(ArtworkCategoryType::class, $artworkCategory);
         $editForm->handleRequest($request);
 
@@ -109,6 +102,7 @@ class ArtworkCategoryController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The artworkCategory has been updated.');
+
             return $this->redirectToRoute('artwork_category_show', array('id' => $artworkCategory->getId()));
         }
 
@@ -121,17 +115,14 @@ class ArtworkCategoryController extends Controller
     /**
      * Deletes a ArtworkCategory entity.
      *
-     * @Route("/{id}/delete", name="artwork_category_delete")
-     * @Method("GET")
-	 * @param Request $request
-	 * @param ArtworkCategory $artworkCategory
+     * @Route("/{id}/delete", name="artwork_category_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     *
+     * @param Request $request
+     * @param ArtworkCategory $artworkCategory
      */
-    public function deleteAction(Request $request, ArtworkCategory $artworkCategory)
-    {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+    public function deleteAction(Request $request, ArtworkCategory $artworkCategory) {
         $em = $this->getDoctrine()->getManager();
         $em->remove($artworkCategory);
         $em->flush();

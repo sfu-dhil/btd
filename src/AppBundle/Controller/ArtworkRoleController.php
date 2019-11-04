@@ -4,11 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ArtworkRole;
 use AppBundle\Form\Artwork\ArtworkRoleType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ArtworkRole controller.
@@ -16,13 +16,13 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("/artwork_role")
  */
 class ArtworkRoleController extends Controller {
-
     /**
      * Lists all ArtworkRole entities.
      *
-     * @Route("/", name="artwork_role_index")
-     * @Method("GET")
+     * @Route("/", name="artwork_role_index", methods={"GET"})
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function indexAction(Request $request) {
@@ -40,16 +40,14 @@ class ArtworkRoleController extends Controller {
     /**
      * Creates a new ArtworkRole entity.
      *
-     * @Route("/new", name="artwork_role_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="artwork_role_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
      * @Template()
+     *
      * @param Request $request
      */
     public function newAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $artworkRole = new ArtworkRole();
         $form = $this->createForm(ArtworkRoleType::class, $artworkRole);
         $form->handleRequest($request);
@@ -60,6 +58,7 @@ class ArtworkRoleController extends Controller {
             $em->flush();
 
             $this->addFlash('success', 'The new artworkRole was created.');
+
             return $this->redirectToRoute('artwork_role_show', array('id' => $artworkRole->getId()));
         }
 
@@ -72,13 +71,13 @@ class ArtworkRoleController extends Controller {
     /**
      * Finds and displays a ArtworkRole entity.
      *
-     * @Route("/{id}", name="artwork_role_show")
-     * @Method("GET")
+     * @Route("/{id}", name="artwork_role_show", methods={"GET"})
+     *
      * @Template()
+     *
      * @param ArtworkRole $artworkRole
      */
     public function showAction(ArtworkRole $artworkRole) {
-
         return array(
             'artworkRole' => $artworkRole,
         );
@@ -87,17 +86,15 @@ class ArtworkRoleController extends Controller {
     /**
      * Displays a form to edit an existing ArtworkRole entity.
      *
-     * @Route("/{id}/edit", name="artwork_role_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="artwork_role_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
      * @Template()
+     *
      * @param Request $request
      * @param ArtworkRole $artworkRole
      */
     public function editAction(Request $request, ArtworkRole $artworkRole) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $editForm = $this->createForm(ArtworkRoleType::class, $artworkRole);
         $editForm->handleRequest($request);
 
@@ -105,6 +102,7 @@ class ArtworkRoleController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success', 'The artworkRole has been updated.');
+
             return $this->redirectToRoute('artwork_role_show', array('id' => $artworkRole->getId()));
         }
 
@@ -117,16 +115,14 @@ class ArtworkRoleController extends Controller {
     /**
      * Deletes a ArtworkRole entity.
      *
-     * @Route("/{id}/delete", name="artwork_role_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="artwork_role_delete", methods={"GET"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     *
      * @param Request $request
      * @param ArtworkRole $artworkRole
      */
     public function deleteAction(Request $request, ArtworkRole $artworkRole) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($artworkRole);
         $em->flush();
@@ -134,5 +130,4 @@ class ArtworkRoleController extends Controller {
 
         return $this->redirectToRoute('artwork_role_index');
     }
-
 }

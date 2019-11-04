@@ -10,14 +10,13 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * MediaFile
+ * MediaFile.
  *
  * @ORM\Table(name="media_file", indexes={
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MediaFileRepository")
  */
 class MediaFile extends AbstractEntity {
-
     /**
      * A Doctrine event listener will turn the filename into a file object.
      *
@@ -32,7 +31,7 @@ class MediaFile extends AbstractEntity {
     private $filename;
 
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $hasThumbnail;
@@ -101,6 +100,7 @@ class MediaFile extends AbstractEntity {
 
     public function setFile(File $file) {
         $this->file = $file;
+
         return $this;
     }
 
@@ -129,14 +129,13 @@ class MediaFile extends AbstractEntity {
         $path = $this->getPath();
         $name = $base . '_tn.jpg';
         $tnPath = $path . '/' . $name;
-        if(file_exists($tnPath) && is_readable($tnPath)) {
+        if (file_exists($tnPath) && is_readable($tnPath)) {
             return new File($tnPath);
         }
-        return null;
     }
 
     /**
-     * Set originalName
+     * Set originalName.
      *
      * @param string $originalName
      *
@@ -149,7 +148,7 @@ class MediaFile extends AbstractEntity {
     }
 
     /**
-     * Get originalName
+     * Get originalName.
      *
      * @return string
      */
@@ -158,7 +157,7 @@ class MediaFile extends AbstractEntity {
     }
 
     /**
-     * Add metadataField
+     * Add metadataField.
      *
      * @param MediaFileField $metadataField
      *
@@ -171,7 +170,7 @@ class MediaFile extends AbstractEntity {
     }
 
     /**
-     * Remove metadataField
+     * Remove metadataField.
      *
      * @param MediaFileField $metadataField
      */
@@ -180,113 +179,108 @@ class MediaFile extends AbstractEntity {
     }
 
     /**
-     * Get metadataFields
+     * Get metadataFields.
+     *
+     * @param null|mixed $name
+     * @param mixed $list
      *
      * @return Collection
      */
     public function getMetadataFields($name = null, $list = true) {
-        if (!$name) {
+        if ( ! $name) {
             return $this->metadataFields;
         }
-        $matches = $this->metadataFields->filter(function(AbstractField $field) use ($name) {
+        $matches = $this->metadataFields->filter(function (AbstractField $field) use ($name) {
             return $field->getElement()->getName() === $name;
         });
-        if($list) {
+        if ($list) {
             return $matches;
         }
+
         return $matches->first();
     }
 
-
     /**
-     * Set mediaFileCategory
+     * Set mediaFileCategory.
      *
      * @param MediaFileCategory $mediaFileCategory
      *
      * @return MediaFile
      */
-    public function setMediaFileCategory(MediaFileCategory $mediaFileCategory = null)
-    {
+    public function setMediaFileCategory(MediaFileCategory $mediaFileCategory = null) {
         $this->mediaFileCategory = $mediaFileCategory;
 
         return $this;
     }
 
     /**
-     * Get mediaFileCategory
+     * Get mediaFileCategory.
      *
      * @return MediaFileCategory
      */
-    public function getMediaFileCategory()
-    {
+    public function getMediaFileCategory() {
         return $this->mediaFileCategory;
     }
 
     /**
-     * Add artwork
+     * Add artwork.
      *
      * @param Artwork $artwork
      *
      * @return MediaFile
      */
-    public function addArtwork(Artwork $artwork)
-    {
+    public function addArtwork(Artwork $artwork) {
         $this->artworks[] = $artwork;
 
         return $this;
     }
 
     /**
-     * Remove artwork
+     * Remove artwork.
      *
      * @param Artwork $artwork
      */
-    public function removeArtwork(Artwork $artwork)
-    {
+    public function removeArtwork(Artwork $artwork) {
         $this->artworks->removeElement($artwork);
     }
 
     /**
-     * Get artworks
+     * Get artworks.
      *
      * @return Collection
      */
-    public function getArtworks()
-    {
+    public function getArtworks() {
         return $this->artworks;
     }
 
     /**
-     * Add project
+     * Add project.
      *
      * @param Project $project
      *
      * @return MediaFile
      */
-    public function addProject(Project $project)
-    {
+    public function addProject(Project $project) {
         $this->projects[] = $project;
 
         return $this;
     }
 
     /**
-     * Remove project
+     * Remove project.
      *
      * @param Project $project
      */
-    public function removeProject(Project $project)
-    {
+    public function removeProject(Project $project) {
         $this->projects->removeElement($project);
     }
 
     /**
-     * Get projects
+     * Get projects.
      *
      * @return Collection
      */
-    public function getProjects()
-    {
+    public function getProjects() {
         return $this->projects;
     }
 
@@ -295,15 +289,14 @@ class MediaFile extends AbstractEntity {
     }
 
     /**
-     * Add person
+     * Add person.
      *
      * @param Person $person
      *
      * @return MediaFile
      */
-    public function addPerson(Person $person)
-    {
-        if( ! $this->people->contains($person)) {
+    public function addPerson(Person $person) {
+        if ( ! $this->people->contains($person)) {
             $this->people[] = $person;
         }
 
@@ -311,46 +304,42 @@ class MediaFile extends AbstractEntity {
     }
 
     /**
-     * Remove person
+     * Remove person.
      *
      * @param Person $person
      */
-    public function removePerson(Person $person)
-    {
+    public function removePerson(Person $person) {
         $this->people->removeElement($person);
     }
 
     /**
-     * Get people
+     * Get people.
      *
      * @return Collection
      */
-    public function getPeople()
-    {
+    public function getPeople() {
         return $this->people;
     }
 
     /**
-     * Set hasThumbnail
+     * Set hasThumbnail.
      *
-     * @param boolean $hasThumbnail
+     * @param bool $hasThumbnail
      *
      * @return MediaFile
      */
-    public function setHasThumbnail($hasThumbnail)
-    {
+    public function setHasThumbnail($hasThumbnail) {
         $this->hasThumbnail = $hasThumbnail;
 
         return $this;
     }
 
     /**
-     * Get hasThumbnail
+     * Get hasThumbnail.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getHasThumbnail()
-    {
+    public function getHasThumbnail() {
         return $this->hasThumbnail;
     }
 }

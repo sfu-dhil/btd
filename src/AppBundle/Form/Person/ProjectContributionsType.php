@@ -15,7 +15,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProjectContributionsType extends AbstractType {
-
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $person = $options['person'];
         $builder->add('projectContributions', CollectionType::class, array(
@@ -41,5 +40,4 @@ class ProjectContributionsType extends AbstractType {
             'person' => null,
         ));
     }
-
 }

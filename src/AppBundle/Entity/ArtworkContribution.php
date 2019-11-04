@@ -6,13 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
- * ArtworkContribution
+ * ArtworkContribution.
  *
  * @ORM\Table(name="artwork_contribution")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtworkContributionRepository")
  */
 class ArtworkContribution extends AbstractEntity {
-
     /**
      * @var Artwork
      * @ORM\ManyToOne(targetEntity="Artwork", inversedBy="contributions")
@@ -40,11 +39,11 @@ class ArtworkContribution extends AbstractEntity {
     private $artworkRole;
 
     public function __toString() {
-        return implode(":", array($this->artwork, $this->person, $this->organization, $this->artworkRole));
+        return implode(':', array($this->artwork, $this->person, $this->organization, $this->artworkRole));
     }
 
     /**
-     * Set artwork
+     * Set artwork.
      *
      * @param Artwork $artwork
      *
@@ -57,7 +56,7 @@ class ArtworkContribution extends AbstractEntity {
     }
 
     /**
-     * Get artwork
+     * Get artwork.
      *
      * @return Artwork
      */
@@ -66,7 +65,7 @@ class ArtworkContribution extends AbstractEntity {
     }
 
     /**
-     * Set person
+     * Set person.
      *
      * @param Person $person
      *
@@ -79,7 +78,7 @@ class ArtworkContribution extends AbstractEntity {
     }
 
     /**
-     * Get person
+     * Get person.
      *
      * @return Person
      */
@@ -88,7 +87,7 @@ class ArtworkContribution extends AbstractEntity {
     }
 
     /**
-     * Set organization
+     * Set organization.
      *
      * @param Organization $organization
      *
@@ -101,7 +100,7 @@ class ArtworkContribution extends AbstractEntity {
     }
 
     /**
-     * Get organization
+     * Get organization.
      *
      * @return Organization
      */
@@ -110,7 +109,7 @@ class ArtworkContribution extends AbstractEntity {
     }
 
     /**
-     * Set artworkRole
+     * Set artworkRole.
      *
      * @param ArtworkRole $artworkRole
      *
@@ -123,12 +122,11 @@ class ArtworkContribution extends AbstractEntity {
     }
 
     /**
-     * Get artworkRole
+     * Get artworkRole.
      *
      * @return ArtworkRole
      */
     public function getArtworkRole() {
         return $this->artworkRole;
     }
-
 }

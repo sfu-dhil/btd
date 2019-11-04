@@ -10,14 +10,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadProjectPage form.
  */
-class LoadProjectPage extends Fixture implements DependentFixtureInterface
-{
+class LoadProjectPage extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new ProjectPage();
             $fixture->setTitle('Title ' . $i);
             $fixture->setExcerpt('Excerpt ' . $i);
@@ -29,7 +27,6 @@ class LoadProjectPage extends Fixture implements DependentFixtureInterface
         }
 
         $em->flush();
-
     }
 
     /**
@@ -38,10 +35,8 @@ class LoadProjectPage extends Fixture implements DependentFixtureInterface
     public function getDependencies() {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
-        return [
+        return array(
             LoadProject::class,
-        ];
+        );
     }
-
-
 }

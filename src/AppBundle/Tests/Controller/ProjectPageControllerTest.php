@@ -2,19 +2,17 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\ProjectPage;
 use AppBundle\DataFixtures\ORM\LoadProjectPage;
+use AppBundle\Entity\ProjectPage;
 use Nines\UserBundle\DataFixtures\ORM\LoadUser;
 use Nines\UtilBundle\Tests\Util\BaseTestCase;
 
-class ProjectPageControllerTest extends BaseTestCase
-{
-
+class ProjectPageControllerTest extends BaseTestCase {
     protected function getFixtures() {
-        return [
+        return array(
             LoadUser::class,
-            LoadProjectPage::class
-        ];
+            LoadProjectPage::class,
+        );
     }
 
     public function testAnonIndex() {
@@ -61,18 +59,18 @@ class ProjectPageControllerTest extends BaseTestCase
         $this->assertEquals(1, $crawler->selectLink('Edit')->count());
         $this->assertEquals(1, $crawler->selectLink('Delete')->count());
     }
+
     public function testAnonEdit() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/project/2/page/1/edit');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
 
     public function testUserEdit() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/project/2/page/1/edit');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testAdminEdit() {
@@ -81,12 +79,12 @@ class ProjectPageControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Update')->form([
+        $form = $formCrawler->selectButton('Update')->form(array(
             // DO STUFF HERE.
             // 'project/2/pages[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect('/project/2/page/1'));
@@ -99,14 +97,13 @@ class ProjectPageControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/project/2/page/new');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
 
     public function testUserNew() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/project/2/page/new');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testAdminNew() {
@@ -115,12 +112,12 @@ class ProjectPageControllerTest extends BaseTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
-        $form = $formCrawler->selectButton('Create')->form([
+        $form = $formCrawler->selectButton('Create')->form(array(
             // DO STUFF HERE.
             // 'project/2/pages[FIELDNAME]' => 'FIELDVALUE',
-        ]);
+        ));
 
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect());
@@ -133,14 +130,13 @@ class ProjectPageControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/project/2/page/1/delete');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
 
     public function testUserDelete() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/project/2/page/1/delete');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/login'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testAdminDelete() {
@@ -156,5 +152,4 @@ class ProjectPageControllerTest extends BaseTestCase
         $postCount = count($this->em->getRepository(ProjectPage::class)->findAll());
         $this->assertEquals($preCount - 1, $postCount);
     }
-
 }

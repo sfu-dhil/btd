@@ -18,12 +18,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Description of ProjectContribution
+ * Description of ProjectContribution.
  *
  * @author michael
  */
 class ProjectContributionType extends AbstractType {
-
     /**
      * @var EntityManagerInterface
      */
@@ -41,7 +40,7 @@ class ProjectContributionType extends AbstractType {
         ));
         $builder->add('projectRole');
         $builder->add('project');
-        
+
         $builder->get('organization')->addModelTransformer(new HiddenEntityTransformer($this->em, Organization::class));
     }
 
@@ -51,5 +50,4 @@ class ProjectContributionType extends AbstractType {
             'organization' => null,
         ));
     }
-
 }
