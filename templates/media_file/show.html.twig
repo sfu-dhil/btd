@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %} 
+    <h1>MediaFile</h1>
+{% endblock %} 
+
+{% block body %}
+
+    <div class="btn-toolbar">
+        <div class="btn-group pull-right">
+            <a href="{{ path('media_file_index') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-arrow-left"></span> Back
+            </a>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                <a href="{{ path('media_file_edit', { 'id': mediaFile.id }) }}" class="btn btn-default">
+                    <span class='glyphicon glyphicon-edit'></span> Edit
+                </a>
+                <a href="{{ path('media_file_delete', { 'id': mediaFile.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this MediaFile?">
+                    <span class='glyphicon glyphicon-remove'></span> Delete
+                </a>
+            {% endif %}
+        </div>
+    </div>    
+
+    <div class='clear-fix'></div>
+
+    {% if mediaFile.mimetype starts with 'image/' %}
+        {% include 'media_file/image.html.twig' %}
+    {% elseif mediaFile.mimetype starts with 'video/' %}
+        {% include 'media_file/video.html.twig' %}
+    {% elseif mediaFile.mimetype starts with 'audio/' %}
+        {% include 'media_file/audio.html.twig' %}
+    {% elseif mediaFile.mimetype == 'application/pdf' %}
+        {% include 'media_file/pdf.html.twig' %}
+    {% else %}
+        {% include 'media_file/unknown.html.twig' %}
+    {% endif %}    
+
+    <h2>File Info</h2>
+    <dl class="dl-horizontal">
+        <dt>Id</dt>
+        <dd>{{ mediaFile.id }}</dd>
+        <dt>Media Category</dt>
+        <dd>{{ mediaFile.mediaFileCategory }}</dd>
+        <dt>File type</dt>
+        <dd>{{ mediaFile.mimetype }}</dd>
+        <dt>File size</dt>
+        <dd>{{ mediaFile.size }}</dd>
+        <dt>File name</dt>
+        <dd>{{ mediaFile.filename }}</dd>
+        <dt>File path</dt>
+        <dd>{{ mediaFile.path }}</dd>
+        <dt>Original name</dt>
+        <dd>{{ mediaFile.originalName }}</dd>
+        <dt>Uploaded</dt>
+        <dd>{{ mediaFile.updated|date }}</dd>
+        <dt>URL</dt>
+        <dd>
+            <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
+                {{ url('media_file_raw', {'id': mediaFile.id}) }}
+            </a>
+        </dd>
+    </dl>
+
+    <h2>Metadata</h2>
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <div class="btn-toolbar">
+            <div class="btn-group pull-right">
+                <a href="{{ path('media_file_metadata', { 'id': mediaFile.id }) }}" class="btn btn-default">
+                    <span class='glyphicon glyphicon-edit'></span> Edit
+                </a>
+            </div>
+        </div>    
+    {% endif %}
+
+    <dl class='dl-horizontal'>
+        {% for element in elements %}
+            {% set fields = mediaFile.getMetadataFields(element.name) %}
+            {% if fields|length > 0 %}
+                <dt>{{ element.label }}</dt>
+                {% for field in fields %}
+                    <dd>{{ field.value }}</dd>
+                {% endfor %}
+            {% endif %}        
+        {% endfor %}
+    </dl>
+
+    {% if mediaFile.people %}
+        {% for person in mediaFile.people %}
+            <h3>
+                <a href="{{ path('person_show', { 'id': person.id }) }}">
+                    {{ person }}
+                </a>
+            </h3>
+            <p>
+                {{ text_service.trim(person.biography, 100) }}            
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    {% if mediaFile.artworks %}
+        {% for artwork in mediaFile.artworks %}
+            <h3>
+                <a href="{{ path('artwork_show', { 'id': artwork.id }) }}">
+                    {{ artwork }}
+                </a>
+            </h3>
+            <p>
+                {{ text_service.trim(artwork.description, 100) }}            
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    {% if mediaFile.projects %}
+        {% for project in mediaFile.projects %}
+            <h3>
+                <a href="{{ path('project_show', { 'id': project.id }) }}">
+                    {{ project }}
+                </a>
+            </h3>
+            <p>
+                {{ text_service.trim(project.description, 100) }}            
+            </p>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
