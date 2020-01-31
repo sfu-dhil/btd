@@ -2,36 +2,36 @@
 
 namespace App\Tests\Controller;
 
-use App\DataFixtures\ORM\LoadArtworkContribution;
-use Nines\UserBundle\DataFixtures\ORM\LoadUser;
-use Nines\UtilBundle\Tests\Util\BaseTestCase;
+use App\DataFixtures\ArtworkContributionFixtures;
+use Nines\UserBundle\DataFixtures\UserFixtures;
+use Nines\UtilBundle\Tests\ControllerBaseCase;
 
-class ArtworkContributionControllerTest extends BaseTestCase {
-    protected function getFixtures() {
+class ArtworkContributionControllerTest extends ControllerBaseCase {
+    protected function fixtures() : array {
         return array(
-            LoadUser::class,
-            LoadArtworkContribution::class,
+            UserFixtures::class,
+            ArtworkContributionFixtures::class,
         );
     }
 
     public function testAnonIndex() {
-        $client = $this->makeClient();
-        $crawler = $client->request('GET', '/artwork_contribution/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $crawler = $this->client->request('GET', '/artwork_contribution/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('New')->count());
     }
 
     public function testUserIndex() {
-        $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/artwork_contribution/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->login('user.user');
+        $crawler = $this->client->request('GET', '/artwork_contribution/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('New')->count());
     }
 
     public function testAdminIndex() {
-        $client = $this->makeClient(LoadUser::ADMIN);
-        $crawler = $client->request('GET', '/artwork_contribution/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->login('user.admin');
+        $crawler = $this->client->request('GET', '/artwork_contribution/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('New')->count());
     }
 }

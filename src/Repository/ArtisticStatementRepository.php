@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\ArtisticStatement;
 use App\Entity\Artwork;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

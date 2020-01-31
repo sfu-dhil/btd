@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints\Collection;
  * @ORM\Table(name="artistic_statement", indexes={
  *  @ORM\Index(columns={"title", "excerpt", "content"}, flags={"fulltext"}),
  * })
- * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ArtisticStatementRepository")
  */
 class ArtisticStatement extends AbstractEntity implements ContentEntityInterface {
     use ContentExcerptTrait;
