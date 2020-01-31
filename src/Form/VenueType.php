@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Venue;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,7 +17,11 @@ class VenueType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder->add('name');
         $builder->add('address');
-        $builder->add('description', CKEditorType::class);
+        $builder->add('description', TextareaType::class, array(
+            'attr' => [
+                'class' => 'tinymce'
+            ]
+        ));
         $builder->add('url');
         $builder->add('location');
         $builder->add('venueCategory');

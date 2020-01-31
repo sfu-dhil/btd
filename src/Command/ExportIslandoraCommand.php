@@ -7,17 +7,19 @@ use App\Entity\Project;
 use App\Entity\ProjectContribution;
 use App\Entity\ProjectPage;
 use App\Entity\Venue;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
+use Psr\Log\LoggerInterface;
 use SplFileInfo;
 use Symfony\Bridge\Twig\TwigEngine;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ExportIslandoraCommand extends ContainerAwareCommand {
+class ExportIslandoraCommand extends Command {
     /**
      * @var ObjectManager
      */
@@ -37,17 +39,29 @@ class ExportIslandoraCommand extends ContainerAwareCommand {
         ;
     }
 
+    /**
+     * @param EntityManagerInterface $em
+     *
+     * @required
+     */
+    public function setEntityManager(EntityManagerInterface $em) {
+        $this->em = $em;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     *
+     * @required
+     */
+    public function setLogger(LoggerInterface $logger) {
+        $this->logger = $logger;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output) {
         $project = $this->em->find(Project::class, $input->getArgument('project-id'));
         $dh = $this->getDirHandle($input->getArgument('path'));
         $output->writeln("exporting {$project} to {$dh->getRealPath()}");
         $this->exportProject($project, $dh);
-    }
-
-    public function setContainer(ContainerInterface $container = null) {
-        parent::setContainer($container);
-        $this->em = $container->get('doctrine')->getManager();
-        $this->twig = $container->get('templating');
     }
 
     /**

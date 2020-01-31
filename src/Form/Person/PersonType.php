@@ -6,6 +6,7 @@ use App\Entity\Person;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,7 +19,11 @@ class PersonType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder->add('fullname');
         $builder->add('sortableName');
-        $builder->add('biography', CKEditorType::class);
+        $builder->add('biography', TextareaType::class, [
+            'attr' => [
+                'class' => 'tinymce'
+            ]
+        ]);
         $builder->add('urls', CollectionType::class, array(
             'allow_add' => true,
             'allow_delete' => true,

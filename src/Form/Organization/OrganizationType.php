@@ -6,6 +6,7 @@ use App\Entity\Organization;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,7 +19,11 @@ class OrganizationType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder->add('name');
         $builder->add('address');
-        $builder->add('description', CKEditorType::class);
+        $builder->add('description', TextareaType::class, [
+            'attr' => [
+                'class' => 'tinymce'
+            ]
+        ]);
         $builder->add('urls', CollectionType::class, array(
             'label' => 'Websites',
             'entry_type' => UrlType::class,

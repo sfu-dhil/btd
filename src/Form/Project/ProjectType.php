@@ -7,6 +7,7 @@ use App\Entity\Venue;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
@@ -48,14 +49,19 @@ class ProjectType extends AbstractType {
             'delay' => 250,
             'language' => 'en',
         ));
-        $builder->add('excerpt', CKEditorType::class, array(
+        $builder->add('excerpt', TextareaType::class, array(
             'attr' => array(
+                'class' => 'ckeditor',
                 'help_block' => 'Excerpts will be shown on the home page and in '
                 . 'lists of pages. Leave this field blank and one will be '
                 . 'generated automatically.',
             ),
         ));
-        $builder->add('content', CKEditorType::class);
+        $builder->add('content', TextareaType::class, [
+            'attr' => [
+                'class' => 'tinymce'
+            ]
+        ]);
         $builder->add('url');
         $builder->add('projectCategory');
     }

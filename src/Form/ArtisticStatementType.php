@@ -8,6 +8,7 @@ use App\Entity\Person;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
@@ -26,19 +27,21 @@ class ArtisticStatementType extends AbstractType {
             ),
         ));
 
-        $builder->add('excerpt', CKEditorType::class, array(
+        $builder->add('excerpt', TextareaType::class, array(
             'label' => 'Excerpt',
             'required' => false,
             'attr' => array(
                 'help_block' => '',
+                'class' => 'tinymce'
             ),
         ));
 
-        $builder->add('content', CKEditorType::class, array(
+        $builder->add('content', TextareaType::class, array(
             'label' => 'Content',
             'required' => true,
             'attr' => array(
                 'help_block' => '',
+                'class' => 'tinymce'
             ),
         ));
 

@@ -5,14 +5,13 @@ namespace App\Command;
 use App\Entity\MediaFile;
 use App\Utility\Thumbnailer;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class GenerateThumbnailsCommand extends ContainerAwareCommand {
-    private $thumbnailSize;
+class GenerateThumbnailsCommand extends Command {
 
     protected function configure() {
         $this
@@ -46,10 +45,5 @@ class GenerateThumbnailsCommand extends ContainerAwareCommand {
                 $output->writeln($e->getMessage());
             }
         }
-    }
-
-    public function setContainer(ContainerInterface $container = null) {
-        parent::setContainer($container);
-        $this->thumbnailSize = $container->getParameter('btd.media_thumbnail_size');
     }
 }
