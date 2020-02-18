@@ -28,3 +28,4 @@ public/yarn
 config/deploy.yml
 *.sql
 data/uploads
+config/deploy.yaml

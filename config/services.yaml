@@ -12,9 +12,9 @@ parameters:
     asset.request_context.secure: auto
 
     dhil.piwik_enabled: '%env(bool:PIWIK_ENABLED)%'
-    dhil.piwik_url: null
-    dhil.piwik_siteid: null
-    dhil.piwik_domain: null
+    dhil.piwik_url: //piwik.lib.sfu.ca/piwik/
+    dhil.piwik_siteid: 36
+    dhil.piwik_domain: dhil.lib.sfu.ca/btd
 
     btd.thumbnail_width: 256
     btd.thumbnail_height: 171
