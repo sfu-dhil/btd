@@ -106,7 +106,7 @@
                 </a>
             </h3>
             <p>
-                {{ text_service.trim(artwork.description, 100) }}            
+                {{ text_service.trim(artwork.content, 100) }}
             </p>
         {% endfor %}
     {% endif %}
@@ -119,7 +119,7 @@
                 </a>
             </h3>
             <p>
-                {{ text_service.trim(project.description, 100) }}            
+                {{ text_service.trim(project.content, 100) }}
             </p>
         {% endfor %}
     {% endif %}
