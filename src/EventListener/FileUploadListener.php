@@ -21,9 +21,15 @@ class FileUploadListener {
      */
     private $thumbnailer;
 
-    public function __construct(FileUploader $uploader, Thumbnailer $thumbnailer) {
+    /**
+     * @var string
+     */
+    private $missingFile;
+
+    public function __construct(FileUploader $uploader, Thumbnailer $thumbnailer, $missingFile) {
         $this->uploader = $uploader;
         $this->thumbnailer = $thumbnailer;
+        $this->missingFile = $missingFile;
     }
 
     private function uploadFile($entity) {
@@ -58,7 +64,7 @@ class FileUploadListener {
         if (file_exists($path)) {
             $entity->setFile(new File($path));
         } else {
-            $entity->setFile(new File($this->uploader->getUploadDir() . '/../misc/missing-file.jpg'));
+            $entity->setFile(new File($this->missingFile));
         }
     }
 }

@@ -20,6 +20,7 @@ parameters:
     btd.thumbnail_height: 171
 
     btd.media_upload_path: '%kernel.project_dir%/data/uploads'
+    btd.missing_image: '%kernel.project_dir%/data/misc/missing-file.jpg'
 
 services:
     # default configuration for services in *this* file
@@ -44,7 +45,8 @@ services:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
 
     App\Services\FileUploader:
-        arguments: ['%btd.media_upload_path%']
+        arguments:
+            $uploadDir: '%btd.media_upload_path%'
 
     App\Services\Thumbnailer:
         arguments:
@@ -52,6 +54,8 @@ services:
             $height: '%btd.thumbnail_height%'
 
     App\EventListener\FileUploadListener:
+        arguments:
+            $missingFile: '%btd.missing_image%'
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
