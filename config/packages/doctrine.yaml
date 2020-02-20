@@ -22,5 +22,5 @@ doctrine:
                 alias: App
         dql:
             string_functions:
-                match: Nines\UtilBundle\Extensions\Doctrine\MatchAgainst
+                match: Nines\UtilBundle\Extensions\Doctrine\MySQL\MatchAgainst
 
