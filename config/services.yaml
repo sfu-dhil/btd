@@ -19,7 +19,7 @@ parameters:
     btd.thumbnail_width: 256
     btd.thumbnail_height: 171
 
-    btd.media_upload_path: '%kernel.project_dir%/data/uploads'
+    btd.media_upload_path: '%env(string:UPLOAD_PATH)%'
     btd.missing_image: '%kernel.project_dir%/data/misc/missing-file.jpg'
 
 services:
