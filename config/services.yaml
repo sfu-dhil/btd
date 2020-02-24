@@ -1,0 +1,62 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    router.request_context.scheme: '%env(string:ROUTE_PROTOCOL)%'
+    router.request_context.host: '%env(string:ROUTE_HOST)%'
+    router.request_context.base_url: '%env(string:ROUTE_BASE)%'
+
+    asset.request_context.base_path: '%env(string:ROUTE_BASE)%'
+    asset.request_context.secure: auto
+
+    dhil.piwik_enabled: '%env(bool:PIWIK_ENABLED)%'
+    dhil.piwik_url: //piwik.lib.sfu.ca/piwik/
+    dhil.piwik_siteid: 36
+    dhil.piwik_domain: dhil.lib.sfu.ca/btd
+
+    btd.thumbnail_width: 256
+    btd.thumbnail_height: 171
+
+    btd.media_upload_path: '%env(string:UPLOAD_PATH)%'
+    btd.missing_image: '%kernel.project_dir%/data/misc/missing-file.jpg'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments', 'knp_paginator.injectable']
+
+    App\Menu\Builder:
+        tags:
+            - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
+
+    App\Services\FileUploader:
+        arguments:
+            $uploadDir: '%btd.media_upload_path%'
+
+    App\Services\Thumbnailer:
+        arguments:
+            $width: '%btd.thumbnail_width%'
+            $height: '%btd.thumbnail_height%'
+
+    App\EventListener\FileUploadListener:
+        arguments:
+            $missingFile: '%btd.missing_image%'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
