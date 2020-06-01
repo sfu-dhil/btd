@@ -52,7 +52,7 @@ class Location extends AbstractEntity {
         $this->projects = new ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString() : string {
         return $this->city;
     }
 

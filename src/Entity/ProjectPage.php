@@ -37,7 +37,7 @@ class ProjectPage extends \Nines\UtilBundle\Entity\AbstractEntity implements Con
         parent::__construct();
     }
 
-    public function __toString() {
+    public function __toString() : string {
         return $this->title;
     }
 

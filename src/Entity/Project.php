@@ -106,7 +106,7 @@ class Project extends AbstractEntity implements ContentEntityInterface {
         $this->children = new ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString() : string {
         return $this->title;
     }
 

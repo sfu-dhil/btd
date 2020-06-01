@@ -79,7 +79,7 @@ class MediaFile extends AbstractEntity {
         $this->hasThumbnail = false;
     }
 
-    public function __toString() {
+    public function __toString() : string {
         return $this->getId();
     }
 
