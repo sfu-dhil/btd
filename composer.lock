@@ -7695,12 +7695,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ubermichael/nines-bundles.git",
-                "reference": "c6bba8f1d756ff3fe800ad0d50f029799dea30d1"
+                "reference": "583a45c587351310e49a8ef7687c4b63db320dde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ubermichael/nines-bundles/zipball/c6bba8f1d756ff3fe800ad0d50f029799dea30d1",
-                "reference": "c6bba8f1d756ff3fe800ad0d50f029799dea30d1",
+                "url": "https://api.github.com/repos/ubermichael/nines-bundles/zipball/583a45c587351310e49a8ef7687c4b63db320dde",
+                "reference": "583a45c587351310e49a8ef7687c4b63db320dde",
                 "shasum": ""
             },
             "require": {
@@ -7746,7 +7746,7 @@
                 "source": "https://github.com/ubermichael/nines-bundles/tree/4.x",
                 "issues": "https://github.com/ubermichael/nines-bundles/issues"
             },
-            "time": "2020-05-28T22:52:33+00:00"
+            "time": "2020-06-01T16:28:04+00:00"
         },
         {
             "name": "webmozart/assert",
