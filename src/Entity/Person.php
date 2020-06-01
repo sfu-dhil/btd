@@ -74,7 +74,7 @@ class Person extends AbstractEntity {
         $this->urls = array();
     }
 
-    public function __toString() {
+    public function __toString() : string {
         return $this->fullname;
     }
 

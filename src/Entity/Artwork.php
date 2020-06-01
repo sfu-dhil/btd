@@ -77,7 +77,7 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
         $this->artisticStatements = new ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString() : string {
         return $this->title;
     }
 

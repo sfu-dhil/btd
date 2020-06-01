@@ -45,7 +45,7 @@ class ArtisticStatement extends AbstractEntity implements ContentEntityInterface
         $this->people = new ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString() : string {
         return $this->title;
     }
 
