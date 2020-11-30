@@ -30,3 +30,4 @@ config/deploy.yml
 data/uploads
 config/deploy.yaml
 public/docs
+src/.preload.php
