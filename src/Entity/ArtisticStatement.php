@@ -29,7 +29,7 @@ class ArtisticStatement extends AbstractEntity implements ContentEntityInterface
 
     /**
      * @var Artwork
-     * @ORM\ManyToOne(targetEntity="Artwork")
+     * @ORM\ManyToOne(targetEntity="Artwork", inversedBy="artisticStatements")
      */
     private $artwork;
 
