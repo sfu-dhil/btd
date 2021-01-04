@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ArtworkRole;
@@ -18,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/artwork_role")
  */
-class ArtworkRoleController extends AbstractController  implements PaginatorAwareInterface {
+class ArtworkRoleController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -26,9 +34,7 @@ class ArtworkRoleController extends AbstractController  implements PaginatorAwar
      *
      * @Route("/", name="artwork_role_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:ArtworkRole e ORDER BY e.id';
@@ -36,20 +42,18 @@ class ArtworkRoleController extends AbstractController  implements PaginatorAwar
 
         $artworkRoles = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'artworkRoles' => $artworkRoles,
-        );
+        ];
     }
 
     /**
      * Creates a new ArtworkRole entity.
      *
-     * @Route("/new", name="artwork_role_new", methods={"GET","POST"})
+     * @Route("/new", name="artwork_role_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $artworkRole = new ArtworkRole();
@@ -62,13 +66,13 @@ class ArtworkRoleController extends AbstractController  implements PaginatorAwar
 
             $this->addFlash('success', 'The new artworkRole was created.');
 
-            return $this->redirectToRoute('artwork_role_show', array('id' => $artworkRole->getId()));
+            return $this->redirectToRoute('artwork_role_show', ['id' => $artworkRole->getId()]);
         }
 
-        return array(
+        return [
             'artworkRole' => $artworkRole,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -76,26 +80,21 @@ class ArtworkRoleController extends AbstractController  implements PaginatorAwar
      *
      * @Route("/{id}", name="artwork_role_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param ArtworkRole $artworkRole
+     * @Template
      */
     public function showAction(ArtworkRole $artworkRole) {
-        return array(
+        return [
             'artworkRole' => $artworkRole,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing ArtworkRole entity.
      *
-     * @Route("/{id}/edit", name="artwork_role_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="artwork_role_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param ArtworkRole $artworkRole
+     * @Template
      */
     public function editAction(Request $request, ArtworkRole $artworkRole, EntityManagerInterface $em) {
         $editForm = $this->createForm(ArtworkRoleType::class, $artworkRole);
@@ -105,13 +104,13 @@ class ArtworkRoleController extends AbstractController  implements PaginatorAwar
             $em->flush();
             $this->addFlash('success', 'The artworkRole has been updated.');
 
-            return $this->redirectToRoute('artwork_role_show', array('id' => $artworkRole->getId()));
+            return $this->redirectToRoute('artwork_role_show', ['id' => $artworkRole->getId()]);
         }
 
-        return array(
+        return [
             'artworkRole' => $artworkRole,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -119,10 +118,6 @@ class ArtworkRoleController extends AbstractController  implements PaginatorAwar
      *
      * @Route("/{id}/delete", name="artwork_role_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param ArtworkRole $artworkRole
      */
     public function deleteAction(Request $request, ArtworkRole $artworkRole, EntityManagerInterface $em) {
         $em->remove($artworkRole);

@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ProjectCategory;
@@ -18,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/project_category")
  */
-class ProjectCategoryController extends AbstractController  implements PaginatorAwareInterface {
+class ProjectCategoryController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -26,9 +34,7 @@ class ProjectCategoryController extends AbstractController  implements Paginator
      *
      * @Route("/", name="project_category_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:ProjectCategory e ORDER BY e.id';
@@ -36,20 +42,18 @@ class ProjectCategoryController extends AbstractController  implements Paginator
 
         $projectCategories = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'projectCategories' => $projectCategories,
-        );
+        ];
     }
 
     /**
      * Creates a new ProjectCategory entity.
      *
-     * @Route("/new", name="project_category_new", methods={"GET","POST"})
+     * @Route("/new", name="project_category_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $projectCategory = new ProjectCategory();
@@ -62,13 +66,13 @@ class ProjectCategoryController extends AbstractController  implements Paginator
 
             $this->addFlash('success', 'The new projectCategory was created.');
 
-            return $this->redirectToRoute('project_category_show', array('id' => $projectCategory->getId()));
+            return $this->redirectToRoute('project_category_show', ['id' => $projectCategory->getId()]);
         }
 
-        return array(
+        return [
             'projectCategory' => $projectCategory,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -76,26 +80,21 @@ class ProjectCategoryController extends AbstractController  implements Paginator
      *
      * @Route("/{id}", name="project_category_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param ProjectCategory $projectCategory
+     * @Template
      */
     public function showAction(ProjectCategory $projectCategory) {
-        return array(
+        return [
             'projectCategory' => $projectCategory,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing ProjectCategory entity.
      *
-     * @Route("/{id}/edit", name="project_category_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="project_category_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param ProjectCategory $projectCategory
+     * @Template
      */
     public function editAction(Request $request, ProjectCategory $projectCategory, EntityManagerInterface $em) {
         $editForm = $this->createForm(ProjectCategoryType::class, $projectCategory);
@@ -105,13 +104,13 @@ class ProjectCategoryController extends AbstractController  implements Paginator
             $em->flush();
             $this->addFlash('success', 'The projectCategory has been updated.');
 
-            return $this->redirectToRoute('project_category_show', array('id' => $projectCategory->getId()));
+            return $this->redirectToRoute('project_category_show', ['id' => $projectCategory->getId()]);
         }
 
-        return array(
+        return [
             'projectCategory' => $projectCategory,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -119,10 +118,6 @@ class ProjectCategoryController extends AbstractController  implements Paginator
      *
      * @Route("/{id}/delete", name="project_category_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param ProjectCategory $projectCategory
      */
     public function deleteAction(Request $request, ProjectCategory $projectCategory, EntityManagerInterface $em) {
         $em->remove($projectCategory);

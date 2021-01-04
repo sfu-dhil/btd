@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ProjectRole;
@@ -18,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/project_role")
  */
-class ProjectRoleController extends AbstractController  implements PaginatorAwareInterface {
+class ProjectRoleController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -26,9 +34,7 @@ class ProjectRoleController extends AbstractController  implements PaginatorAwar
      *
      * @Route("/", name="project_role_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:ProjectRole e ORDER BY e.id';
@@ -36,20 +42,18 @@ class ProjectRoleController extends AbstractController  implements PaginatorAwar
 
         $projectRoles = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'projectRoles' => $projectRoles,
-        );
+        ];
     }
 
     /**
      * Creates a new ProjectRole entity.
      *
-     * @Route("/new", name="project_role_new", methods={"GET","POST"})
+     * @Route("/new", name="project_role_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $projectRole = new ProjectRole();
@@ -62,13 +66,13 @@ class ProjectRoleController extends AbstractController  implements PaginatorAwar
 
             $this->addFlash('success', 'The new projectRole was created.');
 
-            return $this->redirectToRoute('project_role_show', array('id' => $projectRole->getId()));
+            return $this->redirectToRoute('project_role_show', ['id' => $projectRole->getId()]);
         }
 
-        return array(
+        return [
             'projectRole' => $projectRole,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -76,26 +80,21 @@ class ProjectRoleController extends AbstractController  implements PaginatorAwar
      *
      * @Route("/{id}", name="project_role_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param ProjectRole $projectRole
+     * @Template
      */
     public function showAction(ProjectRole $projectRole) {
-        return array(
+        return [
             'projectRole' => $projectRole,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing ProjectRole entity.
      *
-     * @Route("/{id}/edit", name="project_role_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="project_role_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param ProjectRole $projectRole
+     * @Template
      */
     public function editAction(Request $request, ProjectRole $projectRole, EntityManagerInterface $em) {
         $editForm = $this->createForm(ProjectRoleType::class, $projectRole);
@@ -105,13 +104,13 @@ class ProjectRoleController extends AbstractController  implements PaginatorAwar
             $em->flush();
             $this->addFlash('success', 'The projectRole has been updated.');
 
-            return $this->redirectToRoute('project_role_show', array('id' => $projectRole->getId()));
+            return $this->redirectToRoute('project_role_show', ['id' => $projectRole->getId()]);
         }
 
-        return array(
+        return [
             'projectRole' => $projectRole,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -119,10 +118,6 @@ class ProjectRoleController extends AbstractController  implements PaginatorAwar
      *
      * @Route("/{id}/delete", name="project_role_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param ProjectRole $projectRole
      */
     public function deleteAction(Request $request, ProjectRole $projectRole, EntityManagerInterface $em) {
         $em->remove($projectRole);

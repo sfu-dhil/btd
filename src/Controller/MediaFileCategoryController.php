@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\MediaFileCategory;
@@ -18,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/media_file_category")
  */
-class MediaFileCategoryController extends AbstractController  implements PaginatorAwareInterface {
+class MediaFileCategoryController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -26,9 +34,7 @@ class MediaFileCategoryController extends AbstractController  implements Paginat
      *
      * @Route("/", name="media_file_category_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:MediaFileCategory e ORDER BY e.id';
@@ -36,20 +42,18 @@ class MediaFileCategoryController extends AbstractController  implements Paginat
 
         $mediaFileCategories = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'mediaFileCategories' => $mediaFileCategories,
-        );
+        ];
     }
 
     /**
      * Creates a new MediaFileCategory entity.
      *
-     * @Route("/new", name="media_file_category_new", methods={"GET","POST"})
+     * @Route("/new", name="media_file_category_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $mediaFileCategory = new MediaFileCategory();
@@ -62,13 +66,13 @@ class MediaFileCategoryController extends AbstractController  implements Paginat
 
             $this->addFlash('success', 'The new mediaFileCategory was created.');
 
-            return $this->redirectToRoute('media_file_category_show', array('id' => $mediaFileCategory->getId()));
+            return $this->redirectToRoute('media_file_category_show', ['id' => $mediaFileCategory->getId()]);
         }
 
-        return array(
+        return [
             'mediaFileCategory' => $mediaFileCategory,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -76,26 +80,21 @@ class MediaFileCategoryController extends AbstractController  implements Paginat
      *
      * @Route("/{id}", name="media_file_category_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param MediaFileCategory $mediaFileCategory
+     * @Template
      */
     public function showAction(MediaFileCategory $mediaFileCategory) {
-        return array(
+        return [
             'mediaFileCategory' => $mediaFileCategory,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing MediaFileCategory entity.
      *
-     * @Route("/{id}/edit", name="media_file_category_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="media_file_category_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param MediaFileCategory $mediaFileCategory
+     * @Template
      */
     public function editAction(Request $request, MediaFileCategory $mediaFileCategory, EntityManagerInterface $em) {
         $editForm = $this->createForm('App\Form\MediaFileCategoryType', $mediaFileCategory);
@@ -105,13 +104,13 @@ class MediaFileCategoryController extends AbstractController  implements Paginat
             $em->flush();
             $this->addFlash('success', 'The mediaFileCategory has been updated.');
 
-            return $this->redirectToRoute('media_file_category_show', array('id' => $mediaFileCategory->getId()));
+            return $this->redirectToRoute('media_file_category_show', ['id' => $mediaFileCategory->getId()]);
         }
 
-        return array(
+        return [
             'mediaFileCategory' => $mediaFileCategory,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -119,10 +118,6 @@ class MediaFileCategoryController extends AbstractController  implements Paginat
      *
      * @Route("/{id}/delete", name="media_file_category_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param MediaFileCategory $mediaFileCategory
      */
     public function deleteAction(Request $request, MediaFileCategory $mediaFileCategory, EntityManagerInterface $em) {
         $em->remove($mediaFileCategory);

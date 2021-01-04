@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Command;
 
 use App\Entity\MediaFile;
@@ -17,7 +25,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ExportIslandoraCommand extends Command {
     /**
@@ -30,7 +37,7 @@ class ExportIslandoraCommand extends Command {
      */
     private $twig;
 
-    protected function configure() {
+    protected function configure() : void {
         $this
             ->setName('app:export:islandora')
             ->setDescription('Export a project as an islandora collection.')
@@ -39,29 +46,25 @@ class ExportIslandoraCommand extends Command {
         ;
     }
 
-    /**
-     * @param EntityManagerInterface $em
-     *
-     * @required
-     */
-    public function setEntityManager(EntityManagerInterface $em) {
-        $this->em = $em;
-    }
-
-    /**
-     * @param LoggerInterface $logger
-     *
-     * @required
-     */
-    public function setLogger(LoggerInterface $logger) {
-        $this->logger = $logger;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output) : void {
         $project = $this->em->find(Project::class, $input->getArgument('project-id'));
         $dh = $this->getDirHandle($input->getArgument('path'));
         $output->writeln("exporting {$project} to {$dh->getRealPath()}");
         $this->exportProject($project, $dh);
+    }
+
+    /**
+     * @required
+     */
+    public function setEntityManager(EntityManagerInterface $em) : void {
+        $this->em = $em;
+    }
+
+    /**
+     * @required
+     */
+    public function setLogger(LoggerInterface $logger) : void {
+        $this->logger = $logger;
     }
 
     /**
@@ -86,18 +89,18 @@ class ExportIslandoraCommand extends Command {
         return $dh;
     }
 
-    public function writeCollection(Project $project, SplFileInfo $dh) {
+    public function writeCollection(Project $project, SplFileInfo $dh) : void {
         $fh = fopen($dh->getRealPath() . '/collection_dc.xml', 'w');
-        $xml = $this->twig->render('App:Project:dc.xml.twig', array('project' => $project));
+        $xml = $this->twig->render('App:Project:dc.xml.twig', ['project' => $project]);
         fwrite($fh, $xml);
         fclose($fh);
     }
 
-    public function exportPage(ProjectPage $page, SplFileInfo $dh) {
+    public function exportPage(ProjectPage $page, SplFileInfo $dh) : void {
         $dcHandle = fopen($dh->getRealPath() . "/page_{$page->getId()}_DC.xml", 'w');
-        $xml = $this->twig->render('App:ProjectPage:dc.xml.twig', array(
+        $xml = $this->twig->render('App:ProjectPage:dc.xml.twig', [
             'page' => $page,
-        ));
+        ]);
         fwrite($dcHandle, $xml);
         fclose($dcHandle);
 
@@ -105,22 +108,22 @@ class ExportIslandoraCommand extends Command {
         fwrite($contentHandle, $page->getContent());
     }
 
-    public function exportMediaFile(MediaFile $mediaFile, SplFileInfo $dh) {
+    public function exportMediaFile(MediaFile $mediaFile, SplFileInfo $dh) : void {
         $dcHandle = fopen($dh->getRealPath() . "/media_{$mediaFile->getBasename()}_DC.xml", 'w');
-        $xml = $this->twig->render('App:MediaFile:dc.xml.twig', array(
+        $xml = $this->twig->render('App:MediaFile:dc.xml.twig', [
             'mediaFile' => $mediaFile,
-        ));
+        ]);
         fwrite($dcHandle, $xml);
         fclose($dcHandle);
 
         copy($mediaFile->getRealPath(), "{$dh->getRealPath()}/media_{$mediaFile->getFilename()}");
     }
 
-    public function exportContribution(ProjectContribution $contribution, SplFileInfo $dh) {
+    public function exportContribution(ProjectContribution $contribution, SplFileInfo $dh) : void {
         $dcHandle = fopen($dh->getRealPath() . "/{$contribution->getProjectRole()->getName()}_{$contribution->getId()}_DC.xml", 'w');
-        $xml = $this->twig->render('App:ProjectContribution:dc.xml.twig', array(
+        $xml = $this->twig->render('App:ProjectContribution:dc.xml.twig', [
             'contribution' => $contribution,
-        ));
+        ]);
         fwrite($dcHandle, $xml);
         fclose($dcHandle);
 
@@ -134,22 +137,25 @@ class ExportIslandoraCommand extends Command {
         echo "\n";
     }
 
-    public function exportVenue(Venue $venue) {
+    public function exportVenue(Venue $venue) : void {
         echo $venue . "\n";
     }
 
-    public function exportProject(Project $project, SplFileInfo $dh) {
+    public function exportProject(Project $project, SplFileInfo $dh) : void {
         $this->writeCollection($project, $dh);
 
         foreach ($project->getProjectPages() as $page) {
             $this->exportPage($page, $dh);
         }
+
         foreach ($project->getMediaFiles() as $mediaFile) {
             $this->exportMediaFile($mediaFile, $dh);
         }
+
         foreach ($project->getContributions() as $contribution) {
             $this->exportContribution($contribution, $dh);
         }
+
         foreach ($project->getVenues() as $venue) {
             $this->exportVenue($venue);
         }

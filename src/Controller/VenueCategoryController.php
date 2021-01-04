@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\VenueCategory;
@@ -17,7 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/venue_category")
  */
-class VenueCategoryController extends AbstractController  implements PaginatorAwareInterface {
+class VenueCategoryController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -25,9 +33,7 @@ class VenueCategoryController extends AbstractController  implements PaginatorAw
      *
      * @Route("/", name="venue_category_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:VenueCategory e ORDER BY e.id';
@@ -35,20 +41,18 @@ class VenueCategoryController extends AbstractController  implements PaginatorAw
 
         $venueCategories = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'venueCategories' => $venueCategories,
-        );
+        ];
     }
 
     /**
      * Creates a new VenueCategory entity.
      *
-     * @Route("/new", name="venue_category_new", methods={"GET","POST"})
+     * @Route("/new", name="venue_category_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $venueCategory = new VenueCategory();
@@ -61,13 +65,13 @@ class VenueCategoryController extends AbstractController  implements PaginatorAw
 
             $this->addFlash('success', 'The new venueCategory was created.');
 
-            return $this->redirectToRoute('venue_category_show', array('id' => $venueCategory->getId()));
+            return $this->redirectToRoute('venue_category_show', ['id' => $venueCategory->getId()]);
         }
 
-        return array(
+        return [
             'venueCategory' => $venueCategory,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -75,26 +79,21 @@ class VenueCategoryController extends AbstractController  implements PaginatorAw
      *
      * @Route("/{id}", name="venue_category_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param VenueCategory $venueCategory
+     * @Template
      */
     public function showAction(VenueCategory $venueCategory) {
-        return array(
+        return [
             'venueCategory' => $venueCategory,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing VenueCategory entity.
      *
-     * @Route("/{id}/edit", name="venue_category_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="venue_category_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param VenueCategory $venueCategory
+     * @Template
      */
     public function editAction(Request $request, VenueCategory $venueCategory, EntityManagerInterface $em) {
         $editForm = $this->createForm('App\Form\VenueCategoryType', $venueCategory);
@@ -104,13 +103,13 @@ class VenueCategoryController extends AbstractController  implements PaginatorAw
             $em->flush();
             $this->addFlash('success', 'The venueCategory has been updated.');
 
-            return $this->redirectToRoute('venue_category_show', array('id' => $venueCategory->getId()));
+            return $this->redirectToRoute('venue_category_show', ['id' => $venueCategory->getId()]);
         }
 
-        return array(
+        return [
             'venueCategory' => $venueCategory,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -118,10 +117,6 @@ class VenueCategoryController extends AbstractController  implements PaginatorAw
      *
      * @Route("/{id}/delete", name="venue_category_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param VenueCategory $venueCategory
      */
     public function deleteAction(Request $request, VenueCategory $venueCategory, EntityManagerInterface $em) {
         $em->remove($venueCategory);

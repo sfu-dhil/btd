@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ArtworkContribution;
@@ -17,7 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/artwork_contribution")
  */
-class ArtworkContributionController extends AbstractController  implements PaginatorAwareInterface {
+class ArtworkContributionController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -25,9 +33,7 @@ class ArtworkContributionController extends AbstractController  implements Pagin
      *
      * @Route("/", name="artwork_contribution_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em, MediaFileRepository $repo) {
         $dql = 'SELECT e FROM App:ArtworkContribution e ORDER BY e.id';
@@ -35,8 +41,8 @@ class ArtworkContributionController extends AbstractController  implements Pagin
 
         $artworkContributions = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'artworkContributions' => $artworkContributions,
-        );
+        ];
     }
 }

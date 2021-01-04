@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,7 +21,7 @@ use Nines\UtilBundle\Entity\ContentExcerptTrait;
  * Artwork.
  *
  * @ORM\Table(name="artwork", indexes={
- *  @ORM\Index(columns={"title", "content", "materials", "copyright"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"title", "content", "materials", "copyright"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="App\Repository\ArtworkRepository")
  */
@@ -150,8 +158,6 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
     /**
      * Add contribution.
      *
-     * @param ArtworkContribution $contribution
-     *
      * @return Artwork
      */
     public function addContribution(ArtworkContribution $contribution) {
@@ -162,10 +168,8 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
 
     /**
      * Remove contribution.
-     *
-     * @param ArtworkContribution $contribution
      */
-    public function removeContribution(ArtworkContribution $contribution) {
+    public function removeContribution(ArtworkContribution $contribution) : void {
         $this->contributions->removeElement($contribution);
     }
 
@@ -185,8 +189,6 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
     /**
      * Add mediaFile.
      *
-     * @param MediaFile $mediaFile
-     *
      * @return Artwork
      */
     public function addMediaFile(MediaFile $mediaFile) {
@@ -199,10 +201,8 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
 
     /**
      * Remove mediaFile.
-     *
-     * @param MediaFile $mediaFile
      */
-    public function removeMediaFile(MediaFile $mediaFile) {
+    public function removeMediaFile(MediaFile $mediaFile) : void {
         $this->mediaFiles->removeElement($mediaFile);
     }
 
@@ -233,7 +233,7 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
      *
      * @param \App\Entity\Project $project
      */
-    public function removeProject(Project $project) {
+    public function removeProject(Project $project) : void {
         $this->projects->removeElement($project);
     }
 
@@ -253,7 +253,7 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
      *
      * @return Artwork
      */
-    public function setArtworkCategory(ArtworkCategory $artworkCategory = null) {
+    public function setArtworkCategory(?ArtworkCategory $artworkCategory = null) {
         $this->artworkCategory = $artworkCategory;
 
         return $this;

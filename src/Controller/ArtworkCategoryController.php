@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ArtworkCategory;
@@ -19,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/artwork_category")
  */
-class ArtworkCategoryController extends AbstractController  implements PaginatorAwareInterface {
+class ArtworkCategoryController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -27,9 +35,7 @@ class ArtworkCategoryController extends AbstractController  implements Paginator
      *
      * @Route("/", name="artwork_category_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em, MediaFileRepository $repo) {
         $dql = 'SELECT e FROM App:ArtworkCategory e ORDER BY e.id';
@@ -37,20 +43,18 @@ class ArtworkCategoryController extends AbstractController  implements Paginator
 
         $artworkCategories = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'artworkCategories' => $artworkCategories,
-        );
+        ];
     }
 
     /**
      * Creates a new ArtworkCategory entity.
      *
-     * @Route("/new", name="artwork_category_new", methods={"GET","POST"})
+     * @Route("/new", name="artwork_category_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em, MediaFileRepository $repo) {
         $artworkCategory = new ArtworkCategory();
@@ -63,13 +67,13 @@ class ArtworkCategoryController extends AbstractController  implements Paginator
 
             $this->addFlash('success', 'The new artworkCategory was created.');
 
-            return $this->redirectToRoute('artwork_category_show', array('id' => $artworkCategory->getId()));
+            return $this->redirectToRoute('artwork_category_show', ['id' => $artworkCategory->getId()]);
         }
 
-        return array(
+        return [
             'artworkCategory' => $artworkCategory,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -77,26 +81,21 @@ class ArtworkCategoryController extends AbstractController  implements Paginator
      *
      * @Route("/{id}", name="artwork_category_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param ArtworkCategory $artworkCategory
+     * @Template
      */
     public function showAction(ArtworkCategory $artworkCategory) {
-        return array(
+        return [
             'artworkCategory' => $artworkCategory,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing ArtworkCategory entity.
      *
-     * @Route("/{id}/edit", name="artwork_category_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="artwork_category_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param ArtworkCategory $artworkCategory
+     * @Template
      */
     public function editAction(Request $request, ArtworkCategory $artworkCategory, EntityManagerInterface $em, MediaFileRepository $repo) {
         $editForm = $this->createForm(ArtworkCategoryType::class, $artworkCategory);
@@ -106,13 +105,13 @@ class ArtworkCategoryController extends AbstractController  implements Paginator
             $em->flush();
             $this->addFlash('success', 'The artworkCategory has been updated.');
 
-            return $this->redirectToRoute('artwork_category_show', array('id' => $artworkCategory->getId()));
+            return $this->redirectToRoute('artwork_category_show', ['id' => $artworkCategory->getId()]);
         }
 
-        return array(
+        return [
             'artworkCategory' => $artworkCategory,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -120,10 +119,6 @@ class ArtworkCategoryController extends AbstractController  implements Paginator
      *
      * @Route("/{id}/delete", name="artwork_category_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param ArtworkCategory $artworkCategory
      */
     public function deleteAction(Request $request, ArtworkCategory $artworkCategory, EntityManagerInterface $em, MediaFileRepository $repo) {
         $em->remove($artworkCategory);

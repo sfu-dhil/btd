@@ -1,5 +1,5 @@
 {
-    "name": "dhil/btd",
+    "name": "sfu_dhil/btd",
     "description": "Between the Digital",
     "type": "project",
     "license": "proprietary",
@@ -33,7 +33,7 @@
         "symfony/yaml": "4.4.*",
         "tetranz/select2entity-bundle": "^3.0",
         "twig/string-extra": "^3.0",
-        "ubermichael/nines": "4.x-dev"
+        "ubermichael/nines": "~4.x-dev"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",

@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Services;
 
 use Symfony\Component\Filesystem\Filesystem;
@@ -25,7 +33,7 @@ class FileUploader {
         return $fileName[0] . '/' . $fileName;
     }
 
-    public function delete(File $file) {
+    public function delete(File $file) : void {
         $fs = new Filesystem();
         if ($fs->exists($path = $this->uploadDir . '/' . $file)) {
             $fs->remove($file);
@@ -41,9 +49,9 @@ class FileUploader {
         if ($asBytes) {
             return $maxBytes;
         }
-        $units = array('b', 'Kb', 'Mb', 'Gb', 'Tb');
+        $units = ['b', 'Kb', 'Mb', 'Gb', 'Tb'];
         $exp = floor(log($maxBytes, 1024));
-        $est = round($maxBytes / pow(1024, $exp), 1);
+        $est = round($maxBytes / 1024 ** $exp, 1);
 
         return $est . $units[$exp];
     }

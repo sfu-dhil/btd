@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\MediaFile;
@@ -10,7 +18,6 @@ use App\Repository\MediaFileRepository;
 use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
-use Nines\DublinCoreBundle\Entity\Element;
 use Nines\DublinCoreBundle\Repository\ElementRepository;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -28,7 +35,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/media_file")
  */
-class MediaFileController extends AbstractController  implements PaginatorAwareInterface {
+class MediaFileController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -36,9 +43,7 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
      *
      * @Route("/", name="media_file_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:MediaFile e ORDER BY e.id';
@@ -46,9 +51,9 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
 
         $mediaFiles = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'mediaFiles' => $mediaFiles,
-        );
+        ];
     }
 
     /**
@@ -61,9 +66,7 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
      *
      * @Route("/search", name="media_file_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function searchAction(Request $request, MediaFileRepository $repo) {
         $q = $request->query->get('q');
@@ -72,13 +75,13 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
 
             $results = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $results = array();
+            $results = [];
         }
 
-        return array(
+        return [
             'results' => $results,
             'q' => $q,
-        );
+        ];
     }
 
     /**
@@ -86,9 +89,7 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
      *
      * @Route("/fulltext", name="media_file_fulltext", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      *
      * @return array
      */
@@ -99,24 +100,22 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
 
             $mediaFiles = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $mediaFiles = array();
+            $mediaFiles = [];
         }
 
-        return array(
+        return [
             'mediaFiles' => $mediaFiles,
             'q' => $q,
-        );
+        ];
     }
 
     /**
      * Creates a new MediaFile entity.
      *
-     * @Route("/new", name="media_file_new", methods={"GET","POST"})
+     * @Route("/new", name="media_file_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em, ElementRepository $repo) {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
@@ -125,9 +124,9 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $mediaFile = new MediaFile();
-        $form = $this->createForm('App\Form\MediaFileType', $mediaFile, array(
+        $form = $this->createForm('App\Form\MediaFileType', $mediaFile, [
             'max_file_upload' => UploadedFile::getMaxFilesize(),
-        ));
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -135,7 +134,7 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
             $em->persist($mediaFile);
 
             $mediaFileField = new MediaFileField();
-            $mediaFileField->setElement($repo->findOneBy(array('name' => 'dc_identifier')));
+            $mediaFileField->setElement($repo->findOneBy(['name' => 'dc_identifier']));
             $mediaFileField->setValue($mediaFile->getOriginalName());
             $mediaFileField->setMediaFile($mediaFile);
             $em->persist($mediaFileField);
@@ -143,13 +142,13 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
             $em->flush();
             $this->addFlash('success', 'The new mediaFile was created');
 
-            return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
+            return $this->redirectToRoute('media_file_show', ['id' => $mediaFile->getId()]);
         }
 
-        return array(
+        return [
             'mediaFile' => $mediaFile,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -157,24 +156,19 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
      *
      * @Route("/{id}", name="media_file_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param MediaFile $mediaFile
+     * @Template
      */
     public function showAction(MediaFile $mediaFile, ElementRepository $repo) {
-        return array(
+        return [
             'elements' => $repo->findAll(),
             'mediaFile' => $mediaFile,
-        );
+        ];
     }
 
     /**
      * Finds and displays a media file.
      *
      * @Route("/{id}/view", name="media_file_raw", methods={"GET"})
-     *
-     *
-     * @param MediaFile $mediaFile
      */
     public function mediaAction(MediaFile $mediaFile) {
         return new BinaryFileResponse($mediaFile->getFile());
@@ -184,9 +178,6 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
      * Finds and displays a media file.
      *
      * @Route("/{id}/tn", name="media_file_tn", methods={"GET"})
-     *
-     *
-     * @param MediaFile $mediaFile
      */
     public function thumbnailAction(MediaFile $mediaFile) {
         $tn = $mediaFile->getThumbnail();
@@ -200,14 +191,10 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
     /**
      * Displays a form to edit an existing MediaFile entity.
      *
-     * @Route("/{id}/edit", name="media_file_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="media_file_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param MediaFile $mediaFile
-     * @param FileUploader $uploader
+     * @Template
      */
     public function editAction(Request $request, MediaFile $mediaFile, FileUploader $uploader, EntityManagerInterface $em, ElementRepository $repo) {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
@@ -216,18 +203,18 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
         $max = $uploader->getMaxUploadSize();
-        $editForm = $this->createForm(MediaFileType::class, $mediaFile, array(
+        $editForm = $this->createForm(MediaFileType::class, $mediaFile, [
             'max_file_upload' => $max,
-        ));
+        ]);
         $editForm->remove('file');
-        $editForm->add('newFile', FileType::class, array(
+        $editForm->add('newFile', FileType::class, [
             'label' => 'New File',
             'required' => false,
-            'attr' => array(
+            'attr' => [
                 'help_block' => "Select a file to replace the current one. Optional. Maximum file upload size is {$max}.",
-            ),
+            ],
             'mapped' => false,
-        ));
+        ]);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -237,7 +224,7 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
                 $mediaFile->preUpdate();
 
                 $mediaFileField = new MediaFileField();
-                $mediaFileField->setElement($repo->findOneBy(array('name' => 'dc_identifier')));
+                $mediaFileField->setElement($repo->findOneBy(['name' => 'dc_identifier']));
                 $mediaFileField->setValue($mediaFile->getOriginalName());
                 $mediaFileField->setMediaFile($mediaFile);
                 $em->persist($mediaFileField);
@@ -245,13 +232,13 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
             $em->flush();
             $this->addFlash('success', 'The mediaFile has been updated.');
 
-            return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
+            return $this->redirectToRoute('media_file_show', ['id' => $mediaFile->getId()]);
         }
 
-        return array(
+        return [
             'mediaFile' => $mediaFile,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -259,11 +246,6 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
      *
      * @Route("/{id}/delete", name="media_file_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param MediaFile $mediaFile
-     * @param FileUploader $uploader
      */
     public function deleteAction(Request $request, MediaFile $mediaFile, FileUploader $uploader, EntityManagerInterface $em) {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
@@ -277,6 +259,7 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
         if ($mediaFile->getThumbnail()) {
             $uploader->delete($mediaFile->getThumbnail());
         }
+
         foreach ($mediaFile->getMetadataFields() as $field) {
             $em->remove($field);
         }
@@ -290,13 +273,10 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
     /**
      * Edit metadata for a media file.
      *
-     * @Route("/{id}/metadata", name="media_file_metadata", methods={"GET","POST"})
+     * @Route("/{id}/metadata", name="media_file_metadata", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param MediaFile $mediaFile
+     * @Template
      */
     public function metadataAction(Request $request, MediaFile $mediaFile, EntityManagerInterface $em, ElementRepository $repo) {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
@@ -304,17 +284,19 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
 
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
-        $form = $this->createForm(MediaFileMetadataType::class, null, array(
+        $form = $this->createForm(MediaFileMetadataType::class, null, [
             'mediaFile' => $mediaFile,
             'entityManager' => $em,
-        ));
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($mediaFile->getMetadataFields() as $field) {
                 $em->remove($field);
             }
+
             foreach ($form->getData() as $name => $values) {
-                $element = $repo->findOneBy(array('name' => $name));
+                $element = $repo->findOneBy(['name' => $name]);
+
                 foreach ($values as $value) {
                     $field = new MediaFileField();
                     $field->setElement($element);
@@ -326,12 +308,12 @@ class MediaFileController extends AbstractController  implements PaginatorAwareI
             $em->flush();
             $this->addFlash('success', 'The metadata has been updated.');
 
-            return $this->redirectToRoute('media_file_show', array('id' => $mediaFile->getId()));
+            return $this->redirectToRoute('media_file_show', ['id' => $mediaFile->getId()]);
         }
 
-        return array(
+        return [
             'edit_form' => $form->createView(),
             'mediaFile' => $mediaFile,
-        );
+        ];
     }
 }

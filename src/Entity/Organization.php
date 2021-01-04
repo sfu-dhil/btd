@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +19,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * Organization.
  *
  * @ORM\Table(name="organization", indexes={
- *  @ORM\Index(columns={"name", "address", "description", "contact"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"name", "address", "description", "contact"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  */
@@ -170,7 +178,7 @@ class Organization extends AbstractEntity {
      *
      * @return Organization
      */
-    public function setLocation(Location $location = null) {
+    public function setLocation(?Location $location = null) {
         $this->location = $location;
 
         return $this;
@@ -188,8 +196,6 @@ class Organization extends AbstractEntity {
     /**
      * Add artworkContribution.
      *
-     * @param ArtworkContribution $artworkContribution
-     *
      * @return Organization
      */
     public function addArtworkContribution(ArtworkContribution $artworkContribution) {
@@ -200,10 +206,8 @@ class Organization extends AbstractEntity {
 
     /**
      * Remove artworkContribution.
-     *
-     * @param ArtworkContribution $artworkContribution
      */
-    public function removeArtworkContribution(ArtworkContribution $artworkContribution) {
+    public function removeArtworkContribution(ArtworkContribution $artworkContribution) : void {
         $this->artworkContributions->removeElement($artworkContribution);
     }
 
@@ -219,8 +223,6 @@ class Organization extends AbstractEntity {
     /**
      * Add projectContribution.
      *
-     * @param ProjectContribution $projectContribution
-     *
      * @return Organization
      */
     public function addProjectContribution(ProjectContribution $projectContribution) {
@@ -231,10 +233,8 @@ class Organization extends AbstractEntity {
 
     /**
      * Remove projectContribution.
-     *
-     * @param ProjectContribution $projectContribution
      */
-    public function removeProjectContribution(ProjectContribution $projectContribution) {
+    public function removeProjectContribution(ProjectContribution $projectContribution) : void {
         $this->projectContributions->removeElement($projectContribution);
     }
 

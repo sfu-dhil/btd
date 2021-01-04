@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Form\Project;
 
 use App\Entity\Project;
@@ -21,16 +29,12 @@ class ContributionType extends AbstractType {
         $this->em = $em;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $project = $options['project'];
-        $builder->add('project', HiddenType::class, array(
+        $builder->add('project', HiddenType::class, [
             'data' => $project,
             'data_class' => null,
-        ));
+        ]);
         $builder->add('person');
         $builder->add('organization');
         $builder->add('projectRole');
@@ -38,13 +42,10 @@ class ContributionType extends AbstractType {
         $builder->get('project')->addModelTransformer(new HiddenEntityTransformer($this->em, Project::class));
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver) {
-        $resolver->setDefaults(array(
+    public function configureOptions(OptionsResolver $resolver) : void {
+        $resolver->setDefaults([
             'data_class' => ProjectContribution::class,
             'project' => null,
-        ));
+        ]);
     }
 }

@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Project;
@@ -25,7 +33,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/project")
  */
-class ProjectController extends AbstractController  implements PaginatorAwareInterface {
+class ProjectController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -33,9 +41,7 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
      *
      * @Route("/", name="project_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:Project e ORDER BY e.id';
@@ -43,30 +49,29 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
 
         $projects = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'projects' => $projects,
-        );
+        ];
     }
 
     /**
-     * @param Request $request
      * @Security("is_granted('ROLE_CONTENT_ADMIN')")
      * @Route("/typeahead", name="project_typeahead", methods={"GET"})
-     *
      *
      * @return JsonResponse
      */
     public function typeaheadAction(Request $request, ProjectRepository $repo) {
         $q = $request->query->get('q');
         if ( ! $q) {
-            return new JsonResponse(array());
+            return new JsonResponse([]);
         }
-        $data = array();
+        $data = [];
+
         foreach ($repo->typeaheadQuery($q) as $result) {
-            $data[] = array(
+            $data[] = [
                 'id' => $result->getId(),
                 'text' => $result->getTitle(),
-            );
+            ];
         }
 
         return new JsonResponse($data);
@@ -77,9 +82,7 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
      *
      * @Route("/fulltext", name="project_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      *
      * @return array
      */
@@ -90,24 +93,22 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
 
             $projects = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $projects = array();
+            $projects = [];
         }
 
-        return array(
+        return [
             'projects' => $projects,
             'q' => $q,
-        );
+        ];
     }
 
     /**
      * Creates a new Project entity.
      *
-     * @Route("/new", name="project_new", methods={"GET","POST"})
+     * @Route("/new", name="project_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $project = new Project();
@@ -120,13 +121,13 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
 
             $this->addFlash('success', 'The new project was created.');
 
-            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
+            return $this->redirectToRoute('project_show', ['id' => $project->getId()]);
         }
 
-        return array(
+        return [
             'project' => $project,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -134,26 +135,22 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
      *
      * @Route("/{id}", name="project_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Project $project
+     * @Template
      */
     public function showAction(Project $project) {
-        return array(
+        return [
             'project' => $project,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing Project entity.
      *
-     * @Route("/{id}/edit", name="project_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="project_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
+     * @Template
      *
-     * @param Request $request
-     * @param Project $project
      * @param Text $text
      */
     public function editAction(Request $request, Project $project, EntityManagerInterface $em) {
@@ -164,13 +161,13 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
             $em->flush();
             $this->addFlash('success', 'The project has been updated.');
 
-            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
+            return $this->redirectToRoute('project_show', ['id' => $project->getId()]);
         }
 
-        return array(
+        return [
             'project' => $project,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -178,10 +175,6 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
      *
      * @Route("/{id}/delete", name="project_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param Project $project
      */
     public function deleteAction(Request $request, Project $project, EntityManagerInterface $em) {
         $em->remove($project);
@@ -195,10 +188,7 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
      * @Route("/{id}/add_media", name="project_add_media", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Project $project
+     * @Template
      */
     public function addMediaAction(Request $request, Project $project, EntityManagerInterface $em, MediaFileRepository $repo) {
         $q = $request->query->get('q');
@@ -221,31 +211,27 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
             }
             $this->addFlash('success', 'The media file is associated with the artowrk.');
 
-            return $this->redirectToRoute('project_add_media', array(
+            return $this->redirectToRoute('project_add_media', [
                 'id' => $project->getId(),
                 'q' => $q,
                 'page' => $request->query->getInt('page', 1),
-            ));
+            ]);
         }
 
-        return array(
+        return [
             'project' => $project,
             'q' => $q,
             'results' => $results,
-        );
+        ];
     }
 
     /**
      * @Route("/{id}/remove_media", name="project_remove_media", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Project $project
+     * @Template
      */
     public function removeMediaAction(Request $request, Project $project, EntityManagerInterface $em, MediaFileRepository $repo) {
-
         $results = $this->paginator->paginate($project->getMediaFiles(), $request->query->getInt('page', 1), 25);
 
         $removeId = $request->query->get('removeId');
@@ -258,31 +244,28 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
             }
             $this->addFlash('success', 'The media file is associated with the artowrk.');
 
-            return $this->redirectToRoute('project_remove_media', array(
+            return $this->redirectToRoute('project_remove_media', [
                 'id' => $project->getId(),
                 'page' => $request->query->getInt('page', 1),
-            ));
+            ]);
         }
 
-        return array(
+        return [
             'project' => $project,
             'results' => $results,
-        );
+        ];
     }
 
     /**
-     * @Route("/{id}/contributions", name="project_contributions", methods={"GET","POST"})
+     * @Route("/{id}/contributions", name="project_contributions", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Project $project
+     * @Template
      */
     public function contributionsAction(Request $request, Project $project, EntityManagerInterface $em) {
-        $form = $this->createForm(ContributionsType::class, $project, array(
+        $form = $this->createForm(ContributionsType::class, $project, [
             'project' => $project,
-        ));
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -291,37 +274,34 @@ class ProjectController extends AbstractController  implements PaginatorAwareInt
             // return $this->redirectToRoute('project_show', array('id' => $project->getId()));
         }
 
-        return array(
+        return [
             'project' => $project,
             'edit_form' => $form->createView(),
-        );
+        ];
     }
 
     /**
      * @Route("/{id}/artworks", name="project_artworks", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Project $project
+     * @Template
      */
     public function artworksAction(Request $request, Project $project, EntityManagerInterface $em) {
-        $form = $this->createForm(ArtworksType::class, $project, array(
+        $form = $this->createForm(ArtworksType::class, $project, [
             'project' => $project,
-        ));
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash('success', 'The artworks have been updated.');
 
-            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
+            return $this->redirectToRoute('project_show', ['id' => $project->getId()]);
         }
 
-        return array(
+        return [
             'project' => $project,
             'edit_form' => $form->createView(),
-        );
+        ];
     }
 }

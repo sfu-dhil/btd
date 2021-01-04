@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Menu;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class Builder implements ContainerAwareInterface {
     use ContainerAwareTrait;
 
-    const CARET = ' ▾'; // U+25BE, black down-pointing small triangle.
+    public const CARET = ' ▾'; // U+25BE, black down-pointing small triangle.
 
     /**
      * @var FactoryInterface
@@ -56,110 +64,108 @@ class Builder implements ContainerAwareInterface {
     /**
      * Build a menu for blog posts.
      *
-     * @param array $options
-     *
      * @return ItemInterface
      */
     public function mainMenu(array $options) {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttributes(array(
+        $menu->setChildrenAttributes([
             'class' => 'nav navbar-nav',
-        ));
-        $menu->addChild('home', array(
+        ]);
+        $menu->addChild('home', [
             'label' => 'Home',
             'route' => 'homepage',
-        ));
+        ]);
 
-        $browse = $menu->addChild('browse', array(
+        $browse = $menu->addChild('browse', [
             'label' => 'Browse ' . self::CARET,
             'uri' => '#',
-        ));
+        ]);
 
         $browse->setAttribute('dropdown', true);
         $browse->setLinkAttribute('class', 'dropdown-toggle');
         $browse->setLinkAttribute('data-toggle', 'dropdown');
         $browse->setChildrenAttribute('class', 'dropdown-menu');
 
-        $browse->addChild('artwork', array(
+        $browse->addChild('artwork', [
             'label' => 'Artworks',
             'route' => 'artwork_index',
-        ));
-        $browse->addChild('artistic_statement', array(
+        ]);
+        $browse->addChild('artistic_statement', [
             'label' => 'Artistic Statements',
             'route' => 'artwork_statement_index',
-        ));
-        $browse->addChild('location', array(
+        ]);
+        $browse->addChild('location', [
             'label' => 'Locations',
             'route' => 'location_index',
-        ));
-        $browse->addChild('mediafile', array(
+        ]);
+        $browse->addChild('mediafile', [
             'label' => 'Media Files',
             'route' => 'media_file_index',
-        ));
-        $browse->addChild('person', array(
+        ]);
+        $browse->addChild('person', [
             'label' => 'People',
             'route' => 'person_index',
-        ));
-        $browse->addChild('project', array(
+        ]);
+        $browse->addChild('project', [
             'label' => 'Projects',
             'route' => 'project_index',
-        ));
-        $browse->addChild('organization', array(
+        ]);
+        $browse->addChild('organization', [
             'label' => 'Organizations',
             'route' => 'organization_index',
-        ));
-        $browse->addChild('venue', array(
+        ]);
+        $browse->addChild('venue', [
             'label' => 'Venues',
             'route' => 'venue_index',
-        ));
+        ]);
 
         if ($this->hasRole('ROLE_USER')) {
-            $browse->addChild('divider', array(
+            $browse->addChild('divider', [
                 'label' => '',
-            ));
-            $browse['divider']->setAttributes(array(
+            ]);
+            $browse['divider']->setAttributes([
                 'role' => 'separator',
                 'class' => 'divider',
-            ));
-            $browse->addChild('artwork_contributions', array(
+            ]);
+            $browse->addChild('artwork_contributions', [
                 'label' => 'Artwork Contributions',
                 'route' => 'artwork_contribution_index',
-            ));
-            $browse->addChild('project_contributions', array(
+            ]);
+            $browse->addChild('project_contributions', [
                 'label' => 'Project Contributions',
                 'route' => 'project_contribution_index',
-            ));
-            $browse->addChild('divider2', array(
+            ]);
+            $browse->addChild('divider2', [
                 'label' => '',
-            ));
-            $browse['divider2']->setAttributes(array(
+            ]);
+            $browse['divider2']->setAttributes([
                 'role' => 'separator',
                 'class' => 'divider',
-            ));
-            $browse->addChild('artwork_category', array(
+            ]);
+            $browse->addChild('artwork_category', [
                 'label' => 'Artwork Categories',
                 'route' => 'artwork_category_index',
-            ));
-            $browse->addChild('artwork_role', array(
+            ]);
+            $browse->addChild('artwork_role', [
                 'label' => 'Artwork Roles',
                 'route' => 'artwork_role_index',
-            ));
-            $browse->addChild('mediafile_category', array(
+            ]);
+            $browse->addChild('mediafile_category', [
                 'label' => 'Media File Categories',
                 'route' => 'media_file_category_index',
-            ));
-            $browse->addChild('project_role', array(
+            ]);
+            $browse->addChild('project_role', [
                 'label' => 'Project Roles',
                 'route' => 'project_role_index',
-            ));
-            $browse->addChild('project_category', array(
+            ]);
+            $browse->addChild('project_category', [
                 'label' => 'Project Categories',
                 'route' => 'project_category_index',
-            ));
-            $browse->addChild('venue_category', array(
+            ]);
+            $browse->addChild('venue_category', [
                 'label' => 'Venue Categories',
                 'route' => 'venue_category_index',
-            ));
+            ]);
         }
 
         return $menu;

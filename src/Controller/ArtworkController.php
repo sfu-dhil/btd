@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Artwork;
@@ -22,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/artwork")
  */
-class ArtworkController extends AbstractController  implements PaginatorAwareInterface {
+class ArtworkController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -30,9 +38,7 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
      *
      * @Route("/", name="artwork_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:Artwork e ORDER BY e.id';
@@ -40,9 +46,9 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
 
         $artworks = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'artworks' => $artworks,
-        );
+        ];
     }
 
     /**
@@ -50,9 +56,7 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
      *
      * @Route("/search", name="artwork_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      *
      * @return array
      */
@@ -63,24 +67,22 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
 
             $artworks = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $artworks = array();
+            $artworks = [];
         }
 
-        return array(
+        return [
             'artworks' => $artworks,
             'q' => $q,
-        );
+        ];
     }
 
     /**
      * Creates a new Artwork entity.
      *
-     * @Route("/new", name="artwork_new", methods={"GET","POST"})
+     * @Route("/new", name="artwork_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $artwork = new Artwork();
@@ -93,13 +95,13 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
 
             $this->addFlash('success', 'The new artwork was created.');
 
-            return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
+            return $this->redirectToRoute('artwork_show', ['id' => $artwork->getId()]);
         }
 
-        return array(
+        return [
             'artwork' => $artwork,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -107,26 +109,21 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
      *
      * @Route("/{id}", name="artwork_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Artwork $artwork
+     * @Template
      */
     public function showAction(Artwork $artwork) {
-        return array(
+        return [
             'artwork' => $artwork,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing Artwork entity.
      *
-     * @Route("/{id}/edit", name="artwork_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="artwork_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Artwork $artwork
+     * @Template
      */
     public function editAction(Request $request, Artwork $artwork, EntityManagerInterface $em) {
         $editForm = $this->createForm(ArtworkType::class, $artwork);
@@ -136,13 +133,13 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
             $em->flush();
             $this->addFlash('success', 'The artwork has been updated.');
 
-            return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
+            return $this->redirectToRoute('artwork_show', ['id' => $artwork->getId()]);
         }
 
-        return array(
+        return [
             'artwork' => $artwork,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -150,10 +147,6 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
      *
      * @Route("/{id}/delete", name="artwork_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param Artwork $artwork
      */
     public function deleteAction(Request $request, Artwork $artwork, EntityManagerInterface $em) {
         $em->remove($artwork);
@@ -167,10 +160,7 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
      * @Route("/{id}/add_media", name="artwork_add_media", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Artwork $artwork
+     * @Template
      */
     public function addMediaAction(Request $request, Artwork $artwork, EntityManagerInterface $em, MediaFileRepository $repo) {
         $q = $request->query->get('q');
@@ -192,31 +182,27 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
             }
             $this->addFlash('success', 'The media file is associated with the artowrk.');
 
-            return $this->redirectToRoute('artwork_add_media', array(
+            return $this->redirectToRoute('artwork_add_media', [
                 'id' => $artwork->getId(),
                 'q' => $q,
                 'page' => $request->query->getInt('page', 1),
-            ));
+            ]);
         }
 
-        return array(
+        return [
             'artwork' => $artwork,
             'q' => $q,
             'results' => $results,
-        );
+        ];
     }
 
     /**
      * @Route("/{id}/remove_media", name="artwork_remove_media", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Artwork $artwork
+     * @Template
      */
     public function removeMediaAction(Request $request, Artwork $artwork, EntityManagerInterface $em, MediaFileRepository $repo) {
-
         $results = $this->paginator->paginate($artwork->getMediaFiles(), $request->query->getInt('page', 1), 25);
 
         $removeId = $request->query->get('removeId');
@@ -229,54 +215,48 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
             }
             $this->addFlash('success', 'The media file is associated with the artowrk.');
 
-            return $this->redirectToRoute('artwork_remove_media', array(
+            return $this->redirectToRoute('artwork_remove_media', [
                 'id' => $artwork->getId(),
                 'page' => $request->query->getInt('page', 1),
-            ));
+            ]);
         }
 
-        return array(
+        return [
             'artwork' => $artwork,
             'results' => $results,
-        );
+        ];
     }
 
     /**
-     * @Route("/{id}/contributions", name="artwork_contributions", methods={"GET","POST"})
+     * @Route("/{id}/contributions", name="artwork_contributions", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Artwork $artwork
+     * @Template
      */
     public function contributionsAction(Request $request, Artwork $artwork, EntityManagerInterface $em) {
-        $form = $this->createForm(ArtworkContributionsType::class, $artwork, array(
+        $form = $this->createForm(ArtworkContributionsType::class, $artwork, [
             'artwork' => $artwork,
-        ));
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
 
-            return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
+            return $this->redirectToRoute('artwork_show', ['id' => $artwork->getId()]);
         }
 
-        return array(
+        return [
             'artwork' => $artwork,
             'edit_form' => $form->createView(),
-        );
+        ];
     }
 
     /**
-     * @Route("/{id}/projects", name="artwork_projects", methods={"GET","POST"})
+     * @Route("/{id}/projects", name="artwork_projects", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Artwork $artwork
+     * @Template
      */
     public function projectsAction(Request $request, Artwork $artwork, EntityManagerInterface $em) {
         $oldProjects = $artwork->getProjects()->toArray();
@@ -287,6 +267,7 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
             foreach ($oldProjects as $project) {
                 $project->removeArtwork($artwork);
             }
+
             foreach ($artwork->getProjects() as $project) {
                 if ( ! $project->hasArtwork($artwork)) {
                     $project->addArtwork($artwork);
@@ -297,9 +278,9 @@ class ArtworkController extends AbstractController  implements PaginatorAwareInt
             // return $this->redirectToRoute('artwork_show', array('id' => $artwork->getId()));
         }
 
-        return array(
+        return [
             'artwork' => $artwork,
             'edit_form' => $form->createView(),
-        );
+        ];
     }
 }
