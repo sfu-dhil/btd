@@ -1,4 +1,4 @@
-
+  
 10.0.0.10:
     stage: staging
     become: ~
@@ -11,7 +11,7 @@
 .settings:
     application: btd
     repository: ~
-    branch: master
+    branch: main
     shared_dirs:
         - var/logs
         - var/sessions
