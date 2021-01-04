@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use DateTime;
@@ -14,7 +22,7 @@ use Nines\UtilBundle\Entity\ContentExcerptTrait;
  * Project.
  *
  * @ORM\Table(name="project", indexes={
- *  @ORM\Index(columns={"title", "content"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"title", "content"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
  */
@@ -161,7 +169,7 @@ class Project extends AbstractEntity implements ContentEntityInterface {
      *
      * @return Project
      */
-    public function setProjectCategory(ProjectCategory $projectCategory = null) {
+    public function setProjectCategory(?ProjectCategory $projectCategory = null) {
         $this->projectCategory = $projectCategory;
 
         return $this;
@@ -179,8 +187,6 @@ class Project extends AbstractEntity implements ContentEntityInterface {
     /**
      * Add venue.
      *
-     * @param Venue $venue
-     *
      * @return Project
      */
     public function addVenue(Venue $venue) {
@@ -191,10 +197,8 @@ class Project extends AbstractEntity implements ContentEntityInterface {
 
     /**
      * Remove venue.
-     *
-     * @param Venue $venue
      */
-    public function removeVenue(Venue $venue) {
+    public function removeVenue(Venue $venue) : void {
         $this->venues->removeElement($venue);
     }
 
@@ -210,8 +214,6 @@ class Project extends AbstractEntity implements ContentEntityInterface {
     /**
      * Add contribution.
      *
-     * @param ProjectContribution $contribution
-     *
      * @return Project
      */
     public function addContribution(ProjectContribution $contribution) {
@@ -222,10 +224,8 @@ class Project extends AbstractEntity implements ContentEntityInterface {
 
     /**
      * Remove contribution.
-     *
-     * @param ProjectContribution $contribution
      */
-    public function removeContribution(ProjectContribution $contribution) {
+    public function removeContribution(ProjectContribution $contribution) : void {
         $this->contributions->removeElement($contribution);
     }
 
@@ -241,8 +241,6 @@ class Project extends AbstractEntity implements ContentEntityInterface {
     /**
      * Check if a media file is associated with this project.
      *
-     * @param MediaFile $mediaFile
-     *
      * @return bool
      */
     public function hasMediaFile(MediaFile $mediaFile) {
@@ -251,8 +249,6 @@ class Project extends AbstractEntity implements ContentEntityInterface {
 
     /**
      * Add mediaFile.
-     *
-     * @param MediaFile $mediaFile
      *
      * @return Project
      */
@@ -266,10 +262,8 @@ class Project extends AbstractEntity implements ContentEntityInterface {
 
     /**
      * Remove mediaFile.
-     *
-     * @param MediaFile $mediaFile
      */
-    public function removeMediaFile(MediaFile $mediaFile) {
+    public function removeMediaFile(MediaFile $mediaFile) : void {
         $this->mediaFiles->removeElement($mediaFile);
     }
 
@@ -329,8 +323,6 @@ class Project extends AbstractEntity implements ContentEntityInterface {
     /**
      * Add projectPage.
      *
-     * @param ProjectPage $projectPage
-     *
      * @return Project
      */
     public function addProjectPage(ProjectPage $projectPage) {
@@ -341,10 +333,8 @@ class Project extends AbstractEntity implements ContentEntityInterface {
 
     /**
      * Remove projectPage.
-     *
-     * @param ProjectPage $projectPage
      */
-    public function removeProjectPage(ProjectPage $projectPage) {
+    public function removeProjectPage(ProjectPage $projectPage) : void {
         $this->projectPages->removeElement($projectPage);
     }
 
@@ -360,8 +350,6 @@ class Project extends AbstractEntity implements ContentEntityInterface {
     /**
      * Add artwork.
      *
-     * @param Artwork $artwork
-     *
      * @return Project
      */
     public function addArtwork(Artwork $artwork) {
@@ -376,10 +364,8 @@ class Project extends AbstractEntity implements ContentEntityInterface {
 
     /**
      * Remove artwork.
-     *
-     * @param Artwork $artwork
      */
-    public function removeArtwork(Artwork $artwork) {
+    public function removeArtwork(Artwork $artwork) : void {
         $this->artworks->removeElement($artwork);
     }
 
@@ -395,11 +381,9 @@ class Project extends AbstractEntity implements ContentEntityInterface {
     /**
      * Set parent.
      *
-     * @param null|Project $parent
-     *
      * @return Project
      */
-    public function setParent(Project $parent = null) {
+    public function setParent(?self $parent = null) {
         $this->parent = $parent;
 
         return $this;
@@ -417,11 +401,9 @@ class Project extends AbstractEntity implements ContentEntityInterface {
     /**
      * Add child.
      *
-     * @param Project $child
-     *
      * @return Project
      */
-    public function addChild(Project $child) {
+    public function addChild(self $child) {
         $this->children[] = $child;
 
         return $this;
@@ -430,11 +412,9 @@ class Project extends AbstractEntity implements ContentEntityInterface {
     /**
      * Remove child.
      *
-     * @param Project $child
-     *
      * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeChild(Project $child) {
+    public function removeChild(self $child) {
         return $this->children->removeElement($child);
     }
 

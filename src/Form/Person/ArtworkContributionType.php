@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * To change this license header, choose License Headers in Artwork Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace App\Form\Person;
@@ -34,20 +36,20 @@ class ArtworkContributionType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $person = $options['person'];
-        $builder->add('person', HiddenType::class, array(
+        $builder->add('person', HiddenType::class, [
             'data' => $person,
             'data_class' => null,
-        ));
+        ]);
         $builder->add('artworkRole');
         $builder->add('artwork');
 
         $builder->get('person')->addModelTransformer(new HiddenEntityTransformer($this->em, Person::class));
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
-        $resolver->setDefaults(array(
+    public function configureOptions(OptionsResolver $resolver) : void {
+        $resolver->setDefaults([
             'data_class' => ArtworkContribution::class,
             'person' => null,
-        ));
+        ]);
     }
 }

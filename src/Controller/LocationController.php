@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Location;
@@ -18,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/location")
  */
-class LocationController extends AbstractController  implements PaginatorAwareInterface {
+class LocationController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -26,9 +34,7 @@ class LocationController extends AbstractController  implements PaginatorAwareIn
      *
      * @Route("/", name="location_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:Location e ORDER BY e.id';
@@ -36,9 +42,9 @@ class LocationController extends AbstractController  implements PaginatorAwareIn
 
         $locations = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'locations' => $locations,
-        );
+        ];
     }
 
     /**
@@ -46,9 +52,7 @@ class LocationController extends AbstractController  implements PaginatorAwareIn
      *
      * @Route("/search", name="location_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      *
      * @return array
      */
@@ -59,24 +63,22 @@ class LocationController extends AbstractController  implements PaginatorAwareIn
 
             $locations = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $locations = array();
+            $locations = [];
         }
 
-        return array(
+        return [
             'locations' => $locations,
             'q' => $q,
-        );
+        ];
     }
 
     /**
      * Creates a new Location entity.
      *
-     * @Route("/new", name="location_new", methods={"GET","POST"})
+     * @Route("/new", name="location_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $location = new Location();
@@ -89,13 +91,13 @@ class LocationController extends AbstractController  implements PaginatorAwareIn
 
             $this->addFlash('success', 'The new location was created.');
 
-            return $this->redirectToRoute('location_show', array('id' => $location->getId()));
+            return $this->redirectToRoute('location_show', ['id' => $location->getId()]);
         }
 
-        return array(
+        return [
             'location' => $location,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -103,26 +105,21 @@ class LocationController extends AbstractController  implements PaginatorAwareIn
      *
      * @Route("/{id}", name="location_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Location $location
+     * @Template
      */
     public function showAction(Location $location) {
-        return array(
+        return [
             'location' => $location,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing Location entity.
      *
-     * @Route("/{id}/edit", name="location_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="location_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Location $location
+     * @Template
      */
     public function editAction(Request $request, Location $location, EntityManagerInterface $em) {
         $editForm = $this->createForm('App\Form\LocationType', $location);
@@ -132,13 +129,13 @@ class LocationController extends AbstractController  implements PaginatorAwareIn
             $em->flush();
             $this->addFlash('success', 'The location has been updated.');
 
-            return $this->redirectToRoute('location_show', array('id' => $location->getId()));
+            return $this->redirectToRoute('location_show', ['id' => $location->getId()]);
         }
 
-        return array(
+        return [
             'location' => $location,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -146,10 +143,6 @@ class LocationController extends AbstractController  implements PaginatorAwareIn
      *
      * @Route("/{id}/delete", name="location_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param Location $location
      */
     public function deleteAction(Request $request, Location $location, EntityManagerInterface $em) {
         $em->remove($location);

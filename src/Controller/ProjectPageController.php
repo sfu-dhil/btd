@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Project;
@@ -19,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * ProjectPage controller.
  */
-class ProjectPageController extends AbstractController  implements PaginatorAwareInterface {
+class ProjectPageController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -28,9 +36,8 @@ class ProjectPageController extends AbstractController  implements PaginatorAwar
      * @Route("/project/{projectId}/page", name="project_page_index", methods={"GET"})
      * @ParamConverter("project", class="App:Project", options={"id": "projectId"})
      *
-     * @Template()
+     * @Template
      *
-     * @param Request $request
      * @param Project $project
      */
     public function indexAction(Request $request, $project, EntityManagerInterface $em) {
@@ -40,23 +47,20 @@ class ProjectPageController extends AbstractController  implements PaginatorAwar
 
         $projectPages = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'project' => $project,
             'projectPages' => $projectPages,
-        );
+        ];
     }
 
     /**
      * Creates a new ProjectPage entity.
      *
-     * @Route("/project/{projectId}/page/new", name="project_page_new", methods={"GET","POST"})
+     * @Route("/project/{projectId}/page/new", name="project_page_new", methods={"GET", "POST"})
      * @ParamConverter("project", class="App:Project", options={"id": "projectId"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Project $project
+     * @Template
      */
     public function newAction(Request $request, Project $project, EntityManagerInterface $em) {
         $projectPage = new ProjectPage();
@@ -70,14 +74,14 @@ class ProjectPageController extends AbstractController  implements PaginatorAwar
 
             $this->addFlash('success', 'The new projectPage was created.');
 
-            return $this->redirectToRoute('project_page_show', array('projectId' => $project->getId(), 'id' => $projectPage->getId()));
+            return $this->redirectToRoute('project_page_show', ['projectId' => $project->getId(), 'id' => $projectPage->getId()]);
         }
 
-        return array(
+        return [
             'project' => $project,
             'projectPage' => $projectPage,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -86,34 +90,27 @@ class ProjectPageController extends AbstractController  implements PaginatorAwar
      * @Route("/project/{projectId}/page/{id}", name="project_page_show", methods={"GET"})
      * @ParamConverter("project", class="App:Project", options={"id": "projectId"})
      *
-     * @Template()
-     *
-     * @param Project $project
-     * @param ProjectPage $projectPage
+     * @Template
      */
     public function showAction(Project $project, ProjectPage $projectPage) {
         if ($project->getId() !== $projectPage->getProject()->getId()) {
             throw new NotFoundHttpException();
         }
 
-        return array(
+        return [
             'project' => $project,
             'projectPage' => $projectPage,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing ProjectPage entity.
      *
-     * @Route("/project/{projectId}/page/{id}/edit", name="project_page_edit", methods={"GET","POST"})
+     * @Route("/project/{projectId}/page/{id}/edit", name="project_page_edit", methods={"GET", "POST"})
      * @ParamConverter("project", class="App:Project", options={"id": "projectId"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param ProjectPage $projectPage
-     * @param Project $project
+     * @Template
      */
     public function editAction(Request $request, Project $project, ProjectPage $projectPage, EntityManagerInterface $em) {
         if ($project->getId() !== $projectPage->getProject()->getId()) {
@@ -126,17 +123,17 @@ class ProjectPageController extends AbstractController  implements PaginatorAwar
             $em->flush();
             $this->addFlash('success', 'The projectPage has been updated.');
 
-            return $this->redirectToRoute('project_page_show', array(
+            return $this->redirectToRoute('project_page_show', [
                 'projectId' => $project->getId(),
                 'id' => $projectPage->getId(),
-            ));
+            ]);
         }
 
-        return array(
+        return [
             'project' => $project,
             'projectPage' => $projectPage,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -145,19 +142,14 @@ class ProjectPageController extends AbstractController  implements PaginatorAwar
      * @Route("/project/{projectId}/page/{id}/delete", name="project_page_delete", methods={"GET"})
      * @ParamConverter("project", class="App:Project", options={"id": "projectId"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param ProjectPage $projectPage
-     * @param Project $project
      */
     public function deleteAction(Request $request, Project $project, ProjectPage $projectPage, EntityManagerInterface $em) {
         $em->remove($projectPage);
         $em->flush();
         $this->addFlash('success', 'The projectPage was deleted.');
 
-        return $this->redirectToRoute('project_page_index', array(
+        return $this->redirectToRoute('project_page_index', [
             'projectId' => $project->getId(),
-        ));
+        ]);
     }
 }

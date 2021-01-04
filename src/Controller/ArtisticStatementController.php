@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ArtisticStatement;
@@ -19,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/artistic_statement")
  */
-class ArtisticStatementController extends AbstractController  implements PaginatorAwareInterface {
+class ArtisticStatementController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -27,9 +35,7 @@ class ArtisticStatementController extends AbstractController  implements Paginat
      *
      * @Route("/", name="artwork_statement_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $qb = $em->createQueryBuilder();
@@ -38,9 +44,9 @@ class ArtisticStatementController extends AbstractController  implements Paginat
 
         $artisticStatements = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'artisticStatements' => $artisticStatements,
-        );
+        ];
     }
 
     /**
@@ -53,9 +59,7 @@ class ArtisticStatementController extends AbstractController  implements Paginat
      *
      * @Route("/search", name="artwork_statement_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function searchAction(Request $request, EntityManagerInterface $em, ArtisticStatementRepository $repo) {
         $q = $request->query->get('q');
@@ -64,13 +68,13 @@ class ArtisticStatementController extends AbstractController  implements Paginat
 
             $artisticStatements = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $artisticStatements = array();
+            $artisticStatements = [];
         }
 
-        return array(
+        return [
             'artisticStatements' => $artisticStatements,
             'q' => $q,
-        );
+        ];
     }
 
     /**
@@ -96,9 +100,7 @@ class ArtisticStatementController extends AbstractController  implements Paginat
      *
      * @Route("/fulltext", name="artwork_statement_fulltext", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      *
      * @return array
      */
@@ -109,24 +111,22 @@ class ArtisticStatementController extends AbstractController  implements Paginat
 
             $artisticStatements = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $artisticStatements = array();
+            $artisticStatements = [];
         }
 
-        return array(
+        return [
             'artisticStatements' => $artisticStatements,
             'q' => $q,
-        );
+        ];
     }
 
     /**
      * Creates a new ArtisticStatement entity.
      *
-     * @Route("/new", name="artwork_statement_new", methods={"GET","POST"})
+     * @Route("/new", name="artwork_statement_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $artisticStatement = new ArtisticStatement();
@@ -139,13 +139,13 @@ class ArtisticStatementController extends AbstractController  implements Paginat
 
             $this->addFlash('success', 'The new artistic statement was created.');
 
-            return $this->redirectToRoute('artwork_statement_show', array('id' => $artisticStatement->getId()));
+            return $this->redirectToRoute('artwork_statement_show', ['id' => $artisticStatement->getId()]);
         }
 
-        return array(
+        return [
             'artisticStatement' => $artisticStatement,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -153,26 +153,21 @@ class ArtisticStatementController extends AbstractController  implements Paginat
      *
      * @Route("/{id}", name="artwork_statement_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param ArtisticStatement $artisticStatement
+     * @Template
      */
     public function showAction(ArtisticStatement $artisticStatement) {
-        return array(
+        return [
             'artisticStatement' => $artisticStatement,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing ArtisticStatement entity.
      *
-     * @Route("/{id}/edit", name="artwork_statement_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="artwork_statement_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param ArtisticStatement $artisticStatement
+     * @Template
      */
     public function editAction(Request $request, ArtisticStatement $artisticStatement, EntityManagerInterface $em) {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
@@ -187,13 +182,13 @@ class ArtisticStatementController extends AbstractController  implements Paginat
             $em->flush();
             $this->addFlash('success', 'The artisticStatement has been updated.');
 
-            return $this->redirectToRoute('artwork_statement_show', array('id' => $artisticStatement->getId()));
+            return $this->redirectToRoute('artwork_statement_show', ['id' => $artisticStatement->getId()]);
         }
 
-        return array(
+        return [
             'artisticStatement' => $artisticStatement,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -201,10 +196,6 @@ class ArtisticStatementController extends AbstractController  implements Paginat
      *
      * @Route("/{id}/delete", name="artwork_statement_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param ArtisticStatement $artisticStatement
      */
     public function deleteAction(Request $request, ArtisticStatement $artisticStatement, EntityManagerInterface $em) {
         $em->remove($artisticStatement);

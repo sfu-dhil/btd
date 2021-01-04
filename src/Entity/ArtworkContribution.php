@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -39,7 +47,7 @@ class ArtworkContribution extends AbstractEntity {
     private $artworkRole;
 
     public function __toString() : string {
-        return implode(':', array($this->artwork, $this->person, $this->organization, $this->artworkRole));
+        return implode(':', [$this->artwork, $this->person, $this->organization, $this->artworkRole]);
     }
 
     /**
@@ -49,7 +57,7 @@ class ArtworkContribution extends AbstractEntity {
      *
      * @return ArtworkContribution
      */
-    public function setArtwork(Artwork $artwork = null) {
+    public function setArtwork(?Artwork $artwork = null) {
         $this->artwork = $artwork;
 
         return $this;
@@ -71,7 +79,7 @@ class ArtworkContribution extends AbstractEntity {
      *
      * @return ArtworkContribution
      */
-    public function setPerson(Person $person = null) {
+    public function setPerson(?Person $person = null) {
         $this->person = $person;
 
         return $this;
@@ -93,7 +101,7 @@ class ArtworkContribution extends AbstractEntity {
      *
      * @return ArtworkContribution
      */
-    public function setOrganization(Organization $organization = null) {
+    public function setOrganization(?Organization $organization = null) {
         $this->organization = $organization;
 
         return $this;
@@ -115,7 +123,7 @@ class ArtworkContribution extends AbstractEntity {
      *
      * @return ArtworkContribution
      */
-    public function setArtworkRole(ArtworkRole $artworkRole = null) {
+    public function setArtworkRole(?ArtworkRole $artworkRole = null) {
         $this->artworkRole = $artworkRole;
 
         return $this;

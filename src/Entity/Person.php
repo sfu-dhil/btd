@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +19,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * Person.
  *
  * @ORM\Table(name="person", indexes={
- *  @ORM\Index(columns={"fullname", "biography"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"fullname", "biography"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
  */
@@ -71,7 +79,7 @@ class Person extends AbstractEntity {
         $this->projectContributions = new ArrayCollection();
         $this->artisticStatements = new ArrayCollection();
         $this->affiliations = new ArrayCollection();
-        $this->urls = array();
+        $this->urls = [];
     }
 
     public function __toString() : string {
@@ -147,8 +155,6 @@ class Person extends AbstractEntity {
     /**
      * Add artworkContribution.
      *
-     * @param ArtworkContribution $artworkContribution
-     *
      * @return Person
      */
     public function addArtworkContribution(ArtworkContribution $artworkContribution) {
@@ -159,10 +165,8 @@ class Person extends AbstractEntity {
 
     /**
      * Remove artworkContribution.
-     *
-     * @param ArtworkContribution $artworkContribution
      */
-    public function removeArtworkContribution(ArtworkContribution $artworkContribution) {
+    public function removeArtworkContribution(ArtworkContribution $artworkContribution) : void {
         $this->artworkContributions->removeElement($artworkContribution);
     }
 
@@ -178,8 +182,6 @@ class Person extends AbstractEntity {
     /**
      * Add projectContribution.
      *
-     * @param ProjectContribution $projectContribution
-     *
      * @return Person
      */
     public function addProjectContribution(ProjectContribution $projectContribution) {
@@ -190,10 +192,8 @@ class Person extends AbstractEntity {
 
     /**
      * Remove projectContribution.
-     *
-     * @param ProjectContribution $projectContribution
      */
-    public function removeProjectContribution(ProjectContribution $projectContribution) {
+    public function removeProjectContribution(ProjectContribution $projectContribution) : void {
         $this->projectContributions->removeElement($projectContribution);
     }
 
@@ -270,7 +270,7 @@ class Person extends AbstractEntity {
      *
      * @param \App\Entity\MediaFile $mediaFile
      */
-    public function removeMediaFile(MediaFile $mediaFile) {
+    public function removeMediaFile(MediaFile $mediaFile) : void {
         $this->mediaFiles->removeElement($mediaFile);
     }
 
@@ -286,8 +286,6 @@ class Person extends AbstractEntity {
     /**
      * Add affiliation.
      *
-     * @param Organization $affiliation
-     *
      * @return Person
      */
     public function addAffiliation(Organization $affiliation) {
@@ -298,10 +296,8 @@ class Person extends AbstractEntity {
 
     /**
      * Remove affiliation.
-     *
-     * @param Organization $affiliation
      */
-    public function removeAffiliation(Organization $affiliation) {
+    public function removeAffiliation(Organization $affiliation) : void {
         $this->affiliations->removeElement($affiliation);
     }
 
@@ -332,7 +328,7 @@ class Person extends AbstractEntity {
      *
      * @param \App\Entity\ArtisticStatement $artisticStatement
      */
-    public function removeArtisticStatement(ArtisticStatement $artisticStatement) {
+    public function removeArtisticStatement(ArtisticStatement $artisticStatement) : void {
         $this->artisticStatements->removeElement($artisticStatement);
     }
 

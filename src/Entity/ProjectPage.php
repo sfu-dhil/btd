@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +18,7 @@ use Nines\UtilBundle\Entity\ContentExcerptTrait;
  * ProjectPage.
  *
  * @ORM\Table(name="project_page", indexes={
- *  @ORM\Index(columns={"title", "content"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"title", "content"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="App\Repository\ProjectPageRepository")
  */
@@ -70,7 +78,7 @@ class ProjectPage extends \Nines\UtilBundle\Entity\AbstractEntity implements Con
      *
      * @return ProjectPage
      */
-    public function setProject(Project $project = null) {
+    public function setProject(?Project $project = null) {
         $this->project = $project;
 
         return $this;

@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +19,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * Location.
  *
  * @ORM\Table(name="location", indexes={
- *  @ORM\Index(columns={"city", "region", "country"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"city", "region", "country"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
  */
@@ -125,8 +133,6 @@ class Location extends AbstractEntity {
     /**
      * Add venue.
      *
-     * @param Venue $venue
-     *
      * @return Location
      */
     public function addVenue(Venue $venue) {
@@ -137,10 +143,8 @@ class Location extends AbstractEntity {
 
     /**
      * Remove venue.
-     *
-     * @param Venue $venue
      */
-    public function removeVenue(Venue $venue) {
+    public function removeVenue(Venue $venue) : void {
         $this->venues->removeElement($venue);
     }
 
@@ -156,8 +160,6 @@ class Location extends AbstractEntity {
     /**
      * Add organization.
      *
-     * @param Organization $organization
-     *
      * @return Location
      */
     public function addOrganization(Organization $organization) {
@@ -168,10 +170,8 @@ class Location extends AbstractEntity {
 
     /**
      * Remove organization.
-     *
-     * @param Organization $organization
      */
-    public function removeOrganization(Organization $organization) {
+    public function removeOrganization(Organization $organization) : void {
         $this->organizations->removeElement($organization);
     }
 

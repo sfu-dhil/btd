@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * To change this license header, choose License Headers in Artwork Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace App\Form\Project;
@@ -17,18 +19,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArtworksType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
-        $builder->add('artworks', EntityType::class, array(
+        $builder->add('artworks', EntityType::class, [
             'expanded' => true,
             'multiple' => true,
             'class' => Artwork::class,
             'required' => false,
-        ));
+        ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
-        $resolver->setDefaults(array(
+    public function configureOptions(OptionsResolver $resolver) : void {
+        $resolver->setDefaults([
             'data_class' => Project::class,
             'project' => null,
-        ));
+        ]);
     }
 }

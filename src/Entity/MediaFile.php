@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -83,7 +91,7 @@ class MediaFile extends AbstractEntity {
         return $this->getId();
     }
 
-    public function setFilename($filename) {
+    public function setFilename($filename) : void {
         $this->filename = $filename;
     }
 
@@ -159,8 +167,6 @@ class MediaFile extends AbstractEntity {
     /**
      * Add metadataField.
      *
-     * @param MediaFileField $metadataField
-     *
      * @return MediaFile
      */
     public function addMetadataField(MediaFileField $metadataField) {
@@ -171,10 +177,8 @@ class MediaFile extends AbstractEntity {
 
     /**
      * Remove metadataField.
-     *
-     * @param MediaFileField $metadataField
      */
-    public function removeMetadataField(MediaFileField $metadataField) {
+    public function removeMetadataField(MediaFileField $metadataField) : void {
         $this->metadataFields->removeElement($metadataField);
     }
 
@@ -207,7 +211,7 @@ class MediaFile extends AbstractEntity {
      *
      * @return MediaFile
      */
-    public function setMediaFileCategory(MediaFileCategory $mediaFileCategory = null) {
+    public function setMediaFileCategory(?MediaFileCategory $mediaFileCategory = null) {
         $this->mediaFileCategory = $mediaFileCategory;
 
         return $this;
@@ -225,8 +229,6 @@ class MediaFile extends AbstractEntity {
     /**
      * Add artwork.
      *
-     * @param Artwork $artwork
-     *
      * @return MediaFile
      */
     public function addArtwork(Artwork $artwork) {
@@ -237,10 +239,8 @@ class MediaFile extends AbstractEntity {
 
     /**
      * Remove artwork.
-     *
-     * @param Artwork $artwork
      */
-    public function removeArtwork(Artwork $artwork) {
+    public function removeArtwork(Artwork $artwork) : void {
         $this->artworks->removeElement($artwork);
     }
 
@@ -256,8 +256,6 @@ class MediaFile extends AbstractEntity {
     /**
      * Add project.
      *
-     * @param Project $project
-     *
      * @return MediaFile
      */
     public function addProject(Project $project) {
@@ -268,10 +266,8 @@ class MediaFile extends AbstractEntity {
 
     /**
      * Remove project.
-     *
-     * @param Project $project
      */
-    public function removeProject(Project $project) {
+    public function removeProject(Project $project) : void {
         $this->projects->removeElement($project);
     }
 
@@ -291,8 +287,6 @@ class MediaFile extends AbstractEntity {
     /**
      * Add person.
      *
-     * @param Person $person
-     *
      * @return MediaFile
      */
     public function addPerson(Person $person) {
@@ -305,10 +299,8 @@ class MediaFile extends AbstractEntity {
 
     /**
      * Remove person.
-     *
-     * @param Person $person
      */
-    public function removePerson(Person $person) {
+    public function removePerson(Person $person) : void {
         $this->people->removeElement($person);
     }
 

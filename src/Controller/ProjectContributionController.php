@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/project_contribution")
  */
-class ProjectContributionController extends AbstractController  implements PaginatorAwareInterface {
+class ProjectContributionController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -23,9 +31,7 @@ class ProjectContributionController extends AbstractController  implements Pagin
      *
      * @Route("/", name="project_contribution_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:ProjectContribution e ORDER BY e.id';
@@ -33,8 +39,8 @@ class ProjectContributionController extends AbstractController  implements Pagin
 
         $projectContributions = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'projectContributions' => $projectContributions,
-        );
+        ];
     }
 }

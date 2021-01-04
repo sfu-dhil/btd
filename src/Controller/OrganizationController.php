@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Organization;
@@ -21,7 +29,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/organization")
  */
-class OrganizationController extends AbstractController  implements PaginatorAwareInterface {
+class OrganizationController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
@@ -29,9 +37,7 @@ class OrganizationController extends AbstractController  implements PaginatorAwa
      *
      * @Route("/", name="organization_index", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:Organization e ORDER BY e.id';
@@ -39,9 +45,9 @@ class OrganizationController extends AbstractController  implements PaginatorAwa
 
         $organizations = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'organizations' => $organizations,
-        );
+        ];
     }
 
     /**
@@ -49,9 +55,7 @@ class OrganizationController extends AbstractController  implements PaginatorAwa
      *
      * @Route("/search", name="organization_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      *
      * @return array
      */
@@ -62,24 +66,22 @@ class OrganizationController extends AbstractController  implements PaginatorAwa
 
             $organizations = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $organizations = array();
+            $organizations = [];
         }
 
-        return array(
+        return [
             'organizations' => $organizations,
             'q' => $q,
-        );
+        ];
     }
 
     /**
      * Creates a new Organization entity.
      *
-     * @Route("/new", name="organization_new", methods={"GET","POST"})
+     * @Route("/new", name="organization_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
+     * @Template
      */
     public function newAction(Request $request, EntityManagerInterface $em) {
         $organization = new Organization();
@@ -92,13 +94,13 @@ class OrganizationController extends AbstractController  implements PaginatorAwa
 
             $this->addFlash('success', 'The new organization was created.');
 
-            return $this->redirectToRoute('organization_show', array('id' => $organization->getId()));
+            return $this->redirectToRoute('organization_show', ['id' => $organization->getId()]);
         }
 
-        return array(
+        return [
             'organization' => $organization,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -106,26 +108,21 @@ class OrganizationController extends AbstractController  implements PaginatorAwa
      *
      * @Route("/{id}", name="organization_show", methods={"GET"})
      *
-     * @Template()
-     *
-     * @param Organization $organization
+     * @Template
      */
     public function showAction(Organization $organization) {
-        return array(
+        return [
             'organization' => $organization,
-        );
+        ];
     }
 
     /**
      * Displays a form to edit an existing Organization entity.
      *
-     * @Route("/{id}/edit", name="organization_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="organization_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Organization $organization
+     * @Template
      */
     public function editAction(Request $request, Organization $organization, EntityManagerInterface $em) {
         $editForm = $this->createForm(OrganizationType::class, $organization);
@@ -135,13 +132,13 @@ class OrganizationController extends AbstractController  implements PaginatorAwa
             $em->flush();
             $this->addFlash('success', 'The organization has been updated.');
 
-            return $this->redirectToRoute('organization_show', array('id' => $organization->getId()));
+            return $this->redirectToRoute('organization_show', ['id' => $organization->getId()]);
         }
 
-        return array(
+        return [
             'organization' => $organization,
             'edit_form' => $editForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -149,10 +146,6 @@ class OrganizationController extends AbstractController  implements PaginatorAwa
      *
      * @Route("/{id}/delete", name="organization_delete", methods={"GET"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     *
-     * @param Request $request
-     * @param Organization $organization
      */
     public function deleteAction(Request $request, Organization $organization, EntityManagerInterface $em) {
         $em->remove($organization);
@@ -163,58 +156,52 @@ class OrganizationController extends AbstractController  implements PaginatorAwa
     }
 
     /**
-     * @Route("/{id}/project_contributions", name="organization_project_contributions", methods={"GET","POST"})
+     * @Route("/{id}/project_contributions", name="organization_project_contributions", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Organization $organization
+     * @Template
      */
     public function projectContributionsAction(Request $request, Organization $organization, EntityManagerInterface $em) {
-        $form = $this->createForm(ProjectContributionsType::class, $organization, array(
+        $form = $this->createForm(ProjectContributionsType::class, $organization, [
             'organization' => $organization,
-        ));
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
 
-            return $this->redirectToRoute('organization_show', array('id' => $organization->getId()));
+            return $this->redirectToRoute('organization_show', ['id' => $organization->getId()]);
         }
 
-        return array(
+        return [
             'organization' => $organization,
             'edit_form' => $form->createView(),
-        );
+        ];
     }
 
     /**
-     * @Route("/{id}/artwork_contributions", name="organization_artwork_contributions", methods={"GET","POST"})
+     * @Route("/{id}/artwork_contributions", name="organization_artwork_contributions", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template()
-     *
-     * @param Request $request
-     * @param Organization $organization
+     * @Template
      */
     public function artworkContributionsAction(Request $request, Organization $organization, EntityManagerInterface $em) {
-        $form = $this->createForm(ArtworkContributionsType::class, $organization, array(
+        $form = $this->createForm(ArtworkContributionsType::class, $organization, [
             'organization' => $organization,
-        ));
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash('success', 'The contributions have been updated.');
 
-            return $this->redirectToRoute('organization_show', array('id' => $organization->getId()));
+            return $this->redirectToRoute('organization_show', ['id' => $organization->getId()]);
         }
 
-        return array(
+        return [
             'organization' => $organization,
             'edit_form' => $form->createView(),
-        );
+        ];
     }
 }

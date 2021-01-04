@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,8 +36,6 @@ class VenueCategory extends AbstractTerm {
     /**
      * Add venue.
      *
-     * @param Venue $venue
-     *
      * @return VenueCategory
      */
     public function addVenue(Venue $venue) {
@@ -40,10 +46,8 @@ class VenueCategory extends AbstractTerm {
 
     /**
      * Remove venue.
-     *
-     * @param Venue $venue
      */
-    public function removeVenue(Venue $venue) {
+    public function removeVenue(Venue $venue) : void {
         $this->venues->removeElement($venue);
     }
 

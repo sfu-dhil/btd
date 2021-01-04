@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * To change this license header, choose License Headers in Artwork Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace App\Form\Person;
@@ -17,27 +19,27 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ArtworkContributionsType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $person = $options['person'];
-        $builder->add('artworkContributions', CollectionType::class, array(
+        $builder->add('artworkContributions', CollectionType::class, [
             'entry_type' => ArtworkContributionType::class,
             'required' => false,
             'allow_add' => true,
             'allow_delete' => true,
             'delete_empty' => true,
-            'entry_options' => array(
+            'entry_options' => [
                 'person' => $person,
                 'label' => false,
-            ),
+            ],
             'label' => 'Contribution',
-            'attr' => array(
+            'attr' => [
                 'class' => 'collection-simple',
-            ),
-        ));
+            ],
+        ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
-        $resolver->setDefaults(array(
+    public function configureOptions(OptionsResolver $resolver) : void {
+        $resolver->setDefaults([
             'data_class' => Person::class,
             'person' => null,
-        ));
+        ]);
     }
 }

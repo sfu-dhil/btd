@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +19,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * Venue.
  *
  * @ORM\Table(name="venue", indexes={
- *  @ORM\Index(columns={"name", "address", "description", "url"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"name", "address", "description", "url"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="App\Repository\VenueRepository")
  */
@@ -164,7 +172,7 @@ class Venue extends AbstractEntity {
      *
      * @return Venue
      */
-    public function setLocation(Location $location = null) {
+    public function setLocation(?Location $location = null) {
         $this->location = $location;
 
         return $this;
@@ -186,7 +194,7 @@ class Venue extends AbstractEntity {
      *
      * @return Venue
      */
-    public function setVenueCategory(VenueCategory $venueCategory = null) {
+    public function setVenueCategory(?VenueCategory $venueCategory = null) {
         $this->venueCategory = $venueCategory;
 
         return $this;
@@ -204,8 +212,6 @@ class Venue extends AbstractEntity {
     /**
      * Add project.
      *
-     * @param Project $project
-     *
      * @return Venue
      */
     public function addProject(Project $project) {
@@ -216,10 +222,8 @@ class Venue extends AbstractEntity {
 
     /**
      * Remove project.
-     *
-     * @param Project $project
      */
-    public function removeProject(Project $project) {
+    public function removeProject(Project $project) : void {
         $this->projects->removeElement($project);
     }
 

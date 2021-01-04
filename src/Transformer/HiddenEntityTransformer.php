@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Transformer;
 
 use Doctrine\Persistence\ObjectManager;
@@ -42,7 +50,6 @@ class HiddenEntityTransformer implements DataTransformerInterface {
     /**
      * Build and configure the transformer.
      *
-     * @param ObjectManager $em
      * @param type $class
      */
     public function __construct(ObjectManager $em, $class) {

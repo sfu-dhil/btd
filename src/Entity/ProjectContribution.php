@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -39,7 +47,7 @@ class ProjectContribution extends AbstractEntity {
     private $projectRole;
 
     public function __toString() : string {
-        return implode(':', array($this->project, $this->person, $this->organization, $this->projectRole));
+        return implode(':', [$this->project, $this->person, $this->organization, $this->projectRole]);
     }
 
     /**
@@ -49,7 +57,7 @@ class ProjectContribution extends AbstractEntity {
      *
      * @return ProjectContribution
      */
-    public function setProject(Project $project = null) {
+    public function setProject(?Project $project = null) {
         $this->project = $project;
 
         return $this;
@@ -71,7 +79,7 @@ class ProjectContribution extends AbstractEntity {
      *
      * @return ProjectContribution
      */
-    public function setPerson(Person $person = null) {
+    public function setPerson(?Person $person = null) {
         $this->person = $person;
 
         return $this;
@@ -93,7 +101,7 @@ class ProjectContribution extends AbstractEntity {
      *
      * @return ProjectContribution
      */
-    public function setOrganization(Organization $organization = null) {
+    public function setOrganization(?Organization $organization = null) {
         $this->organization = $organization;
 
         return $this;
@@ -115,7 +123,7 @@ class ProjectContribution extends AbstractEntity {
      *
      * @return ProjectContribution
      */
-    public function setProjectRole(ProjectRole $projectRole = null) {
+    public function setProjectRole(?ProjectRole $projectRole = null) {
         $this->projectRole = $projectRole;
 
         return $this;

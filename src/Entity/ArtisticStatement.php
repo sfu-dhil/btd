@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +22,7 @@ use Symfony\Component\Validator\Constraints\Collection;
  * ArtisticStatement.
  *
  * @ORM\Table(name="artistic_statement", indexes={
- *  @ORM\Index(columns={"title", "excerpt", "content"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"title", "excerpt", "content"}, flags={"fulltext"}),
  * })
  * @ORM\Entity(repositoryClass="App\Repository\ArtisticStatementRepository")
  */
@@ -78,7 +86,7 @@ class ArtisticStatement extends AbstractEntity implements ContentEntityInterface
      *
      * @return ArtisticStatement
      */
-    public function setArtwork(Artwork $artwork = null) {
+    public function setArtwork(?Artwork $artwork = null) {
         $this->artwork = $artwork;
 
         return $this;
@@ -96,8 +104,6 @@ class ArtisticStatement extends AbstractEntity implements ContentEntityInterface
     /**
      * Add person.
      *
-     * @param Person $person
-     *
      * @return ArtisticStatement
      */
     public function addPerson(Person $person) {
@@ -108,10 +114,8 @@ class ArtisticStatement extends AbstractEntity implements ContentEntityInterface
 
     /**
      * Remove person.
-     *
-     * @param Person $person
      */
-    public function removePerson(Person $person) {
+    public function removePerson(Person $person) : void {
         $this->people->removeElement($person);
     }
 
