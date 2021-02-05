@@ -381,6 +381,8 @@ class Project extends AbstractEntity implements ContentEntityInterface {
     /**
      * Set parent.
      *
+     * @param ?self $parent
+     *
      * @return Project
      */
     public function setParent(?self $parent = null) {
