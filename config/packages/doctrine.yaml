@@ -1,6 +1,7 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        override_url: true
         charset: utf8mb4
         default_table_options:
             charset: utf8mb4
@@ -23,4 +24,3 @@ doctrine:
         dql:
             string_functions:
                 match: Nines\UtilBundle\Extensions\Doctrine\MySQL\MatchAgainst
-
