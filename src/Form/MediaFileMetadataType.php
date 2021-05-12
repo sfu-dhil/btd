@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -25,9 +25,7 @@ class MediaFileMetadataType extends AbstractType {
 
         foreach ($em->getRepository(Element::class)->findAll() as $element) {
             $fields = $mediaFile->getMetadataFields($element->getName());
-            $values = $fields->map(function (AbstractField $field) {
-                return $field->getValue();
-            })->toArray();
+            $values = $fields->map(fn (AbstractField $field) => $field->getValue())->toArray();
 
             $builder->add($element->getName(), CollectionType::class, [
                 'label' => $element->getLabel(),

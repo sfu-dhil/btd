@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -194,9 +194,7 @@ class MediaFile extends AbstractEntity {
         if ( ! $name) {
             return $this->metadataFields;
         }
-        $matches = $this->metadataFields->filter(function (AbstractField $field) use ($name) {
-            return $field->getElement()->getName() === $name;
-        });
+        $matches = $this->metadataFields->filter(fn (AbstractField $field) => $field->getElement()->getName() === $name);
         if ($list) {
             return $matches;
         }
