@@ -1,142 +1,54 @@
-Between the Digital
-===
-Between the Digital is an archive building project for the Ethnographic Terminalia Project.
+# Between the Digital
 
-This application was developed by the Digital Humanities Innovation Lab at 
-Simon Fraser University with considerable assistance and support from the SFU
-Library.
+[Between the Digital][btd] (affectionately known as BTD) is a PHP application written using the
+[Symfony Framework][symfony]. It is a digital tool for collecting digital art and artefacts.
 
-External libraries
-====
+## Requirements
 
-Video.js is used to play audio and video files, if the browser supports 
-the file type. 
+We have tried to keep the requirements minimal. How you install these
+requirements is up to you, but we have [provided some recommendations][setup]
 
-PDFObject.js is used to embed PDFs.
+- Apache >= 2.4
+- PHP >= 7.4
+- Composer >= 2.0
+- MariaDB >= 10.8[^1]
+- Yarn >= 1.22
 
-Requirements
-============
+## Installation
 
-imagick PHP PECL extension
-gs to read PDF files.
+1. Fork and clone the project from [GitHub][github-btd].
+2. Install the git submodules. `git submodule update --init` is a good way to do this
+3. Install composer dependencies with `composer install`.
+4. Install yarn dependencies with `yarn install`.
+5. Create a MariaDB database and user.
 
-Installation
-----
+   ```sql
+    DROP DATABASE IF EXISTS btd;
+    CREATE DATABASE btd;
+    DROP USER IF EXISTS btd@localhost;
+    CREATE USER btd@localhost IDENTIFIED BY 'abc123';
+    GRANT ALL ON btd.* TO btd@localhost;
+    ```
+6. Copy .env to .env.local and edit configuration to suite your needs.
+7. Either 1) create the schema and load fixture data, or 2) load a MySQLDump file
+   if one has been provided.
+   1. ```bash
+        php ./bin/console doctrine:schema:create --quiet
+        php ./bin/console doctrine:fixtures:load --group=dev --purger=fk_purger
+      ``` 
+    2. ```bash
+        mysql btd < btd.sql
+      ``` 
 
-The WPHP application is based on Symfony 3.2. Installation follows the normal
-process for installing a Symfony application.
+8. Visit http://localhost/btd
+9. happy coding!
 
-1. Get the code from GitHub. 
-  
-  ```bash
-  git clone https://github.com/sfu-dhil/btd.git
-  ```
+Some of the steps above are made easier with the included [MakeFiles](etc/README.md)
+which are in a git submodule. If you missed step 2 above they will be missing.
 
-1. Get the submodules from Git. There is quite a bit of reusable code in the
-application, and it's organized with git submodules.
+[btd]: https://dhil.lib.sfu.ca/btd
+[symfony]: https://symfony.com
+[github-btd]: https://github.com/sfu-dhil/btd
+[setup]: https://sfu-dhil.github.io/dhil-docs/dev/
 
-  ```bash
-  git submodule init
-  git submodule update --recursive --remote
-  ```
-
-1. Create a database and database user.
-  
-  ```sql
-  create database btd;
-  grant all on btd.* to btd@localhost;
-  set password for btd@localhost = password('hotpockets');
-  ```
-
-1. [Install composer](https://getcomposer.org/download/), if it isn't already 
-   installed somewhere.
-  
-1. Install the composer dependencies. Composer will ask for some 
-   configuration variables during installation.
-  
-  ```bash
-  ./vendor/bin/composer install --no-dev -o
-  ```
-  
-  Sometimes composer runs out of memory. If that happens, try this alternate.
-  
-  ```bash
-  php -d memory_limit=-1 ./vendor/bin/composer install --no-dev -o
-  ```
-
-1. Update file permissions. The user running the web server must 
-  be able to write to `var/cache/*` and `var/logs/*` and `var/sessions/*`. The 
-  symfony docs provide [recommended commands](http://symfony.com/doc/current/setup/file_permissions.html),
-  depending on your OS.
-  
-1. Load the schema into the database. This is done with the 
-  symfony console.
-  
-  ```bash
-  ./bin/console doctrine:schema:update --force
-  ```
-  
-1. Create an application user with full admin privileges. This is also done 
-  with the symfony console.
-  
-  ```bash
-  ./bin/console fos:user:create --super-admin  
-  ```
-  
-1. Install bower, npm, and nodejs if you haven't already. Then use bower to 
-  download and install the javascript and css dependencies.
-  
-  ```bash
-  bower install
-  ```
-
-1. Configure the web server. The application's `web/` directory must
-  be accessible to the world. Symfony 
-  provides [example configurations](http://symfony.com/doc/current/setup/web_server_configuration.html)
-  for most server setups.
-  
-At this point, the web interface should be up and running, and you should
-be able to login by following the Login link in the top right menu bar.
-
-Updates
-----
-
-Applying updates from git shouldn't be difficult.
-
-1. Get the updates from a git remote
-
-  ```bash
-  git pull
-  ```
-
-1. Update the git submodules.
-
-  ```bash
-  git submodule update --recursive --remote
-  ```
-
-1. Install any updated composer dependencies.
-
-  ```bash
-  php -d memory_limit=-1 ./vendor/bin/composer install -o
-  ```
-
-1. Apply any database schema updates
-
-  ```bash
-  ./bin/console doctrine:schema:update --force
-  ```
-  
-1. Update the web assets.
-  
-  ```bash
-  bower install
-  ```
-
-1. Clear the cache 
-
-  ```
-  ./bin/console cache:clear --env=prod
-  ```
-
-That should be it.
+[^1]: A similar version of MySQL should also work, but will not be supported.
