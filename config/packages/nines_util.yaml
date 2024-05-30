@@ -1,2 +1,4 @@
 nines_util:
     trim_length: 50
+    sender: 'donotreply@%router.request_context.host%'
+    routing: ~

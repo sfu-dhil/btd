@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Transformer;
 
 use Doctrine\Persistence\ObjectManager;
@@ -33,55 +27,21 @@ use Symfony\Component\Form\DataTransformerInterface;
  *         $builder->add('value');
  *
  *         $builder->get('work')->addModelTransformer(new HiddenEntityTransformer($this->em, Work::class));
- *
- * @author michael
  */
 class HiddenEntityTransformer implements DataTransformerInterface {
-    /**
-     * @var ObjectManager
-     */
-    private $em;
+    public function __construct(private ObjectManager $em, private string $class) {}
 
-    /**
-     * @var string
-     */
-    private $class;
-
-    /**
-     * Build and configure the transformer.
-     *
-     * @param type $class
-     */
-    public function __construct(ObjectManager $em, $class) {
-        $this->em = $em;
-        $this->class = $class;
-    }
-
-    /**
-     * Transform an entity to a string.
-     *
-     * @param null|object $entity
-     *
-     * @return string
-     */
-    public function transform($entity) {
+    public function transform(mixed $entity) : ?string {
         if (null === $entity) {
-            return;
+            return null;
         }
 
         return $entity->getId();
     }
 
-    /**
-     * Transforms  string into an entity.
-     *
-     * @param string $value
-     *
-     * @return null|object
-     */
-    public function reverseTransform($value) {
+    public function reverseTransform(mixed $value) : mixed {
         if ( ! $value) {
-            return;
+            return null;
         }
 
         return $this->em->find($this->class, $value);

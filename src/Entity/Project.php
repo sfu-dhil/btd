@@ -2,110 +2,84 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
-use DateTime;
+use App\Repository\ProjectRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Nines\UtilBundle\Entity\ContentEntityInterface;
 use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
-/**
- * Project.
- *
- * @ORM\Table(name="project", indexes={
- *     @ORM\Index(columns={"title", "content"}, flags={"fulltext"}),
- * })
- * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
- */
+#[ORM\Entity(repositoryClass: ProjectRepository::class)]
+#[ORM\Table(name: 'project')]
+#[ORM\Index(columns: ['title', 'content'], flags: ['fulltext'])]
 class Project extends AbstractEntity implements ContentEntityInterface {
     use ContentExcerptTrait;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $title;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $title = null;
 
-    /**
-     * @var DateTime
-     * @ORM\Column(type="date")
-     */
-    private $startDate;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?DateTimeInterface $startDate = null;
 
-    /**
-     * @var DateTime
-     * @ORM\Column(type="date")
-     */
-    private $endDate;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?DateTimeInterface $endDate = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $url;
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $url = null;
 
-    /**
-     * @var Project
-     * @ORM\ManyToOne(targetEntity="Project", inversedBy="children")
-     */
-    private $parent;
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    private ?Project $parent = null;
 
     /**
      * @var Collection|Project[]
-     * @ORM\OneToMany(targetEntity="Project", mappedBy="parent")
      */
-    private $children;
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    private Collection $children;
 
-    /**
-     * @var ProjectCategory
-     * @ORM\ManyToOne(targetEntity="ProjectCategory", inversedBy="projects")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $projectCategory;
+    #[ORM\ManyToOne(targetEntity: ProjectCategory::class, inversedBy: 'projects')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ProjectCategory $projectCategory = null;
 
     /**
      * @var Collection|Venue[]
-     * @ORM\ManyToMany(targetEntity="Venue", inversedBy="projects")
-     * @ORM\JoinTable(name="project_venues")
      */
-    private $venues;
+    #[ORM\ManyToMany(targetEntity: Venue::class, inversedBy: 'projects')]
+    #[ORM\JoinTable(name: 'project_venues')]
+    private Collection $venues;
 
     /**
      * @var Collection|ProjectContribution[]
-     * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="project", cascade={"persist"}, orphanRemoval=true)
      */
-    private $contributions;
+    #[ORM\OneToMany(targetEntity: ProjectContribution::class, mappedBy: 'project', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $contributions;
 
     /**
      * @var Collection|ProjectPage[]
-     * @ORM\OneToMany(targetEntity="ProjectPage", mappedBy="project")
      */
-    private $projectPages;
+    #[ORM\OneToMany(targetEntity: ProjectPage::class, mappedBy: 'project')]
+    private Collection $projectPages;
 
     /**
      * @var Collection|MediaFile[]
-     * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="projects")
-     * @ORM\JoinTable(name="project_mediafiles")
      */
-    private $mediaFiles;
+    #[ORM\ManyToMany(targetEntity: MediaFile::class, inversedBy: 'projects')]
+    #[ORM\JoinTable(name: 'project_mediafiles')]
+    private Collection $mediaFiles;
 
     /**
      * @var Artwork[]|Collection
-     * @ORM\ManyToMany(targetEntity="Artwork", inversedBy="projects")
-     * @ORM\JoinTable(name="project_artworks")
      */
-    private $artworks;
+    #[ORM\ManyToMany(targetEntity: Artwork::class, inversedBy: 'projects')]
+    #[ORM\JoinTable(name: 'project_artworks')]
+    private Collection $artworks;
 
     public function __construct() {
+        $this->projectPages = new ArrayCollection();
         parent::__construct();
         $this->venues = new ArrayCollection();
         $this->contributions = new ArrayCollection();
@@ -118,141 +92,69 @@ class Project extends AbstractEntity implements ContentEntityInterface {
         return $this->title;
     }
 
-    /**
-     * Set title.
-     *
-     * @param string $title
-     *
-     * @return Project
-     */
-    public function setTitle($title) {
+    public function setTitle(?string $title) : self {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * Get title.
-     *
-     * @return string
-     */
-    public function getTitle() {
+    public function getTitle() : ?string {
         return $this->title;
     }
 
-    /**
-     * Set url.
-     *
-     * @param string $url
-     *
-     * @return Project
-     */
-    public function setUrl($url) {
+    public function setUrl(?string $url) : self {
         $this->url = $url;
 
         return $this;
     }
 
-    /**
-     * Get url.
-     *
-     * @return string
-     */
-    public function getUrl() {
+    public function getUrl() : ?string {
         return $this->url;
     }
 
-    /**
-     * Set projectCategory.
-     *
-     * @param ProjectCategory $projectCategory
-     *
-     * @return Project
-     */
-    public function setProjectCategory(?ProjectCategory $projectCategory = null) {
+    public function setProjectCategory(?ProjectCategory $projectCategory = null) : self {
         $this->projectCategory = $projectCategory;
 
         return $this;
     }
 
-    /**
-     * Get projectCategory.
-     *
-     * @return ProjectCategory
-     */
-    public function getProjectCategory() {
+    public function getProjectCategory() : ?ProjectCategory {
         return $this->projectCategory;
     }
 
-    /**
-     * Add venue.
-     *
-     * @return Project
-     */
-    public function addVenue(Venue $venue) {
+    public function addVenue(Venue $venue) : self {
         $this->venues[] = $venue;
 
         return $this;
     }
 
-    /**
-     * Remove venue.
-     */
     public function removeVenue(Venue $venue) : void {
         $this->venues->removeElement($venue);
     }
 
-    /**
-     * Get venues.
-     *
-     * @return Collection
-     */
-    public function getVenues() {
+    public function getVenues() : Collection {
         return $this->venues;
     }
 
-    /**
-     * Add contribution.
-     *
-     * @return Project
-     */
-    public function addContribution(ProjectContribution $contribution) {
+    public function addContribution(ProjectContribution $contribution) : self {
         $this->contributions[] = $contribution;
 
         return $this;
     }
 
-    /**
-     * Remove contribution.
-     */
     public function removeContribution(ProjectContribution $contribution) : void {
         $this->contributions->removeElement($contribution);
     }
 
-    /**
-     * Get contributions.
-     *
-     * @return Collection
-     */
-    public function getContributions() {
+    public function getContributions() : Collection {
         return $this->contributions;
     }
 
-    /**
-     * Check if a media file is associated with this project.
-     *
-     * @return bool
-     */
-    public function hasMediaFile(MediaFile $mediaFile) {
+    public function hasMediaFile(MediaFile $mediaFile) : bool {
         return $this->mediaFiles->contains($mediaFile);
     }
 
-    /**
-     * Add mediaFile.
-     *
-     * @return Project
-     */
-    public function addMediaFile(MediaFile $mediaFile) {
+    public function addMediaFile(MediaFile $mediaFile) : self {
         if ( ! $this->mediaFiles->contains($mediaFile)) {
             $this->mediaFiles[] = $mediaFile;
         }
@@ -260,99 +162,49 @@ class Project extends AbstractEntity implements ContentEntityInterface {
         return $this;
     }
 
-    /**
-     * Remove mediaFile.
-     */
     public function removeMediaFile(MediaFile $mediaFile) : void {
         $this->mediaFiles->removeElement($mediaFile);
     }
 
-    /**
-     * Get mediaFiles.
-     *
-     * @return Collection
-     */
-    public function getMediaFiles() {
+    public function getMediaFiles() : Collection {
         return $this->mediaFiles;
     }
 
-    /**
-     * Set startDate.
-     *
-     * @param DateTime $startDate
-     *
-     * @return Project
-     */
-    public function setStartDate($startDate) {
+    public function setStartDate(?DateTimeInterface $startDate) : self {
         $this->startDate = $startDate;
 
         return $this;
     }
 
-    /**
-     * Get startDate.
-     *
-     * @return DateTime
-     */
-    public function getStartDate() {
+    public function getStartDate() : ?DateTimeInterface {
         return $this->startDate;
     }
 
-    /**
-     * Set endDate.
-     *
-     * @param DateTime $endDate
-     *
-     * @return Project
-     */
-    public function setEndDate($endDate) {
+    public function setEndDate(?DateTimeInterface $endDate) : self {
         $this->endDate = $endDate;
 
         return $this;
     }
 
-    /**
-     * Get endDate.
-     *
-     * @return DateTime
-     */
-    public function getEndDate() {
+    public function getEndDate() : ?DateTimeInterface {
         return $this->endDate;
     }
 
-    /**
-     * Add projectPage.
-     *
-     * @return Project
-     */
-    public function addProjectPage(ProjectPage $projectPage) {
+    public function addProjectPage(ProjectPage $projectPage) : self {
         $this->projectPages[] = $projectPage;
 
         return $this;
     }
 
-    /**
-     * Remove projectPage.
-     */
     public function removeProjectPage(ProjectPage $projectPage) : void {
         $this->projectPages->removeElement($projectPage);
     }
 
-    /**
-     * Get projectPages.
-     *
-     * @return Collection
-     */
-    public function getProjectPages() {
+    public function getProjectPages() : Collection {
         return $this->projectPages;
     }
 
-    /**
-     * Add artwork.
-     *
-     * @return Project
-     */
-    public function addArtwork(Artwork $artwork) {
+    public function addArtwork(Artwork $artwork) : self {
         $this->artworks[] = $artwork;
 
         return $this;
@@ -362,70 +214,35 @@ class Project extends AbstractEntity implements ContentEntityInterface {
         return $this->artworks->contains($artwork);
     }
 
-    /**
-     * Remove artwork.
-     */
     public function removeArtwork(Artwork $artwork) : void {
         $this->artworks->removeElement($artwork);
     }
 
-    /**
-     * Get artworks.
-     *
-     * @return Collection
-     */
-    public function getArtworks() {
+    public function getArtworks() : Collection {
         return $this->artworks;
     }
 
-    /**
-     * Set parent.
-     *
-     * @param ?self $parent
-     *
-     * @return Project
-     */
-    public function setParent(?self $parent = null) {
+    public function setParent(?self $parent = null) : self {
         $this->parent = $parent;
 
         return $this;
     }
 
-    /**
-     * Get parent.
-     *
-     * @return null|Project
-     */
-    public function getParent() {
+    public function getParent() : ?self {
         return $this->parent;
     }
 
-    /**
-     * Add child.
-     *
-     * @return Project
-     */
-    public function addChild(self $child) {
+    public function addChild(self $child) : self {
         $this->children[] = $child;
 
         return $this;
     }
 
-    /**
-     * Remove child.
-     *
-     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeChild(self $child) {
+    public function removeChild(self $child) : bool {
         return $this->children->removeElement($child);
     }
 
-    /**
-     * Get children.
-     *
-     * @return Collection
-     */
-    public function getChildren() {
+    public function getChildren() : Collection {
         return $this->children;
     }
 }

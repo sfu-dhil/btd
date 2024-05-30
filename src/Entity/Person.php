@@ -2,83 +2,62 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\PersonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * Person.
- *
- * @ORM\Table(name="person", indexes={
- *     @ORM\Index(columns={"fullname", "biography"}, flags={"fulltext"}),
- * })
- * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
- */
+#[ORM\Entity(repositoryClass: PersonRepository::class)]
+#[ORM\Table(name: 'person')]
+#[ORM\Index(columns: ['fullname', 'biography'], flags: ['fulltext'])]
 class Person extends AbstractEntity {
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $fullname;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $fullname = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $sortableName;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $sortableName = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $biography;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $biography = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="array")
-     */
-    private $urls;
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $urls = [];
 
     /**
      * @var ArtworkContribution[]|Collection
-     * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="person", cascade={"persist"}, orphanRemoval=true)
      */
-    private $artworkContributions;
+    #[ORM\OneToMany(targetEntity: ArtworkContribution::class, mappedBy: 'person', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $artworkContributions;
 
     /**
      * @var ArtisticStatement[]|Collection
-     * @ORM\ManyToMany(targetEntity="ArtisticStatement", mappedBy="people")
      */
-    private $artisticStatements;
+    #[ORM\ManyToMany(targetEntity: ArtisticStatement::class, mappedBy: 'people')]
+    private Collection $artisticStatements;
 
     /**
      * @var Collection|ProjectContribution[]
-     * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="person", cascade={"persist"}, orphanRemoval=true)
      */
-    private $projectContributions;
+    #[ORM\OneToMany(targetEntity: ProjectContribution::class, mappedBy: 'person', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $projectContributions;
 
     /**
      * @var Collection|MediaFile[]
-     * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="people")
-     * @ORM\JoinTable(name="person_mediafiles")
      */
-    private $mediaFiles;
+    #[ORM\ManyToMany(targetEntity: MediaFile::class, inversedBy: 'people')]
+    #[ORM\JoinTable(name: 'person_mediafiles')]
+    private Collection $mediaFiles;
 
     public function __construct() {
+        $this->mediaFiles = new ArrayCollection();
         parent::__construct();
         $this->artworkContributions = new ArrayCollection();
         $this->projectContributions = new ArrayCollection();
         $this->artisticStatements = new ArrayCollection();
-        $this->affiliations = new ArrayCollection();
         $this->urls = [];
     }
 
@@ -86,178 +65,85 @@ class Person extends AbstractEntity {
         return $this->fullname;
     }
 
-    /**
-     * Set fullname.
-     *
-     * @param string $fullname
-     *
-     * @return Person
-     */
-    public function setFullname($fullname) {
+    public function setFullname(?string $fullname) : self {
         $this->fullname = $fullname;
 
         return $this;
     }
 
-    /**
-     * Get fullname.
-     *
-     * @return string
-     */
-    public function getFullname() {
+    public function getFullname() : ?string {
         return $this->fullname;
     }
 
-    /**
-     * Set sortableName.
-     *
-     * @param string $sortableName
-     *
-     * @return Person
-     */
-    public function setSortableName($sortableName) {
+    public function setSortableName(?string $sortableName) : self {
         $this->sortableName = $sortableName;
 
         return $this;
     }
 
-    /**
-     * Get sortableName.
-     *
-     * @return string
-     */
-    public function getSortableName() {
+    public function getSortableName() : ?string {
         return $this->sortableName;
     }
 
-    /**
-     * Set biography.
-     *
-     * @param string $biography
-     *
-     * @return Person
-     */
-    public function setBiography($biography) {
+    public function setBiography(?string $biography) : self {
         $this->biography = $biography;
 
         return $this;
     }
 
-    /**
-     * Get biography.
-     *
-     * @return string
-     */
-    public function getBiography() {
+    public function getBiography() : ?string {
         return $this->biography;
     }
 
-    /**
-     * Add artworkContribution.
-     *
-     * @return Person
-     */
-    public function addArtworkContribution(ArtworkContribution $artworkContribution) {
+    public function addArtworkContribution(ArtworkContribution $artworkContribution) : self {
         $this->artworkContributions[] = $artworkContribution;
 
         return $this;
     }
 
-    /**
-     * Remove artworkContribution.
-     */
     public function removeArtworkContribution(ArtworkContribution $artworkContribution) : void {
         $this->artworkContributions->removeElement($artworkContribution);
     }
 
-    /**
-     * Get artworkContributions.
-     *
-     * @return Collection
-     */
-    public function getArtworkContributions() {
+    public function getArtworkContributions() : Collection {
         return $this->artworkContributions;
     }
 
-    /**
-     * Add projectContribution.
-     *
-     * @return Person
-     */
-    public function addProjectContribution(ProjectContribution $projectContribution) {
+    public function addProjectContribution(ProjectContribution $projectContribution) : self {
         $this->projectContributions[] = $projectContribution;
 
         return $this;
     }
 
-    /**
-     * Remove projectContribution.
-     */
     public function removeProjectContribution(ProjectContribution $projectContribution) : void {
         $this->projectContributions->removeElement($projectContribution);
     }
 
-    /**
-     * Get projectContributions.
-     *
-     * @return Collection
-     */
-    public function getProjectContributions() {
+    public function getProjectContributions() : Collection {
         return $this->projectContributions;
     }
 
-    /**
-     * Get the first URL. There may be more.
-     *
-     * @return null|string
-     */
-    public function getUrl() {
+    public function getUrl() : ?string {
         if (count($this->urls) > 0) {
             return $this->urls[0];
         }
     }
 
-    /**
-     * Set urls.
-     *
-     * @param array $urls
-     *
-     * @return Person
-     */
-    public function setUrls($urls) {
+    public function setUrls(array $urls) : self {
         $this->urls = $urls;
 
         return $this;
     }
 
-    /**
-     * Get urls.
-     *
-     * @return array
-     */
-    public function getUrls() {
+    public function getUrls() : array {
         return $this->urls;
     }
 
-    /**
-     * Check if a media file is associated with this person.
-     *
-     * @param \App\Entity\MediaFile $mediaFile
-     *
-     * @return bool
-     */
-    public function hasMediaFile(MediaFile $mediaFile) {
+    public function hasMediaFile(MediaFile $mediaFile) : bool {
         return $this->mediaFiles->contains($mediaFile);
     }
 
-    /**
-     * Add mediaFile.
-     *
-     * @param \App\Entity\MediaFile $mediaFile
-     *
-     * @return Person
-     */
-    public function addMediaFile(MediaFile $mediaFile) {
+    public function addMediaFile(MediaFile $mediaFile) : self {
         if ( ! $this->mediaFiles->contains($mediaFile)) {
             $this->mediaFiles[] = $mediaFile;
         }
@@ -265,59 +151,15 @@ class Person extends AbstractEntity {
         return $this;
     }
 
-    /**
-     * Remove mediaFile.
-     *
-     * @param \App\Entity\MediaFile $mediaFile
-     */
     public function removeMediaFile(MediaFile $mediaFile) : void {
         $this->mediaFiles->removeElement($mediaFile);
     }
 
-    /**
-     * Get mediaFiles.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getMediaFiles() {
+    public function getMediaFiles() : Collection {
         return $this->mediaFiles;
     }
 
-    /**
-     * Add affiliation.
-     *
-     * @return Person
-     */
-    public function addAffiliation(Organization $affiliation) {
-        $this->affiliations[] = $affiliation;
-
-        return $this;
-    }
-
-    /**
-     * Remove affiliation.
-     */
-    public function removeAffiliation(Organization $affiliation) : void {
-        $this->affiliations->removeElement($affiliation);
-    }
-
-    /**
-     * Get affiliations.
-     *
-     * @return Collection
-     */
-    public function getAffiliations() {
-        return $this->affiliations;
-    }
-
-    /**
-     * Add artisticStatement.
-     *
-     * @param \App\Entity\ArtisticStatement $artisticStatement
-     *
-     * @return Person
-     */
-    public function addArtisticStatement(ArtisticStatement $artisticStatement) {
+    public function addArtisticStatement(ArtisticStatement $artisticStatement) : self {
         $this->artisticStatements[] = $artisticStatement;
 
         return $this;
@@ -325,19 +167,12 @@ class Person extends AbstractEntity {
 
     /**
      * Remove artisticStatement.
-     *
-     * @param \App\Entity\ArtisticStatement $artisticStatement
      */
     public function removeArtisticStatement(ArtisticStatement $artisticStatement) : void {
         $this->artisticStatements->removeElement($artisticStatement);
     }
 
-    /**
-     * Get artisticStatements.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getArtisticStatements() {
+    public function getArtisticStatements() : Collection {
         return $this->artisticStatements;
     }
 }

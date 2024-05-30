@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\Organization;
@@ -21,29 +15,27 @@ use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Organization controller.
- *
- * @Route("/organization")
  */
+#[Route(path: '/organization')]
 class OrganizationController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
      * Lists all Organization entities.
-     *
-     * @Route("/", name="organization_index", methods={"GET"})
-     *
-     * @Template
      */
-    public function indexAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/', name: 'organization_index', methods: ['GET'])]
+    #[Template]
+    public function index(Request $request, EntityManagerInterface $em) : array {
         $dql = 'SELECT e FROM App:Organization e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $organizations = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $organizations = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
 
         return [
             'organizations' => $organizations,
@@ -52,14 +44,10 @@ class OrganizationController extends AbstractController implements PaginatorAwar
 
     /**
      * Full text search for Organization entities.
-     *
-     * @Route("/search", name="organization_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
      */
-    public function searchAction(Request $request, EntityManagerInterface $em, OrganizationRepository $repo) {
+    #[Route(path: '/search', name: 'organization_search', methods: ['GET'])]
+    #[Template]
+    public function search(Request $request, EntityManagerInterface $em, OrganizationRepository $repo) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $repo->fulltextQuery($q);
@@ -77,13 +65,11 @@ class OrganizationController extends AbstractController implements PaginatorAwar
 
     /**
      * Creates a new Organization entity.
-     *
-     * @Route("/new", name="organization_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function newAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/new', name: 'organization_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function new(Request $request, EntityManagerInterface $em) : array|RedirectResponse {
         $organization = new Organization();
         $form = $this->createForm(OrganizationType::class, $organization);
         $form->handleRequest($request);
@@ -105,12 +91,10 @@ class OrganizationController extends AbstractController implements PaginatorAwar
 
     /**
      * Finds and displays a Organization entity.
-     *
-     * @Route("/{id}", name="organization_show", methods={"GET"})
-     *
-     * @Template
      */
-    public function showAction(Organization $organization) {
+    #[Route(path: '/{id}', name: 'organization_show', methods: ['GET'])]
+    #[Template]
+    public function show(Organization $organization) : ?array {
         return [
             'organization' => $organization,
         ];
@@ -118,13 +102,11 @@ class OrganizationController extends AbstractController implements PaginatorAwar
 
     /**
      * Displays a form to edit an existing Organization entity.
-     *
-     * @Route("/{id}/edit", name="organization_edit", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function editAction(Request $request, Organization $organization, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/edit', name: 'organization_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function edit(Request $request, Organization $organization, EntityManagerInterface $em) : array|RedirectResponse {
         $editForm = $this->createForm(OrganizationType::class, $organization);
         $editForm->handleRequest($request);
 
@@ -143,11 +125,10 @@ class OrganizationController extends AbstractController implements PaginatorAwar
 
     /**
      * Deletes a Organization entity.
-     *
-     * @Route("/{id}/delete", name="organization_delete", methods={"GET"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
      */
-    public function deleteAction(Request $request, Organization $organization, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/delete', name: 'organization_delete', methods: ['GET'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function delete(Organization $organization, EntityManagerInterface $em) : RedirectResponse {
         $em->remove($organization);
         $em->flush();
         $this->addFlash('success', 'The organization was deleted.');
@@ -155,13 +136,10 @@ class OrganizationController extends AbstractController implements PaginatorAwar
         return $this->redirectToRoute('organization_index');
     }
 
-    /**
-     * @Route("/{id}/project_contributions", name="organization_project_contributions", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
-     */
-    public function projectContributionsAction(Request $request, Organization $organization, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/project_contributions', name: 'organization_project_contributions', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function projectContributions(Request $request, Organization $organization, EntityManagerInterface $em) : array|RedirectResponse {
         $form = $this->createForm(ProjectContributionsType::class, $organization, [
             'organization' => $organization,
         ]);
@@ -180,13 +158,10 @@ class OrganizationController extends AbstractController implements PaginatorAwar
         ];
     }
 
-    /**
-     * @Route("/{id}/artwork_contributions", name="organization_artwork_contributions", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
-     */
-    public function artworkContributionsAction(Request $request, Organization $organization, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/artwork_contributions', name: 'organization_artwork_contributions', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function artworkContributions(Request $request, Organization $organization, EntityManagerInterface $em) : array|RedirectResponse {
         $form = $this->createForm(ArtworkContributionsType::class, $organization, [
             'organization' => $organization,
         ]);

@@ -1,26 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>Venue List</h1>
     <p class="count">
         Displaying {{ venues|length }} venues of {{ venues.getTotalItemCount }} total.
     </p>
-{% endblock %} 
+{% endblock %}
+
+{% block action_buttons %}
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('venue_new') }}" class="btn btn-light">
+            <span class="bi bi-plus-lg"></span> New
+        </a>
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('venue_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New
-                </a>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class='clearfix'></div>
-
     {% for venue in venues %}
         <h2>
             <a href="{{ path('venue_show', { 'id': venue.id }) }}">
@@ -28,7 +23,7 @@
             </a>
         </h2>
         <p>{{ text_service.trim(venue.description, 100) }}</p>
-        <p class='text-right'>
+        <p class='text-end'>
             Created {{ venue.created|date }}. Most recently updated {{ venue.updated|date }}
         </p>
     {% endfor %}

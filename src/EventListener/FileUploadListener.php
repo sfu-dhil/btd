@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\EventListener;
 
 use App\Entity\MediaFile;
@@ -19,26 +13,11 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploadListener {
-    /**
-     * @var FileUploader
-     */
-    private $uploader;
-
-    /**
-     * @var Thumbnailer
-     */
-    private $thumbnailer;
-
-    /**
-     * @var string
-     */
-    private $missingFile;
-
-    public function __construct(FileUploader $uploader, Thumbnailer $thumbnailer, $missingFile) {
-        $this->uploader = $uploader;
-        $this->thumbnailer = $thumbnailer;
-        $this->missingFile = $missingFile;
-    }
+    public function __construct(
+        private FileUploader $uploader,
+        private Thumbnailer $thumbnailer,
+        private string $missingFile
+    ) {}
 
     private function uploadFile($entity) : void {
         if ( ! $entity instanceof MediaFile) {

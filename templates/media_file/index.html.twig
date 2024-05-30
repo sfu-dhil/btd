@@ -1,28 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>MediaFile List</h1>
     <p class="count">
         Displaying {{ mediaFiles|length }} mediaFiles of {{ mediaFiles.getTotalItemCount }} total.
     </p>
-{% endblock %} 
+{% endblock %}
+
+{% block action_buttons %}
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('media_file_new') }}" class="btn btn-light">
+            <span class="bi bi-plus-lg"></span> New
+        </a>
+    {% endif %}
+    <a href="{{ path('media_file_search') }}" class="btn btn-light">
+        <span class="bi bi-search"></span> Search
+    </a>
+{% endblock %}
 
 {% block body %}
-
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('media_file_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New
-                </a>
-            {% endif %}
-            <a href="{{ path('media_file_search') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search
-            </a>
-        </div>
-    </div>
-    <div class='clearfix'></div>
-
     {% for mediaFile in mediaFiles %}
         <div class='row'>
             <div class='col-sm-4'>
@@ -34,19 +30,19 @@
                 <a href="{{ path('media_file_show', {'id': mediaFile.id}) }}">
                     {{ mediaFile.getMetadataFields('dc_title', false) }}
                 </a>
-                <dl class="dl-horizontal">
-                    <dt>Id</dt>
-                    <dd>{{ mediaFile.id }}</dd>
-                    <dt>Media Category</dt>
-                    <dd>{{ mediaFile.mediaFileCategory }}</dd>
-                    <dt>File category</dt>
-                    <dd>{{ mediaFile.mimetype }}</dd>
-                    <dt>Original name</dt>
-                    <dd>{{ mediaFile.originalName }}</dd>
-                    <dt>Uploaded</dt>
-                    <dd>{{ mediaFile.updated|date }}</dd>
-                    <dt>URL</dt>
-                    <dd>
+                <dl class="row">
+                    <dt class="col-sm-3 text-end">Id</dt>
+                    <dd class="col-sm-9">{{ mediaFile.id }}</dd>
+                    <dt class="col-sm-3 text-end">Media Category</dt>
+                    <dd class="col-sm-9">{{ mediaFile.mediaFileCategory }}</dd>
+                    <dt class="col-sm-3 text-end">File category</dt>
+                    <dd class="col-sm-9">{{ mediaFile.mimetype }}</dd>
+                    <dt class="col-sm-3 text-end">Original name</dt>
+                    <dd class="col-sm-9">{{ mediaFile.originalName }}</dd>
+                    <dt class="col-sm-3 text-end">Uploaded</dt>
+                    <dd class="col-sm-9">{{ mediaFile.updated|date }}</dd>
+                    <dt class="col-sm-3 text-end">URL</dt>
+                    <dd class="col-sm-9">
                         <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
                             {{ url('media_file_raw', {'id': mediaFile.id}) }}
                         </a>

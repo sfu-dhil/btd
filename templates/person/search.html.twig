@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>Person List</h1>
     {% if people|length > 0 %}
         <p class="count">
             Displaying {{ people|length }} people of {{ people.getTotalItemCount }} total.
         </p>
     {% endif %}
-{% endblock %} 
+{% endblock %}
 
 {% block body %}
 
@@ -21,7 +21,7 @@
                         <input type='text' name='q' id='q' class='form-control' value='{{ q }}'>
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit">
-                                <span class='glyphicon glyphicon-search'></span>
+                                <span class='bi bi-search'></span>
                                 Search
                             </button>
                         </span>
@@ -41,9 +41,9 @@
                     </a>
                 </h2>
                 <p>
-                    {{ text_service.trim(person.biography, 100) }}            
+                    {{ text_service.trim(person.biography, 100) }}
                 </p>
-                <p class='text-right'>
+                <p class='text-end'>
                     Created {{ person.created|date }}. Most recently updated {{ person.updated|date }}
                 </p>
             </div>

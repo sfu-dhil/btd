@@ -1,26 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>{{ project }} Pages</h1>
     <p class="count">
         Displaying {{ projectPages|length }} pages of {{ projectPages.getTotalItemCount }} total.
     </p>
-{% endblock %} 
+{% endblock %}
+
+{% block action_buttons %}
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('project_page_new', {'projectId': project.id}) }}" class="btn btn-light">
+            <span class="bi bi-plus-lg"></span> New
+        </a>
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-
-    {% if is_granted('ROLE_CONTENT_ADMIN') %}
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <a href="{{ path('project_page_new', {'projectId': project.id}) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New
-                </a>
-            </div>
-        </div>
-    {% endif %}
-
-    <div class="clearfix"></div>
-
     {% for projectPage in projectPages %}
         <h2>
             <a href="{{ path('project_page_show', { 'projectId': project.id, 'id': projectPage.id }) }}">
@@ -28,7 +23,7 @@
             </a>
         </h2>
         {{ projectPage.excerpt|raw }}
-        <div class="text-right">
+        <div class="text-end">
             Created {{ projectPage.created|date('Y-m-d H:i:s') }}. Most recent update {{ projectPage.updated|date }}.
         </div>
     {% endfor %}

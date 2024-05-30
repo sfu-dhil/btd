@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\MediaFile;
@@ -26,30 +20,28 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * MediaFile controller.
- *
- * @Route("/media_file")
  */
+#[Route(path: '/media_file')]
 class MediaFileController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
      * Lists all MediaFile entities.
-     *
-     * @Route("/", name="media_file_index", methods={"GET"})
-     *
-     * @Template
      */
-    public function indexAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/', name: 'media_file_index', methods: ['GET'])]
+    #[Template]
+    public function index(Request $request, EntityManagerInterface $em) : array {
         $dql = 'SELECT e FROM App:MediaFile e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $mediaFiles = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $mediaFiles = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
 
         return [
             'mediaFiles' => $mediaFiles,
@@ -63,12 +55,10 @@ class MediaFileController extends AbstractController implements PaginatorAwareIn
      * App:MediaFile repository. Replace the fieldName with
      * something appropriate, and adjust the generated search.html.twig
      * template.
-     *
-     * @Route("/search", name="media_file_search", methods={"GET"})
-     *
-     * @Template
      */
-    public function searchAction(Request $request, MediaFileRepository $repo) {
+    #[Route(path: '/search', name: 'media_file_search', methods: ['GET'])]
+    #[Template]
+    public function search(Request $request, MediaFileRepository $repo) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $repo->searchQuery($q);
@@ -86,14 +76,10 @@ class MediaFileController extends AbstractController implements PaginatorAwareIn
 
     /**
      * Full text search for MediaFile entities.
-     *
-     * @Route("/fulltext", name="media_file_fulltext", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
      */
-    public function fulltextAction(Request $request, MediaFileRepository $repo) {
+    #[Route(path: '/fulltext', name: 'media_file_fulltext', methods: ['GET'])]
+    #[Template]
+    public function fulltext(Request $request, MediaFileRepository $repo) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $repo->fulltextQuery($q);
@@ -111,13 +97,11 @@ class MediaFileController extends AbstractController implements PaginatorAwareIn
 
     /**
      * Creates a new MediaFile entity.
-     *
-     * @Route("/new", name="media_file_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function newAction(Request $request, EntityManagerInterface $em, ElementRepository $repo) {
+    #[Route(path: '/new', name: 'media_file_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function new(Request $request, EntityManagerInterface $em, ElementRepository $repo) : array|RedirectResponse {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
 
@@ -153,12 +137,10 @@ class MediaFileController extends AbstractController implements PaginatorAwareIn
 
     /**
      * Finds and displays a MediaFile entity.
-     *
-     * @Route("/{id}", name="media_file_show", methods={"GET"})
-     *
-     * @Template
      */
-    public function showAction(MediaFile $mediaFile, ElementRepository $repo) {
+    #[Route(path: '/{id}', name: 'media_file_show', methods: ['GET'])]
+    #[Template]
+    public function show(MediaFile $mediaFile, ElementRepository $repo) : array {
         return [
             'elements' => $repo->findAll(),
             'mediaFile' => $mediaFile,
@@ -167,36 +149,32 @@ class MediaFileController extends AbstractController implements PaginatorAwareIn
 
     /**
      * Finds and displays a media file.
-     *
-     * @Route("/{id}/view", name="media_file_raw", methods={"GET"})
      */
-    public function mediaAction(MediaFile $mediaFile) {
+    #[Route(path: '/{id}/view', name: 'media_file_raw', methods: ['GET'])]
+    public function media(MediaFile $mediaFile) : BinaryFileResponse {
         return new BinaryFileResponse($mediaFile->getFile());
     }
 
     /**
      * Finds and displays a media file.
-     *
-     * @Route("/{id}/tn", name="media_file_tn", methods={"GET"})
      */
-    public function thumbnailAction(MediaFile $mediaFile) {
+    #[Route(path: '/{id}/tn', name: 'media_file_tn', methods: ['GET'])]
+    public function thumbnail(MediaFile $mediaFile) : BinaryFileResponse {
         $tn = $mediaFile->getThumbnail();
-        if ($tn) {
-            return new BinaryFileResponse($tn);
+        if ( ! $tn) {
+            throw new NotFoundHttpException('Cannot find thumbnail.');
         }
 
-        throw new NotFoundHttpException('Cannot find thumbnail.');
+        return new BinaryFileResponse($tn);
     }
 
     /**
      * Displays a form to edit an existing MediaFile entity.
-     *
-     * @Route("/{id}/edit", name="media_file_edit", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function editAction(Request $request, MediaFile $mediaFile, FileUploader $uploader, EntityManagerInterface $em, ElementRepository $repo) {
+    #[Route(path: '/{id}/edit', name: 'media_file_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function edit(Request $request, MediaFile $mediaFile, FileUploader $uploader, EntityManagerInterface $em, ElementRepository $repo) : array|RedirectResponse {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
 
@@ -218,7 +196,7 @@ class MediaFileController extends AbstractController implements PaginatorAwareIn
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            if (($upload = $editForm->get('newFile')->getData())) {
+            if ($upload = $editForm->get('newFile')->getData()) {
                 $mediaFile->setFile($upload);
                 $mediaFile->setOriginalName($mediaFile->getFile()->getClientOriginalName());
                 $mediaFile->preUpdate();
@@ -243,11 +221,10 @@ class MediaFileController extends AbstractController implements PaginatorAwareIn
 
     /**
      * Deletes a MediaFile entity.
-     *
-     * @Route("/{id}/delete", name="media_file_delete", methods={"GET"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
      */
-    public function deleteAction(Request $request, MediaFile $mediaFile, FileUploader $uploader, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/delete', name: 'media_file_delete', methods: ['GET'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function delete(MediaFile $mediaFile, FileUploader $uploader, EntityManagerInterface $em) : RedirectResponse {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
 
@@ -272,13 +249,11 @@ class MediaFileController extends AbstractController implements PaginatorAwareIn
 
     /**
      * Edit metadata for a media file.
-     *
-     * @Route("/{id}/metadata", name="media_file_metadata", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function metadataAction(Request $request, MediaFile $mediaFile, EntityManagerInterface $em, ElementRepository $repo) {
+    #[Route(path: '/{id}/metadata', name: 'media_file_metadata', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function metadata(Request $request, MediaFile $mediaFile, EntityManagerInterface $em, ElementRepository $repo) : array|RedirectResponse {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
 

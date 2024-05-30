@@ -1,4 +1,4 @@
-<script src="{{ asset('bower/pdfobject/pdfobject.min.js') }}"></script>
+<script src="{{ asset_prefix|default('') ~ asset('node_modules/pdfobject/pdfobject.min.js') }}"></script>
 
 <script defer="defer">
     document.addEventListener("DOMContentLoaded", function (event) {
@@ -11,4 +11,4 @@
     });
 </script>
 
-<div id="pdfView"></div>        
+<div id="pdfView"></div>

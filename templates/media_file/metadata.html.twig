@@ -13,19 +13,19 @@
             <a href="{{ path('media_file_show', {'id': mediaFile.id}) }}">
                 {{ mediaFile.getMetadataFields('dc_title', false) }}
             </a>
-            <dl class="dl-horizontal">
-                <dt>Id</dt>
-                <dd>{{ mediaFile.id }}</dd>
-                <dt>Media Category</dt>
-                <dd>{{ mediaFile.mediaFileCategory }}</dd>
-                <dt>File category</dt>
-                <dd>{{ mediaFile.mimetype }}</dd>
-                <dt>Original name</dt>
-                <dd>{{ mediaFile.originalName }}</dd>
-                <dt>Uploaded</dt>
-                <dd>{{ mediaFile.updated|date }}</dd>
-                <dt>URL</dt>
-                <dd>
+            <dl class="row">
+                <dt class="col-sm-3 text-end">Id</dt>
+                <dd class="col-sm-9">{{ mediaFile.id }}</dd>
+                <dt class="col-sm-3 text-end">Media Category</dt>
+                <dd class="col-sm-9">{{ mediaFile.mediaFileCategory }}</dd>
+                <dt class="col-sm-3 text-end">File category</dt>
+                <dd class="col-sm-9">{{ mediaFile.mimetype }}</dd>
+                <dt class="col-sm-3 text-end">Original name</dt>
+                <dd class="col-sm-9">{{ mediaFile.originalName }}</dd>
+                <dt class="col-sm-3 text-end">Uploaded</dt>
+                <dd class="col-sm-9">{{ mediaFile.updated|date }}</dd>
+                <dt class="col-sm-3 text-end">URL</dt>
+                <dd class="col-sm-9">
                     <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
                         {{ url('media_file_raw', {'id': mediaFile.id}) }}
                     </a>
@@ -36,23 +36,9 @@
 
     {{ form_start(edit_form) }}
     {{ form_widget(edit_form) }}
-    <div class="form-group">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">
-            <input type="submit" value="Update" class="btn btn-primary" />
-            <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}" class="btn btn-warning">Cancel</a>
-        </div>
+    <div class="text-center">
+        <input type="submit" value="Update" class="btn btn-primary" />
+        <a href="{{ path('media_file_show', { 'id': mediaFile.id }) }}" class="btn btn-warning">Cancel</a>
     </div>
     {{ form_end(edit_form) }}
-{% endblock %}
-
-{% block styles %}
-    <link href="{{ asset('bower/select2/dist/css/select2.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('bower/select2-bootstrap-css/select2-bootstrap.min.css') }}" rel="stylesheet">
-{% endblock %}
-
-{% block javascripts %}
-    <script src="{{ asset('bower/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
-    <script src="{{ asset('bower/symfony-collection/jquery.collection.js') }}"></script>
 {% endblock %}

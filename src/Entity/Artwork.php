@@ -2,80 +2,59 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\ArtworkRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Nines\UtilBundle\Entity\ContentEntityInterface;
 use Nines\UtilBundle\Entity\ContentExcerptTrait;
 
-/**
- * Artwork.
- *
- * @ORM\Table(name="artwork", indexes={
- *     @ORM\Index(columns={"title", "content", "materials", "copyright"}, flags={"fulltext"}),
- * })
- * @ORM\Entity(repositoryClass="App\Repository\ArtworkRepository")
- */
+#[ORM\Entity(repositoryClass: ArtworkRepository::class)]
+#[ORM\Table(name: 'artwork')]
+#[ORM\Index(columns: ['title', 'content', 'materials', 'copyright'], flags: ['fulltext'])]
 class Artwork extends AbstractEntity implements ContentEntityInterface {
     use ContentExcerptTrait;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $title;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $title = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $materials;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $materials = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $copyright;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $copyright = null;
 
-    /**
-     * @var ArtworkCategory
-     * @ORM\ManyToOne(targetEntity="ArtworkCategory", inversedBy="artworks")
-     */
-    private $artworkCategory;
+    #[ORM\ManyToOne(targetEntity: ArtworkCategory::class, inversedBy: 'artworks')]
+    private ?ArtworkCategory $artworkCategory = null;
 
     /**
      * @var ArtworkContribution[]|Collection
-     * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="artwork", cascade={"persist"}, orphanRemoval=true)
      */
-    private $contributions;
+    #[ORM\OneToMany(targetEntity: ArtworkContribution::class, mappedBy: 'artwork', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $contributions;
 
     /**
      * @var ArtisticStatement[]|Collection
-     * @ORM\OneToMany(targetEntity="ArtisticStatement", mappedBy="artwork")
      */
-    private $artisticStatements;
+    #[ORM\OneToMany(targetEntity: ArtisticStatement::class, mappedBy: 'artwork')]
+    private Collection $artisticStatements;
 
     /**
      * @var Collection|MediaFile[]
-     * @ORM\ManyToMany(targetEntity="MediaFile", inversedBy="artworks")
-     * @ORM\JoinTable(name="artwork_mediafiles")
      */
-    private $mediaFiles;
+    #[ORM\ManyToMany(targetEntity: MediaFile::class, inversedBy: 'artworks')]
+    #[ORM\JoinTable(name: 'artwork_mediafiles')]
+    private Collection $mediaFiles;
 
     /**
      * @var Collection|Project[]
-     * @ORM\ManyToMany(targetEntity="Project", mappedBy="artworks")
      */
-    private $projects;
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'artworks')]
+    private Collection $projects;
 
     public function __construct() {
         parent::__construct();
@@ -89,96 +68,47 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
         return $this->title;
     }
 
-    /**
-     * Set title.
-     *
-     * @param string $title
-     *
-     * @return Artwork
-     */
-    public function setTitle($title) {
+    public function setTitle(?string $title) : self {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * Get title.
-     *
-     * @return string
-     */
-    public function getTitle() {
+    public function getTitle() : ?string {
         return $this->title;
     }
 
-    /**
-     * Set materials.
-     *
-     * @param string $materials
-     *
-     * @return Artwork
-     */
-    public function setMaterials($materials) {
+    public function setMaterials(?string $materials) : self {
         $this->materials = $materials;
 
         return $this;
     }
 
-    /**
-     * Get materials.
-     *
-     * @return string
-     */
-    public function getMaterials() {
+    public function getMaterials() : ?string {
         return $this->materials;
     }
 
-    /**
-     * Set copyright.
-     *
-     * @param string $copyright
-     *
-     * @return Artwork
-     */
-    public function setCopyright($copyright) {
+    public function setCopyright(?string $copyright) : self {
         $this->copyright = $copyright;
 
         return $this;
     }
 
-    /**
-     * Get copyright.
-     *
-     * @return string
-     */
-    public function getCopyright() {
+    public function getCopyright() : ?string {
         return $this->copyright;
     }
 
-    /**
-     * Add contribution.
-     *
-     * @return Artwork
-     */
-    public function addContribution(ArtworkContribution $contribution) {
+    public function addContribution(ArtworkContribution $contribution) : self {
         $this->contributions[] = $contribution;
 
         return $this;
     }
 
-    /**
-     * Remove contribution.
-     */
     public function removeContribution(ArtworkContribution $contribution) : void {
         $this->contributions->removeElement($contribution);
     }
 
-    /**
-     * Get contributions.
-     *
-     * @return Collection
-     */
-    public function getContributions() {
+    public function getContributions() : Collection {
         return $this->contributions;
     }
 
@@ -186,12 +116,7 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
         return $this->mediaFiles->contains($mediaFile);
     }
 
-    /**
-     * Add mediaFile.
-     *
-     * @return Artwork
-     */
-    public function addMediaFile(MediaFile $mediaFile) {
+    public function addMediaFile(MediaFile $mediaFile) : self {
         if ( ! $this->mediaFiles->contains($mediaFile)) {
             $this->mediaFiles[] = $mediaFile;
         }
@@ -199,105 +124,49 @@ class Artwork extends AbstractEntity implements ContentEntityInterface {
         return $this;
     }
 
-    /**
-     * Remove mediaFile.
-     */
     public function removeMediaFile(MediaFile $mediaFile) : void {
         $this->mediaFiles->removeElement($mediaFile);
     }
 
-    /**
-     * Get mediaFiles.
-     *
-     * @return Collection
-     */
-    public function getMediaFiles() {
+    public function getMediaFiles() : Collection {
         return $this->mediaFiles;
     }
 
-    /**
-     * Add project.
-     *
-     * @param \App\Entity\Project $project
-     *
-     * @return Artwork
-     */
-    public function addProject(Project $project) {
+    public function addProject(Project $project) : self {
         $this->projects[] = $project;
 
         return $this;
     }
 
-    /**
-     * Remove project.
-     *
-     * @param \App\Entity\Project $project
-     */
     public function removeProject(Project $project) : void {
         $this->projects->removeElement($project);
     }
 
-    /**
-     * Get projects.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProjects() {
+    public function getProjects() : Collection {
         return $this->projects;
     }
 
-    /**
-     * Set artworkCategory.
-     *
-     * @param \App\Entity\ArtworkCategory $artworkCategory
-     *
-     * @return Artwork
-     */
-    public function setArtworkCategory(?ArtworkCategory $artworkCategory = null) {
+    public function setArtworkCategory(?ArtworkCategory $artworkCategory = null) : self {
         $this->artworkCategory = $artworkCategory;
 
         return $this;
     }
 
-    /**
-     * Get artworkCategory.
-     *
-     * @return \App\Entity\ArtworkCategory
-     */
-    public function getArtworkCategory() {
+    public function getArtworkCategory() : ?ArtworkCategory {
         return $this->artworkCategory;
     }
 
-    /**
-     * Add artisticStatement.
-     *
-     * @param \App\Entity\ArtisticStatement $artisticStatement
-     *
-     * @return Artwork
-     */
-    public function addArtisticStatement(ArtisticStatement $artisticStatement) {
+    public function addArtisticStatement(ArtisticStatement $artisticStatement) : self {
         $this->artisticStatements[] = $artisticStatement;
 
         return $this;
     }
 
-    /**
-     * Remove artisticStatement.
-     *
-     * @param \App\Entity\ArtisticStatement $artisticStatement
-     *
-     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeArtisticStatement(ArtisticStatement $artisticStatement) {
+    public function removeArtisticStatement(ArtisticStatement $artisticStatement) : bool {
         return $this->artisticStatements->removeElement($artisticStatement);
     }
 
-    /**
-     * Get artisticStatements.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getArtisticStatements() {
+    public function getArtisticStatements() : Collection {
         return $this->artisticStatements;
     }
 }

@@ -1,0 +1,68 @@
+services:
+  db:
+    container_name: btd_db
+    image: mariadb:10.11
+    ports:
+      - "13306:3306"
+    volumes:
+      - .data/mariadb:/var/lib/mysql
+      - ./docker/mariadb/custom.cnf:/etc/mysql/conf.d/custom.cnf
+      - ./docker/mariadb/init:/docker-entrypoint-initdb.d
+      # # HACK: easy sql script running for setting up db
+      # - ./btd.sql:/btd.sql
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: btd
+      MARIADB_USER: btd
+      MARIADB_PASSWORD: password
+    healthcheck:
+      test: mysql btd -u btd -ppassword -e 'SELECT 1;' || exit 1
+      interval: 2s
+      retries: 120
+
+  app:
+    container_name: btd_app
+    # image: dhil/btd
+    build:
+      context: .
+      target: btd
+    ports:
+      - "8080:80"
+    volumes:
+      # code for development
+      - .:/var/www/html
+
+      # use the container's var (for cache, etc)
+      - /var/www/html/var
+      # persist file uploads in .data
+      - .data/app/uploads:/uploads
+      # persist logs
+      - .data/app/log:/var/www/html/var/log
+
+      # use the container's node_modules & vendor folders (don't override)
+      - /var/www/html/public/node_modules
+      - /var/www/html/public/bundles
+      - /var/www/html/vendor
+    healthcheck:
+      test: curl --fail http://localhost/health.php || exit 1
+      interval: 2s
+      retries: 120
+    depends_on:
+      db:
+        condition: service_healthy
+
+  docs:
+    container_name: btd_docs_watcher
+    build:
+      context: .
+      target: btd-docs
+    command: sphinx-autobuild source _site/
+    volumes:
+      - ./docs:/app
+      - ./public/docs/sphinx:/app/_site
+
+  mail:
+    container_name: btd_mail
+    image: jcalonso/mailhog:v1.0.1
+    ports:
+      - "8025:8025"

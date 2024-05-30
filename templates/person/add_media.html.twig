@@ -19,7 +19,7 @@
                         <input type='text' name='q' id='q' class='form-control' value='{{ q }}'>
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit">
-                                <span class='glyphicon glyphicon-search'></span>
+                                <span class='bi bi-search'></span>
                                 Search
                             </button>
                         </span>
@@ -46,17 +46,17 @@
                     </div>
                     <div class='col-sm-8'>
                         {{ mediaFile.getMetadataFields('dc_title', false) }}
-                        <dl class="dl-horizontal">
-                            <dt>Id</dt>
-                            <dd>{{ mediaFile.id }}</dd>
-                            <dt>File type</dt>
-                            <dd>{{ mediaFile.mimetype }}</dd>
-                            <dt>Original name</dt>
-                            <dd>{{ mediaFile.originalName }}</dd>
-                            <dt>Uploaded</dt>
-                            <dd>{{ mediaFile.updated|date }}</dd>
-                            <dt>URL</dt>
-                            <dd>
+                        <dl class="row">
+                            <dt class="col-sm-3 text-end">Id</dt>
+                            <dd class="col-sm-9">{{ mediaFile.id }}</dd>
+                            <dt class="col-sm-3 text-end">File type</dt>
+                            <dd class="col-sm-9">{{ mediaFile.mimetype }}</dd>
+                            <dt class="col-sm-3 text-end">Original name</dt>
+                            <dd class="col-sm-9">{{ mediaFile.originalName }}</dd>
+                            <dt class="col-sm-3 text-end">Uploaded</dt>
+                            <dd class="col-sm-9">{{ mediaFile.updated|date }}</dd>
+                            <dt class="col-sm-3 text-end">URL</dt>
+                            <dd class="col-sm-9">
                                 <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
                                     {{ url('media_file_raw', {'id': mediaFile.id}) }}
                                 </a>

@@ -2,185 +2,105 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * Location.
- *
- * @ORM\Table(name="location", indexes={
- *     @ORM\Index(columns={"city", "region", "country"}, flags={"fulltext"}),
- * })
- * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
- */
+#[ORM\Entity(repositoryClass: LocationRepository::class)]
+#[ORM\Table(name: 'location')]
+#[ORM\Index(columns: ['city', 'region', 'country'], flags: ['fulltext'])]
 class Location extends AbstractEntity {
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $city;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $city = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $region;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $region = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $country;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $country = null;
 
     /**
      * @var Collection|Venue[]
-     * @ORM\OneToMany(targetEntity="Venue", mappedBy="location")
      */
-    private $venues;
+    #[ORM\OneToMany(targetEntity: Venue::class, mappedBy: 'location')]
+    private Collection $venues;
 
     /**
      * @var Collection|Organization[]
-     * @ORM\OneToMany(targetEntity="Organization", mappedBy="location")
      */
-    private $organizations;
+    #[ORM\OneToMany(targetEntity: Organization::class, mappedBy: 'location')]
+    private Collection $organizations;
 
     public function __construct() {
+        $this->venues = new ArrayCollection();
+        $this->organizations = new ArrayCollection();
         parent::__construct();
-        $this->artworks = new ArrayCollection();
-        $this->projects = new ArrayCollection();
     }
 
     public function __toString() : string {
         return $this->city;
     }
 
-    /**
-     * Set city.
-     *
-     * @param string $city
-     *
-     * @return Location
-     */
-    public function setCity($city) {
+    public function setCity(?string $city) : self {
         $this->city = $city;
 
         return $this;
     }
 
-    /**
-     * Get city.
-     *
-     * @return string
-     */
-    public function getCity() {
+    public function getCity() : ?string {
         return $this->city;
     }
 
-    /**
-     * Set region.
-     *
-     * @param string $region
-     *
-     * @return Location
-     */
-    public function setRegion($region) {
+    public function setRegion(?string $region) : self {
         $this->region = $region;
 
         return $this;
     }
 
-    /**
-     * Get region.
-     *
-     * @return string
-     */
-    public function getRegion() {
+    public function getRegion() : ?string {
         return $this->region;
     }
 
-    /**
-     * Set country.
-     *
-     * @param string $country
-     *
-     * @return Location
-     */
-    public function setCountry($country) {
+    public function setCountry(?string $country) : self {
         $this->country = $country;
 
         return $this;
     }
 
-    /**
-     * Get country.
-     *
-     * @return string
-     */
-    public function getCountry() {
+    public function getCountry() : ?string {
         return $this->country;
     }
 
-    /**
-     * Add venue.
-     *
-     * @return Location
-     */
-    public function addVenue(Venue $venue) {
+    public function addVenue(Venue $venue) : self {
         $this->venues[] = $venue;
 
         return $this;
     }
 
-    /**
-     * Remove venue.
-     */
     public function removeVenue(Venue $venue) : void {
         $this->venues->removeElement($venue);
     }
 
-    /**
-     * Get venues.
-     *
-     * @return Collection
-     */
-    public function getVenues() {
+    public function getVenues() : Collection {
         return $this->venues;
     }
 
-    /**
-     * Add organization.
-     *
-     * @return Location
-     */
-    public function addOrganization(Organization $organization) {
+    public function addOrganization(Organization $organization) : self {
         $this->organizations[] = $organization;
 
         return $this;
     }
 
-    /**
-     * Remove organization.
-     */
     public function removeOrganization(Organization $organization) : void {
         $this->organizations->removeElement($organization);
     }
 
-    /**
-     * Get organizations.
-     *
-     * @return Collection
-     */
-    public function getOrganizations() {
+    public function getOrganizations() : Collection {
         return $this->organizations;
     }
 }

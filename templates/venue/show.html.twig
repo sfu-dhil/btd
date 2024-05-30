@@ -1,35 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>Venue</h1>
-{% endblock %} 
+{% endblock %}
+
+{% block action_buttons %}
+    <a href="{{ path('venue_index') }}" class="btn btn-light">
+        <span class="bi bi-arrow-left"></span> Back
+    </a>
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('venue_edit', { 'id': venue.id }) }}" class="btn btn-light">
+            <span class='bi bi-pencil-square'></span> Edit
+        </a>
+        <a href="{{ path('venue_delete', { 'id': venue.id }) }}" class="btn btn-light" data-confirm="Are you sure you want to delete this Venue?">
+            <span class='bi bi-trash'></span> Delete
+        </a>
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-
-    <div class="btn-toolbar">
-        <div class="btn-group pull-right">
-            <a href="{{ path('venue_index') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-arrow-left"></span> Back
-            </a>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('venue_edit', { 'id': venue.id }) }}" class="btn btn-default">
-                    <span class='glyphicon glyphicon-edit'></span> Edit
-                </a>
-                <a href="{{ path('venue_delete', { 'id': venue.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this Venue?">
-                    <span class='glyphicon glyphicon-remove'></span> Delete
-                </a>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class='clearfix'></div>
-
     <h2>{{ venue.name }}</h2>
     <a href="{{ path('location_show', {'id': venue.location.id}) }}">{{ venue.location }}</a>
     <p>{{ venue.address }}</p>
     {{ venue.description|raw }}
     <p><a href='{{ venue.url }}'>{{ venue.url }}</a></p>
-    <p class='text-right'>
+    <p class='text-end'>
         Created {{ venue.created|date }}. Most recently updated {{ venue.updated|date }}
     </p>
 
@@ -41,8 +36,8 @@
                 </a>
             </h3>
             <p>
-                {{ text_service.trim(project.description, 100) }}            
-            </p>            
+                {{ text_service.trim(project.description, 100) }}
+            </p>
         {% endfor %}
     {% endif %}
 

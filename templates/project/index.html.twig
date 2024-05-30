@@ -1,29 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>Project List</h1>
     <p class="count">
         Displaying {{ projects|length }} projects of {{ projects.getTotalItemCount }} total.
     </p>
-{% endblock %} 
+{% endblock %}
+
+{% block action_buttons %}
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('project_new') }}" class="btn btn-light">
+            <span class="bi bi-plus-lg"></span> New
+        </a>
+    {% endif %}
+    <a href="{{ path('project_search') }}" class="btn btn-light">
+        <span class="bi bi-search"></span> Search
+    </a>
+{% endblock %}
 
 {% block body %}
-
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('project_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New
-                </a>
-            {% endif %}
-            <a href="{{ path('project_search') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search
-            </a>
-        </div>
-    </div>
-
-    <div class='clearfix'></div>
-
     {% for project in projects %}
         <h2>
             <a href="{{ path('project_show', { 'id': project.id }) }}">
@@ -31,7 +26,7 @@
             </a>
         </h2>
         {{ project.excerpt|raw }}
-        <p class='text-right'>
+        <p class='text-end'>
             Created {{ project.created|date }}. Most recently updated {{ project.updated|date }}
         </p>
     {% endfor %}

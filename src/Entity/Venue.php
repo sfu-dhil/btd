@@ -2,71 +2,44 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\VenueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * Venue.
- *
- * @ORM\Table(name="venue", indexes={
- *     @ORM\Index(columns={"name", "address", "description", "url"}, flags={"fulltext"}),
- * })
- * @ORM\Entity(repositoryClass="App\Repository\VenueRepository")
- */
+#[ORM\Entity(repositoryClass: VenueRepository::class)]
+#[ORM\Table(name: 'venue')]
+#[ORM\Index(columns: ['name', 'address', 'description', 'url'], flags: ['fulltext'])]
 class Venue extends AbstractEntity {
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $name;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $name = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $address;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $address = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $description;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $url;
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $url = null;
 
-    /**
-     * @var Location
-     * @ORM\ManyToOne(targetEntity="Location", inversedBy="venues")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $location;
+    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'venues')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $location = null;
 
-    /**
-     * @var VenueCategory
-     * @ORM\ManyToOne(targetEntity="VenueCategory", inversedBy="venues")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $venueCategory;
+    #[ORM\ManyToOne(targetEntity: VenueCategory::class, inversedBy: 'venues')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?VenueCategory $venueCategory = null;
 
     /**
      * @var Collection|Project[]
-     * @ORM\ManyToMany(targetEntity="Project", mappedBy="venues")
      */
-    private $projects;
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'venues')]
+    private Collection $projects;
 
     public function __construct() {
         parent::__construct();
@@ -77,162 +50,77 @@ class Venue extends AbstractEntity {
         return $this->name;
     }
 
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return Venue
-     */
-    public function setName($name) {
+    public function setName(?string $name) : self {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName() {
+    public function getName() : ?string {
         return $this->name;
     }
 
-    /**
-     * Set address.
-     *
-     * @param string $address
-     *
-     * @return Venue
-     */
-    public function setAddress($address) {
+    public function setAddress(?string $address) : self {
         $this->address = $address;
 
         return $this;
     }
 
-    /**
-     * Get address.
-     *
-     * @return string
-     */
-    public function getAddress() {
+    public function getAddress() : ?string {
         return $this->address;
     }
 
-    /**
-     * Set description.
-     *
-     * @param string $description
-     *
-     * @return Venue
-     */
-    public function setDescription($description) {
+    public function setDescription(?string $description) : self {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * Get description.
-     *
-     * @return string
-     */
-    public function getDescription() {
+    public function getDescription() : ?string {
         return $this->description;
     }
 
-    /**
-     * Set url.
-     *
-     * @param string $url
-     *
-     * @return Venue
-     */
-    public function setUrl($url) {
+    public function setUrl($url) : self {
         $this->url = $url;
 
         return $this;
     }
 
-    /**
-     * Get url.
-     *
-     * @return string
-     */
-    public function getUrl() {
+    public function getUrl() : ?string {
         return $this->url;
     }
 
-    /**
-     * Set location.
-     *
-     * @param Location $location
-     *
-     * @return Venue
-     */
-    public function setLocation(?Location $location = null) {
+    public function setLocation(?Location $location = null) : self {
         $this->location = $location;
 
         return $this;
     }
 
-    /**
-     * Get location.
-     *
-     * @return Location
-     */
-    public function getLocation() {
+    public function getLocation() : ?Location {
         return $this->location;
     }
 
-    /**
-     * Set venueCategory.
-     *
-     * @param VenueCategory $venueCategory
-     *
-     * @return Venue
-     */
-    public function setVenueCategory(?VenueCategory $venueCategory = null) {
+    public function setVenueCategory(?VenueCategory $venueCategory = null) : self {
         $this->venueCategory = $venueCategory;
 
         return $this;
     }
 
-    /**
-     * Get venueCategory.
-     *
-     * @return VenueCategory
-     */
-    public function getVenueCategory() {
+    public function getVenueCategory() : ?VenueCategory {
         return $this->venueCategory;
     }
 
-    /**
-     * Add project.
-     *
-     * @return Venue
-     */
-    public function addProject(Project $project) {
+    public function addProject(Project $project) : self {
         $this->projects[] = $project;
 
         return $this;
     }
 
-    /**
-     * Remove project.
-     */
     public function removeProject(Project $project) : void {
         $this->projects->removeElement($project);
     }
 
-    /**
-     * Get projects.
-     *
-     * @return Collection
-     */
-    public function getProjects() {
+    public function getProjects() : Collection {
         return $this->projects;
     }
 }

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\ProjectCategory;
@@ -18,29 +12,27 @@ use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ProjectCategory controller.
- *
- * @Route("/project_category")
  */
+#[Route(path: '/project_category')]
 class ProjectCategoryController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
      * Lists all ProjectCategory entities.
-     *
-     * @Route("/", name="project_category_index", methods={"GET"})
-     *
-     * @Template
      */
-    public function indexAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/', name: 'project_category_index', methods: ['GET'])]
+    #[Template]
+    public function index(Request $request, EntityManagerInterface $em) : array {
         $dql = 'SELECT e FROM App:ProjectCategory e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $projectCategories = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $projectCategories = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
 
         return [
             'projectCategories' => $projectCategories,
@@ -49,13 +41,11 @@ class ProjectCategoryController extends AbstractController implements PaginatorA
 
     /**
      * Creates a new ProjectCategory entity.
-     *
-     * @Route("/new", name="project_category_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function newAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/new', name: 'project_category_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function new(Request $request, EntityManagerInterface $em) : array|RedirectResponse {
         $projectCategory = new ProjectCategory();
         $form = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $form->handleRequest($request);
@@ -77,12 +67,10 @@ class ProjectCategoryController extends AbstractController implements PaginatorA
 
     /**
      * Finds and displays a ProjectCategory entity.
-     *
-     * @Route("/{id}", name="project_category_show", methods={"GET"})
-     *
-     * @Template
      */
-    public function showAction(ProjectCategory $projectCategory) {
+    #[Route(path: '/{id}', name: 'project_category_show', methods: ['GET'])]
+    #[Template]
+    public function show(ProjectCategory $projectCategory) : array {
         return [
             'projectCategory' => $projectCategory,
         ];
@@ -90,13 +78,11 @@ class ProjectCategoryController extends AbstractController implements PaginatorA
 
     /**
      * Displays a form to edit an existing ProjectCategory entity.
-     *
-     * @Route("/{id}/edit", name="project_category_edit", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function editAction(Request $request, ProjectCategory $projectCategory, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/edit', name: 'project_category_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function edit(Request $request, ProjectCategory $projectCategory, EntityManagerInterface $em) : array|RedirectResponse {
         $editForm = $this->createForm(ProjectCategoryType::class, $projectCategory);
         $editForm->handleRequest($request);
 
@@ -115,11 +101,10 @@ class ProjectCategoryController extends AbstractController implements PaginatorA
 
     /**
      * Deletes a ProjectCategory entity.
-     *
-     * @Route("/{id}/delete", name="project_category_delete", methods={"GET"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
      */
-    public function deleteAction(Request $request, ProjectCategory $projectCategory, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/delete', name: 'project_category_delete', methods: ['GET'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function delete(ProjectCategory $projectCategory, EntityManagerInterface $em) : RedirectResponse {
         $em->remove($projectCategory);
         $em->flush();
         $this->addFlash('success', 'The projectCategory was deleted.');

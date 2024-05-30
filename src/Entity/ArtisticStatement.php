@@ -2,51 +2,35 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\ArtisticStatementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection as Collection2;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Nines\UtilBundle\Entity\ContentEntityInterface;
 use Nines\UtilBundle\Entity\ContentExcerptTrait;
-use Symfony\Component\Validator\Constraints\Collection;
 
-/**
- * ArtisticStatement.
- *
- * @ORM\Table(name="artistic_statement", indexes={
- *     @ORM\Index(columns={"title", "excerpt", "content"}, flags={"fulltext"}),
- * })
- * @ORM\Entity(repositoryClass="App\Repository\ArtisticStatementRepository")
- */
+#[ORM\Entity(repositoryClass: ArtisticStatementRepository::class)]
+#[ORM\Table(name: 'artistic_statement')]
+#[ORM\Index(columns: ['title', 'excerpt', 'content'], flags: ['fulltext'])]
 class ArtisticStatement extends AbstractEntity implements ContentEntityInterface {
     use ContentExcerptTrait;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $title;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $title = null;
 
-    /**
-     * @var Artwork
-     * @ORM\ManyToOne(targetEntity="Artwork", inversedBy="artisticStatements")
-     */
-    private $artwork;
+    #[ORM\ManyToOne(targetEntity: Artwork::class, inversedBy: 'artisticStatements')]
+    private ?Artwork $artwork = null;
 
     /**
      * @var Collection|Person[]
-     * @ORM\ManyToMany(targetEntity="Person", inversedBy="artisticStatements")
-     * @ORM\JoinTable(name="person_artistic_statements")
      */
-    private $people;
+    #[ORM\ManyToMany(targetEntity: Person::class, inversedBy: 'artisticStatements')]
+    #[ORM\JoinTable(name: 'person_artistic_statements')]
+    private Collection $people;
 
     public function __construct() {
         parent::__construct();
@@ -57,74 +41,37 @@ class ArtisticStatement extends AbstractEntity implements ContentEntityInterface
         return $this->title;
     }
 
-    /**
-     * Set title.
-     *
-     * @param string $title
-     *
-     * @return ArtisticStatement
-     */
-    public function setTitle($title) {
+    public function setTitle(?string $title) : self {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * Get title.
-     *
-     * @return string
-     */
-    public function getTitle() {
+    public function getTitle() : ?string {
         return $this->title;
     }
 
-    /**
-     * Set artwork.
-     *
-     * @param Artwork $artwork
-     *
-     * @return ArtisticStatement
-     */
-    public function setArtwork(?Artwork $artwork = null) {
+    public function setArtwork(?Artwork $artwork = null) : self {
         $this->artwork = $artwork;
 
         return $this;
     }
 
-    /**
-     * Get artwork.
-     *
-     * @return Artwork
-     */
-    public function getArtwork() {
+    public function getArtwork() : ?Artwork {
         return $this->artwork;
     }
 
-    /**
-     * Add person.
-     *
-     * @return ArtisticStatement
-     */
-    public function addPerson(Person $person) {
+    public function addPerson(Person $person) : self {
         $this->people[] = $person;
 
         return $this;
     }
 
-    /**
-     * Remove person.
-     */
     public function removePerson(Person $person) : void {
         $this->people->removeElement($person);
     }
 
-    /**
-     * Get people.
-     *
-     * @return Collection2
-     */
-    public function getPeople() {
+    public function getPeople() : Collection {
         return $this->people;
     }
 }
