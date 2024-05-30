@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>Artwork List</h1>
     {% if artworks|length > 0 %}
         <p class="count">
             Displaying {{ artworks|length }} artworks of {{ artworks.getTotalItemCount }} total.
         </p>
     {% endif %}
-{% endblock %} 
+{% endblock %}
 
 {% block body %}
 
@@ -21,7 +21,7 @@
                         <input type='text' name='q' id='q' class='form-control' value='{{ q }}'>
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit">
-                                <span class='glyphicon glyphicon-search'></span>
+                                <span class='bi bi-search'></span>
                                 Search
                             </button>
                         </span>
@@ -40,7 +40,7 @@
                 </a>
             </h2>
             {{ artwork.excerpt }}
-            <p class='text-right'>
+            <p class='text-end'>
                 Created {{ artwork.created|date }}. Most recently updated {{ artwork.updated|date }}
             </p>
         {% endfor %}

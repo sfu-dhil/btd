@@ -2,85 +2,64 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\MediaFileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\DublinCoreBundle\Entity\AbstractField;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Symfony\Component\HttpFoundation\File\File;
 
-/**
- * MediaFile.
- *
- * @ORM\Table(name="media_file", indexes={
- * })
- * @ORM\Entity(repositoryClass="App\Repository\MediaFileRepository")
- */
+#[ORM\Entity(repositoryClass: MediaFileRepository::class)]
+#[ORM\Table(name: 'media_file')]
 class MediaFile extends AbstractEntity {
     /**
      * A Doctrine event listener will turn the filename into a file object.
-     *
-     * @var File
      */
-    private $file;
+    private ?File $file = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="file", type="string")
-     */
-    private $filename;
+    #[ORM\Column(name: 'file', type: Types::STRING)]
+    private ?string $filename = null;
 
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $hasThumbnail;
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private ?bool $hasThumbnail = null;
 
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $originalName;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $originalName = null;
 
-    /**
-     * @var MediaFileCategory
-     * @ORM\ManyToOne(targetEntity="MediaFileCategory", inversedBy="mediaFiles")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $mediaFileCategory;
+    #[ORM\ManyToOne(targetEntity: MediaFileCategory::class, inversedBy: 'mediaFiles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MediaFileCategory $mediaFileCategory = null;
 
     /**
      * @var Collection|MediaFileField[]
-     * @ORM\OneToMany(targetEntity="MediaFileField", mappedBy="mediaFile")
      */
-    private $metadataFields;
+    #[ORM\OneToMany(targetEntity: MediaFileField::class, mappedBy: 'mediaFile')]
+    private Collection $metadataFields;
 
     /**
      * @var Collection|MediaFileField[]
-     * @ORM\ManyToMany(targetEntity="Artwork", mappedBy="mediaFiles")
      */
-    private $artworks;
+    #[ORM\ManyToMany(targetEntity: Artwork::class, mappedBy: 'mediaFiles')]
+    private Collection $artworks;
 
     /**
      * @var Collection|MediaFileField[]
-     * @ORM\ManyToMany(targetEntity="Project", mappedBy="mediaFiles")
      */
-    private $projects;
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'mediaFiles')]
+    private Collection $projects;
 
     /**
      * @var Collection|MediaFileField[]
-     * @ORM\ManyToMany(targetEntity="Person", mappedBy="mediaFiles")
      */
-    private $people;
+    #[ORM\ManyToMany(targetEntity: Person::class, mappedBy: 'mediaFiles')]
+    private Collection $people;
 
     public function __construct() {
+        $this->artworks = new ArrayCollection();
+        $this->projects = new ArrayCollection();
         parent::__construct();
         $this->metadataFields = new ArrayCollection();
         $this->people = new ArrayCollection();
@@ -88,7 +67,7 @@ class MediaFile extends AbstractEntity {
     }
 
     public function __toString() : string {
-        return $this->getId();
+        return (string) $this->getId() ?? '';
     }
 
     public function setFilename($filename) : void {
@@ -99,40 +78,37 @@ class MediaFile extends AbstractEntity {
         return $this->filename;
     }
 
-    /**
-     * @return File
-     */
-    public function getFile() {
+    public function getFile() : ?File {
         return $this->file;
     }
 
-    public function setFile(File $file) {
+    public function setFile(File $file) : self {
         $this->file = $file;
 
         return $this;
     }
 
-    public function getMimeType() {
+    public function getMimeType() : ?string {
         return $this->file->getMimeType();
     }
 
-    public function getPath() {
+    public function getPath() : ?string {
         return $this->file->getPath();
     }
 
-    public function getRealPath() {
+    public function getRealPath() : ?string {
         return $this->file->getRealPath();
     }
 
-    public function getBasename() {
+    public function getBasename() : ?string {
         return $this->file->getBasename('.' . $this->file->getExtension());
     }
 
-    public function getSize() {
+    public function getSize() : bool|int {
         return $this->file->getSize();
     }
 
-    public function getThumbnail() {
+    public function getThumbnail() : ?File {
         $base = $this->getBasename();
         $path = $this->getPath();
         $name = $base . '_tn.jpg';
@@ -142,55 +118,27 @@ class MediaFile extends AbstractEntity {
         }
     }
 
-    /**
-     * Set originalName.
-     *
-     * @param string $originalName
-     *
-     * @return MediaFile
-     */
-    public function setOriginalName($originalName) {
+    public function setOriginalName(string $originalName) : self {
         $this->originalName = $originalName;
 
         return $this;
     }
 
-    /**
-     * Get originalName.
-     *
-     * @return string
-     */
-    public function getOriginalName() {
+    public function getOriginalName() : ?string {
         return $this->originalName;
     }
 
-    /**
-     * Add metadataField.
-     *
-     * @return MediaFile
-     */
-    public function addMetadataField(MediaFileField $metadataField) {
+    public function addMetadataField(MediaFileField $metadataField) : self {
         $this->metadataFields[] = $metadataField;
 
         return $this;
     }
 
-    /**
-     * Remove metadataField.
-     */
     public function removeMetadataField(MediaFileField $metadataField) : void {
         $this->metadataFields->removeElement($metadataField);
     }
 
-    /**
-     * Get metadataFields.
-     *
-     * @param null|mixed $name
-     * @param mixed $list
-     *
-     * @return Collection
-     */
-    public function getMetadataFields($name = null, $list = true) {
+    public function getMetadataFields(mixed $name = null, bool $list = true) : mixed {
         if ( ! $name) {
             return $this->metadataFields;
         }
@@ -202,92 +150,49 @@ class MediaFile extends AbstractEntity {
         return $matches->first();
     }
 
-    /**
-     * Set mediaFileCategory.
-     *
-     * @param MediaFileCategory $mediaFileCategory
-     *
-     * @return MediaFile
-     */
-    public function setMediaFileCategory(?MediaFileCategory $mediaFileCategory = null) {
+    public function setMediaFileCategory(?MediaFileCategory $mediaFileCategory = null) : self {
         $this->mediaFileCategory = $mediaFileCategory;
 
         return $this;
     }
 
-    /**
-     * Get mediaFileCategory.
-     *
-     * @return MediaFileCategory
-     */
-    public function getMediaFileCategory() {
+    public function getMediaFileCategory() : ?MediaFileCategory {
         return $this->mediaFileCategory;
     }
 
-    /**
-     * Add artwork.
-     *
-     * @return MediaFile
-     */
-    public function addArtwork(Artwork $artwork) {
+    public function addArtwork(Artwork $artwork) : self {
         $this->artworks[] = $artwork;
 
         return $this;
     }
 
-    /**
-     * Remove artwork.
-     */
     public function removeArtwork(Artwork $artwork) : void {
         $this->artworks->removeElement($artwork);
     }
 
-    /**
-     * Get artworks.
-     *
-     * @return Collection
-     */
-    public function getArtworks() {
+    public function getArtworks() : Collection {
         return $this->artworks;
     }
 
-    /**
-     * Add project.
-     *
-     * @return MediaFile
-     */
-    public function addProject(Project $project) {
+    public function addProject(Project $project) : self {
         $this->projects[] = $project;
 
         return $this;
     }
 
-    /**
-     * Remove project.
-     */
     public function removeProject(Project $project) : void {
         $this->projects->removeElement($project);
     }
 
-    /**
-     * Get projects.
-     *
-     * @return Collection
-     */
-    public function getProjects() {
+    public function getProjects() : Collection {
         return $this->projects;
     }
 
-    public function hasPerson(Person $person) {
+    public function hasPerson(Person $person) : bool {
         return $this->people->contains($person);
     }
 
-    /**
-     * Add person.
-     *
-     * @return MediaFile
-     */
-    public function addPerson(Person $person) {
+    public function addPerson(Person $person) : self {
         if ( ! $this->people->contains($person)) {
             $this->people[] = $person;
         }
@@ -295,41 +200,21 @@ class MediaFile extends AbstractEntity {
         return $this;
     }
 
-    /**
-     * Remove person.
-     */
     public function removePerson(Person $person) : void {
         $this->people->removeElement($person);
     }
 
-    /**
-     * Get people.
-     *
-     * @return Collection
-     */
-    public function getPeople() {
+    public function getPeople() : Collection {
         return $this->people;
     }
 
-    /**
-     * Set hasThumbnail.
-     *
-     * @param bool $hasThumbnail
-     *
-     * @return MediaFile
-     */
-    public function setHasThumbnail($hasThumbnail) {
+    public function setHasThumbnail(bool $hasThumbnail) : self {
         $this->hasThumbnail = $hasThumbnail;
 
         return $this;
     }
 
-    /**
-     * Get hasThumbnail.
-     *
-     * @return bool
-     */
-    public function getHasThumbnail() {
+    public function getHasThumbnail() : bool {
         return $this->hasThumbnail;
     }
 }

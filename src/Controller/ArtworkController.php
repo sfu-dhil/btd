@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\Artwork;
@@ -22,29 +16,27 @@ use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Artwork controller.
- *
- * @Route("/artwork")
  */
+#[Route(path: '/artwork')]
 class ArtworkController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
      * Lists all Artwork entities.
-     *
-     * @Route("/", name="artwork_index", methods={"GET"})
-     *
-     * @Template
      */
-    public function indexAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/', name: 'artwork_index', methods: ['GET'])]
+    #[Template]
+    public function index(Request $request, EntityManagerInterface $em) : array {
         $dql = 'SELECT e FROM App:Artwork e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $artworks = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $artworks = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
 
         return [
             'artworks' => $artworks,
@@ -53,14 +45,10 @@ class ArtworkController extends AbstractController implements PaginatorAwareInte
 
     /**
      * Full text search for Artwork entities.
-     *
-     * @Route("/search", name="artwork_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
      */
-    public function searchAction(Request $request, ArtworkRepository $repo) {
+    #[Route(path: '/search', name: 'artwork_search', methods: ['GET'])]
+    #[Template]
+    public function search(Request $request, ArtworkRepository $repo) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $repo->fulltextQuery($q);
@@ -78,13 +66,11 @@ class ArtworkController extends AbstractController implements PaginatorAwareInte
 
     /**
      * Creates a new Artwork entity.
-     *
-     * @Route("/new", name="artwork_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function newAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/new', name: 'artwork_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function new(Request $request, EntityManagerInterface $em) : array|RedirectResponse {
         $artwork = new Artwork();
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
@@ -106,12 +92,10 @@ class ArtworkController extends AbstractController implements PaginatorAwareInte
 
     /**
      * Finds and displays a Artwork entity.
-     *
-     * @Route("/{id}", name="artwork_show", methods={"GET"})
-     *
-     * @Template
      */
-    public function showAction(Artwork $artwork) {
+    #[Route(path: '/{id}', name: 'artwork_show', methods: ['GET'])]
+    #[Template]
+    public function show(Artwork $artwork) : array {
         return [
             'artwork' => $artwork,
         ];
@@ -119,13 +103,11 @@ class ArtworkController extends AbstractController implements PaginatorAwareInte
 
     /**
      * Displays a form to edit an existing Artwork entity.
-     *
-     * @Route("/{id}/edit", name="artwork_edit", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function editAction(Request $request, Artwork $artwork, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/edit', name: 'artwork_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function edit(Request $request, Artwork $artwork, EntityManagerInterface $em) : array|RedirectResponse {
         $editForm = $this->createForm(ArtworkType::class, $artwork);
         $editForm->handleRequest($request);
 
@@ -144,11 +126,10 @@ class ArtworkController extends AbstractController implements PaginatorAwareInte
 
     /**
      * Deletes a Artwork entity.
-     *
-     * @Route("/{id}/delete", name="artwork_delete", methods={"GET"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
      */
-    public function deleteAction(Request $request, Artwork $artwork, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/delete', name: 'artwork_delete', methods: ['GET'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function delete(Artwork $artwork, EntityManagerInterface $em) : RedirectResponse {
         $em->remove($artwork);
         $em->flush();
         $this->addFlash('success', 'The artwork was deleted.');
@@ -156,13 +137,10 @@ class ArtworkController extends AbstractController implements PaginatorAwareInte
         return $this->redirectToRoute('artwork_index');
     }
 
-    /**
-     * @Route("/{id}/add_media", name="artwork_add_media", methods={"GET"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
-     */
-    public function addMediaAction(Request $request, Artwork $artwork, EntityManagerInterface $em, MediaFileRepository $repo) {
+    #[Route(path: '/{id}/add_media', name: 'artwork_add_media', methods: ['GET'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function addMedia(Request $request, Artwork $artwork, EntityManagerInterface $em, MediaFileRepository $repo) : array|RedirectResponse {
         $q = $request->query->get('q');
 
         if ($q) {
@@ -196,13 +174,10 @@ class ArtworkController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @Route("/{id}/remove_media", name="artwork_remove_media", methods={"GET"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
-     */
-    public function removeMediaAction(Request $request, Artwork $artwork, EntityManagerInterface $em, MediaFileRepository $repo) {
+    #[Route(path: '/{id}/remove_media', name: 'artwork_remove_media', methods: ['GET'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function removeMedia(Request $request, Artwork $artwork, EntityManagerInterface $em, MediaFileRepository $repo) : array|RedirectResponse {
         $results = $this->paginator->paginate($artwork->getMediaFiles(), $request->query->getInt('page', 1), 25);
 
         $removeId = $request->query->get('removeId');
@@ -227,13 +202,10 @@ class ArtworkController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @Route("/{id}/contributions", name="artwork_contributions", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
-     */
-    public function contributionsAction(Request $request, Artwork $artwork, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/contributions', name: 'artwork_contributions', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function contributions(Request $request, Artwork $artwork, EntityManagerInterface $em) : array|RedirectResponse {
         $form = $this->createForm(ArtworkContributionsType::class, $artwork, [
             'artwork' => $artwork,
         ]);
@@ -252,13 +224,10 @@ class ArtworkController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @Route("/{id}/projects", name="artwork_projects", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
-     */
-    public function projectsAction(Request $request, Artwork $artwork, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/projects', name: 'artwork_projects', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function projects(Request $request, Artwork $artwork, EntityManagerInterface $em) : array {
         $oldProjects = $artwork->getProjects()->toArray();
         $form = $this->createForm(ProjectsType::class, $artwork);
         $form->handleRequest($request);

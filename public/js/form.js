@@ -50,8 +50,8 @@
             allow_up: false,
             allow_down: false,
             max: 400,
-            add: '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span></a>',
-            remove: '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-minus"></span></a>',
+            add: '<a href="#" class="btn btn-light btn-sm"><span class="bi bi-plus-lg"></span></a>',
+            remove: '<a href="#" class="btn btn-light btn-sm"><span class="bi bi-dash-lg"></span></a>',
             add_at_the_end: false,
         });
     }
@@ -62,8 +62,8 @@
             allow_up: false,
             allow_down: false,
             max: 400,
-            add: '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span></a>',
-            remove: '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-minus"></span></a>',
+            add: '<a href="#" class="btn btn-light btn-sm"><span class="bi bi-plus-lg"></span></a>',
+            remove: '<a href="#" class="btn btn-light btn-sm"><span class="bi bi-dash-lg"></span></a>',
             add_at_the_end: true,
             after_add: function(collection, element){
                 $(element).find('.select2entity').select2entity();

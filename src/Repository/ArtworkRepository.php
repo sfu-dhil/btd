@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Repository;
 
 use App\Entity\Artwork;
@@ -27,8 +21,8 @@ class ArtworkRepository extends ServiceEntityRepository {
 
     public function fulltextQuery($q) {
         $qb = $this->createQueryBuilder('e');
-        $qb->addSelect('MATCH_AGAINST (e.title, e.content, e.materials, e.copyright) AGAINST (:q BOOLEAN) as HIDDEN score');
-        $qb->add('where', 'MATCH_AGAINST (e.title, e.content, e.materials, e.copyright) AGAINST (:q BOOLEAN) > 0');
+        $qb->addSelect('MATCH (e.title, e.content, e.materials, e.copyright) AGAINST (:q BOOLEAN) as HIDDEN score');
+        $qb->add('where', 'MATCH (e.title, e.content, e.materials, e.copyright) AGAINST (:q BOOLEAN) > 0');
         $qb->orderBy('score', 'desc');
         $qb->setParameter('q', $q);
 

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Command;
 
 use App\Entity\MediaFile;
@@ -26,55 +20,37 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[\Symfony\Component\Console\Attribute\AsCommand('app:export:islandora', 'Export a project as an islandora collection.')]
 class ExportIslandoraCommand extends Command {
-    /**
-     * @var ObjectManager
-     */
-    private $em;
+    private ObjectManager $em;
 
-    /**
-     * @var TwigEngine
-     */
-    private $twig;
+    private TwigEngine $twig;
 
     protected function configure() : void {
         $this
-            ->setName('app:export:islandora')
-            ->setDescription('Export a project as an islandora collection.')
             ->addArgument('project-id', InputArgument::REQUIRED, 'Database ID of the project to export.')
             ->addArgument('path', InputArgument::REQUIRED, 'File system path to export to.')
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : void {
+    protected function execute(InputInterface $input, OutputInterface $output) : int {
         $project = $this->em->find(Project::class, $input->getArgument('project-id'));
         $dh = $this->getDirHandle($input->getArgument('path'));
         $output->writeln("exporting {$project} to {$dh->getRealPath()}");
         $this->exportProject($project, $dh);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setLogger(LoggerInterface $logger) : void {
         $this->logger = $logger;
     }
 
-    /**
-     * @param string $path
-     *
-     * @throws Exception
-     *
-     * @return SplFileInfo
-     */
-    public function getDirHandle($path) {
+    public function getDirHandle(string $path) : SplFileInfo {
         if ( ! file_exists($path)) {
             mkdir($path);
         }

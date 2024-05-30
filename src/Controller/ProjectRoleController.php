@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\ProjectRole;
@@ -18,29 +12,27 @@ use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ProjectRole controller.
- *
- * @Route("/project_role")
  */
+#[Route(path: '/project_role')]
 class ProjectRoleController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
      * Lists all ProjectRole entities.
-     *
-     * @Route("/", name="project_role_index", methods={"GET"})
-     *
-     * @Template
      */
-    public function indexAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/', name: 'project_role_index', methods: ['GET'])]
+    #[Template]
+    public function index(Request $request, EntityManagerInterface $em) : array {
         $dql = 'SELECT e FROM App:ProjectRole e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $projectRoles = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $projectRoles = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
 
         return [
             'projectRoles' => $projectRoles,
@@ -49,13 +41,11 @@ class ProjectRoleController extends AbstractController implements PaginatorAware
 
     /**
      * Creates a new ProjectRole entity.
-     *
-     * @Route("/new", name="project_role_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function newAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/new', name: 'project_role_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function new(Request $request, EntityManagerInterface $em) : array|RedirectResponse {
         $projectRole = new ProjectRole();
         $form = $this->createForm(ProjectRoleType::class, $projectRole);
         $form->handleRequest($request);
@@ -77,12 +67,10 @@ class ProjectRoleController extends AbstractController implements PaginatorAware
 
     /**
      * Finds and displays a ProjectRole entity.
-     *
-     * @Route("/{id}", name="project_role_show", methods={"GET"})
-     *
-     * @Template
      */
-    public function showAction(ProjectRole $projectRole) {
+    #[Route(path: '/{id}', name: 'project_role_show', methods: ['GET'])]
+    #[Template]
+    public function show(ProjectRole $projectRole) : array {
         return [
             'projectRole' => $projectRole,
         ];
@@ -90,13 +78,11 @@ class ProjectRoleController extends AbstractController implements PaginatorAware
 
     /**
      * Displays a form to edit an existing ProjectRole entity.
-     *
-     * @Route("/{id}/edit", name="project_role_edit", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function editAction(Request $request, ProjectRole $projectRole, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/edit', name: 'project_role_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function edit(Request $request, ProjectRole $projectRole, EntityManagerInterface $em) : array|RedirectResponse {
         $editForm = $this->createForm(ProjectRoleType::class, $projectRole);
         $editForm->handleRequest($request);
 
@@ -115,11 +101,10 @@ class ProjectRoleController extends AbstractController implements PaginatorAware
 
     /**
      * Deletes a ProjectRole entity.
-     *
-     * @Route("/{id}/delete", name="project_role_delete", methods={"GET"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
      */
-    public function deleteAction(Request $request, ProjectRole $projectRole, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/delete', name: 'project_role_delete', methods: ['GET'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function delete(ProjectRole $projectRole, EntityManagerInterface $em) : RedirectResponse {
         $em->remove($projectRole);
         $em->flush();
         $this->addFlash('success', 'The projectRole was deleted.');

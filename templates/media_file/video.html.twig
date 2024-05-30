@@ -1,5 +1,5 @@
-<link href="{{ asset('bower/video.js/dist/video-js.min.css') }}" rel="stylesheet">
-<script src="{{ asset('bower/video.js/dist/video.min.js') }}"></script>
+<link href="{{ asset_prefix|default('') ~ asset('node_modules/video.js/dist/video-js.min.css') }}" rel="stylesheet">
+<script src="{{ asset_prefix|default('') ~ asset('node_modules/video.js/dist/video.min.js') }}"></script>
 
 <video
     id="my-player"

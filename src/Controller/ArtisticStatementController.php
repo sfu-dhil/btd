@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\ArtisticStatement;
@@ -19,30 +13,28 @@ use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ArtisticStatement controller.
- *
- * @Route("/artistic_statement")
  */
+#[Route(path: '/artistic_statement')]
 class ArtisticStatementController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
      * Lists all ArtisticStatement entities.
-     *
-     * @Route("/", name="artwork_statement_index", methods={"GET"})
-     *
-     * @Template
      */
-    public function indexAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/', name: 'artwork_statement_index', methods: ['GET'])]
+    #[Template]
+    public function index(Request $request, EntityManagerInterface $em) : array {
         $qb = $em->createQueryBuilder();
         $qb->select('e')->from(ArtisticStatement::class, 'e')->orderBy('e.id', 'ASC');
         $query = $qb->getQuery();
 
-        $artisticStatements = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $artisticStatements = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
 
         return [
             'artisticStatements' => $artisticStatements,
@@ -56,12 +48,10 @@ class ArtisticStatementController extends AbstractController implements Paginato
      * App:ArtisticStatement repository. Replace the fieldName with
      * something appropriate, and adjust the generated search.html.twig
      * template.
-     *
-     * @Route("/search", name="artwork_statement_search", methods={"GET"})
-     *
-     * @Template
      */
-    public function searchAction(Request $request, EntityManagerInterface $em, ArtisticStatementRepository $repo) {
+    #[Route(path: '/search', name: 'artwork_statement_search', methods: ['GET'])]
+    #[Template]
+    public function search(Request $request, EntityManagerInterface $em, ArtisticStatementRepository $repo) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $repo->searchQuery($q);
@@ -77,34 +67,9 @@ class ArtisticStatementController extends AbstractController implements Paginato
         ];
     }
 
-    /**
-     * Full text search for ArtisticStatement entities.
-     *
-     * To make this work, add a method like this one to the
-     * App:ArtisticStatement repository. Replace the fieldName with
-     * something appropriate, and adjust the generated fulltext.html.twig
-     * template.
-     *
-     * //    public function fulltextQuery($q) {
-     * //        $qb = $this->createQueryBuilder('e');
-     * //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-     * //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-     * //        $qb->orderBy('score', 'desc');
-     * //        $qb->setParameter('q', $q);
-     * //        return $qb->getQuery();
-     * //    }
-     *
-     * Requires a MatchAgainst function be added to doctrine, and appropriate
-     * fulltext indexes on your ArtisticStatement entity.
-     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
-     *
-     * @Route("/fulltext", name="artwork_statement_fulltext", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function fulltextAction(Request $request, ArtisticStatementRepository $repo) {
+    #[Route(path: '/fulltext', name: 'artwork_statement_fulltext', methods: ['GET'])]
+    #[Template]
+    public function fulltext(Request $request, ArtisticStatementRepository $repo) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $repo->fulltextQuery($q);
@@ -122,13 +87,11 @@ class ArtisticStatementController extends AbstractController implements Paginato
 
     /**
      * Creates a new ArtisticStatement entity.
-     *
-     * @Route("/new", name="artwork_statement_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function newAction(Request $request, EntityManagerInterface $em) {
+    #[Route(path: '/new', name: 'artwork_statement_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function new(Request $request, EntityManagerInterface $em) : array|RedirectResponse {
         $artisticStatement = new ArtisticStatement();
         $form = $this->createForm(ArtisticStatementType::class, $artisticStatement);
         $form->handleRequest($request);
@@ -150,12 +113,10 @@ class ArtisticStatementController extends AbstractController implements Paginato
 
     /**
      * Finds and displays a ArtisticStatement entity.
-     *
-     * @Route("/{id}", name="artwork_statement_show", methods={"GET"})
-     *
-     * @Template
      */
-    public function showAction(ArtisticStatement $artisticStatement) {
+    #[Route(path: '/{id}', name: 'artwork_statement_show', methods: ['GET'])]
+    #[Template]
+    public function show(ArtisticStatement $artisticStatement) : array {
         return [
             'artisticStatement' => $artisticStatement,
         ];
@@ -163,13 +124,11 @@ class ArtisticStatementController extends AbstractController implements Paginato
 
     /**
      * Displays a form to edit an existing ArtisticStatement entity.
-     *
-     * @Route("/{id}/edit", name="artwork_statement_edit", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @Template
      */
-    public function editAction(Request $request, ArtisticStatement $artisticStatement, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/edit', name: 'artwork_statement_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template]
+    public function edit(Request $request, ArtisticStatement $artisticStatement, EntityManagerInterface $em) : array|RedirectResponse {
         if ( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
             $this->addFlash('danger', 'You must login to access this page.');
 
@@ -193,11 +152,10 @@ class ArtisticStatementController extends AbstractController implements Paginato
 
     /**
      * Deletes a ArtisticStatement entity.
-     *
-     * @Route("/{id}/delete", name="artwork_statement_delete", methods={"GET"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
      */
-    public function deleteAction(Request $request, ArtisticStatement $artisticStatement, EntityManagerInterface $em) {
+    #[Route(path: '/{id}/delete', name: 'artwork_statement_delete', methods: ['GET'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function delete(ArtisticStatement $artisticStatement, EntityManagerInterface $em) : RedirectResponse {
         $em->remove($artisticStatement);
         $em->flush();
         $this->addFlash('success', 'The artisticStatement was deleted.');

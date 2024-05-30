@@ -2,139 +2,73 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\ProjectContributionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * ProjectContribution.
- *
- * @ORM\Table(name="project_contribution")
- * @ORM\Entity(repositoryClass="App\Repository\ProjectContributionRepository")
  */
+#[ORM\Entity(repositoryClass: ProjectContributionRepository::class)]
+#[ORM\Table(name: 'project_contribution')]
 class ProjectContribution extends AbstractEntity {
-    /**
-     * @var Project
-     * @ORM\ManyToOne(targetEntity="Project", inversedBy="contributions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $project;
+    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'contributions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Project $project = null;
 
-    /**
-     * @var Person
-     * @ORM\ManyToOne(targetEntity="Person", inversedBy="projectContributions")
-     */
-    private $person;
+    #[ORM\ManyToOne(targetEntity: Person::class, inversedBy: 'projectContributions')]
+    private ?Person $person = null;
 
-    /**
-     * @var Person
-     * @ORM\ManyToOne(targetEntity="Organization", inversedBy="projectContributions")
-     */
-    private $organization;
+    #[ORM\ManyToOne(targetEntity: Organization::class, inversedBy: 'projectContributions')]
+    private ?Organization $organization = null;
 
-    /**
-     * @var ProjectRole
-     * @ORM\ManyToOne(targetEntity="ProjectRole", inversedBy="contributions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $projectRole;
+    #[ORM\ManyToOne(targetEntity: ProjectRole::class, inversedBy: 'contributions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ProjectRole $projectRole = null;
 
     public function __toString() : string {
         return implode(':', [$this->project, $this->person, $this->organization, $this->projectRole]);
     }
 
-    /**
-     * Set project.
-     *
-     * @param Project $project
-     *
-     * @return ProjectContribution
-     */
-    public function setProject(?Project $project = null) {
+    public function setProject(?Project $project = null) : self {
         $this->project = $project;
 
         return $this;
     }
 
-    /**
-     * Get project.
-     *
-     * @return Project
-     */
-    public function getProject() {
+    public function getProject() : ?Project {
         return $this->project;
     }
 
-    /**
-     * Set person.
-     *
-     * @param Person $person
-     *
-     * @return ProjectContribution
-     */
-    public function setPerson(?Person $person = null) {
+    public function setPerson(?Person $person = null) : self {
         $this->person = $person;
 
         return $this;
     }
 
-    /**
-     * Get person.
-     *
-     * @return Person
-     */
-    public function getPerson() {
+    public function getPerson() : ?Person {
         return $this->person;
     }
 
-    /**
-     * Set organization.
-     *
-     * @param Organization $organization
-     *
-     * @return ProjectContribution
-     */
-    public function setOrganization(?Organization $organization = null) {
+    public function setOrganization(?Organization $organization = null) : self {
         $this->organization = $organization;
 
         return $this;
     }
 
-    /**
-     * Get organization.
-     *
-     * @return Organization
-     */
-    public function getOrganization() {
+    public function getOrganization() : ?Organization {
         return $this->organization;
     }
 
-    /**
-     * Set projectRole.
-     *
-     * @param ProjectRole $projectRole
-     *
-     * @return ProjectContribution
-     */
-    public function setProjectRole(?ProjectRole $projectRole = null) {
+    public function setProjectRole(?ProjectRole $projectRole = null) : self {
         $this->projectRole = $projectRole;
 
         return $this;
     }
 
-    /**
-     * Get projectRole.
-     *
-     * @return ProjectRole
-     */
-    public function getProjectRole() {
+    public function getProjectRole() : ?ProjectRole {
         return $this->projectRole;
     }
 }

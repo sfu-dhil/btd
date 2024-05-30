@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>Project Search</h1>
     {% if projects|length > 0 %}
         <p class="count">
             Displaying {{ projects|length }} projects of {{ projects.getTotalItemCount }} total.
         </p>
     {% endif %}
-{% endblock %} 
+{% endblock %}
 
 {% block body %}
 
@@ -21,7 +21,7 @@
                         <input type='text' name='q' id='q' class='form-control' value='{{ q }}'>
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit">
-                                <span class='glyphicon glyphicon-search'></span>
+                                <span class='bi bi-search'></span>
                                 Search
                             </button>
                         </span>
@@ -30,7 +30,7 @@
                 <p class="help-block col-sm-offset-2">Search for projects or project pages here.</p>
             </div>
         </fieldset>
-    </form>    
+    </form>
 
     {% if projects|length > 0 %}
         {% for project in projects %}
@@ -40,7 +40,7 @@
                 </a>
             </h2>
             {{ project.excerpt|raw }}
-            <p class='text-right'>
+            <p class='text-end'>
                 Created {{ project.created|date }}. Most recently updated {{ project.updated|date }}
             </p>
         {% endfor %}

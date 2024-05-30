@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Repository;
 
 use App\Entity\Project;
@@ -27,11 +21,11 @@ class ProjectRepository extends ServiceEntityRepository {
 
     public function fulltextQuery($q) {
         $qb = $this->createQueryBuilder('e');
-        $qb->addSelect('MATCH_AGAINST (e.title, e.content) AGAINST(:q BOOLEAN) as HIDDEN score');
-        $qb->andWhere('MATCH_AGAINST (e.title, e.content) AGAINST(:q BOOLEAN) > 0');
+        $qb->addSelect('MATCH (e.title, e.content) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andWhere('MATCH (e.title, e.content) AGAINST(:q BOOLEAN) > 0');
 
         $qb->innerJoin('e.projectPages', 'p');
-        $qb->orWhere('MATCH_AGAINST (p.title, p.content) AGAINST(:q BOOLEAN) > 0');
+        $qb->orWhere('MATCH (p.title, p.content) AGAINST(:q BOOLEAN) > 0');
 
         $qb->orderBy('score', 'desc');
         $qb->setParameter('q', $q);

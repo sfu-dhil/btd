@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Repository;
 
 use App\Entity\MediaFile;
@@ -29,7 +23,7 @@ class MediaFileRepository extends ServiceEntityRepository {
         $qb = $this->createQueryBuilder('e');
         $qb->distinct();
         $qb->innerJoin('e.metadataFields', 'f');
-        $qb->orWhere('MATCH_AGAINST(f.value) AGAINST (:q BOOLEAN) > 0');
+        $qb->orWhere('MATCH(f.value) AGAINST (:q BOOLEAN) > 0');
         $qb->setParameter('q', $q);
 
         return $qb->getQuery();

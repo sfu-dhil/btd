@@ -2,139 +2,73 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\ArtworkContributionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * ArtworkContribution.
- *
- * @ORM\Table(name="artwork_contribution")
- * @ORM\Entity(repositoryClass="App\Repository\ArtworkContributionRepository")
  */
+#[ORM\Entity(repositoryClass: ArtworkContributionRepository::class)]
+#[ORM\Table(name: 'artwork_contribution')]
 class ArtworkContribution extends AbstractEntity {
-    /**
-     * @var Artwork
-     * @ORM\ManyToOne(targetEntity="Artwork", inversedBy="contributions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $artwork;
+    #[ORM\ManyToOne(targetEntity: Artwork::class, inversedBy: 'contributions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Artwork $artwork = null;
 
-    /**
-     * @var Person
-     * @ORM\ManyToOne(targetEntity="Person", inversedBy="artworkContributions")
-     */
-    private $person;
+    #[ORM\ManyToOne(targetEntity: Person::class, inversedBy: 'artworkContributions')]
+    private ?Person $person = null;
 
-    /**
-     * @var Person
-     * @ORM\ManyToOne(targetEntity="Organization", inversedBy="artworkContributions")
-     */
-    private $organization;
+    #[ORM\ManyToOne(targetEntity: Organization::class, inversedBy: 'artworkContributions')]
+    private ?Organization $organization = null;
 
-    /**
-     * @var ArtworkRole
-     * @ORM\ManyToOne(targetEntity="ArtworkRole", inversedBy="contributions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $artworkRole;
+    #[ORM\ManyToOne(targetEntity: ArtworkRole::class, inversedBy: 'contributions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ArtworkRole $artworkRole = null;
 
     public function __toString() : string {
         return implode(':', [$this->artwork, $this->person, $this->organization, $this->artworkRole]);
     }
 
-    /**
-     * Set artwork.
-     *
-     * @param Artwork $artwork
-     *
-     * @return ArtworkContribution
-     */
-    public function setArtwork(?Artwork $artwork = null) {
+    public function setArtwork(?Artwork $artwork = null) : self {
         $this->artwork = $artwork;
 
         return $this;
     }
 
-    /**
-     * Get artwork.
-     *
-     * @return Artwork
-     */
-    public function getArtwork() {
+    public function getArtwork() : ?Artwork {
         return $this->artwork;
     }
 
-    /**
-     * Set person.
-     *
-     * @param Person $person
-     *
-     * @return ArtworkContribution
-     */
-    public function setPerson(?Person $person = null) {
+    public function setPerson(?Person $person = null) : self {
         $this->person = $person;
 
         return $this;
     }
 
-    /**
-     * Get person.
-     *
-     * @return Person
-     */
-    public function getPerson() {
+    public function getPerson() : ?Person {
         return $this->person;
     }
 
-    /**
-     * Set organization.
-     *
-     * @param Organization $organization
-     *
-     * @return ArtworkContribution
-     */
-    public function setOrganization(?Organization $organization = null) {
+    public function setOrganization(?Organization $organization = null) : self {
         $this->organization = $organization;
 
         return $this;
     }
 
-    /**
-     * Get organization.
-     *
-     * @return Organization
-     */
-    public function getOrganization() {
+    public function getOrganization() : ?Organization {
         return $this->organization;
     }
 
-    /**
-     * Set artworkRole.
-     *
-     * @param ArtworkRole $artworkRole
-     *
-     * @return ArtworkContribution
-     */
-    public function setArtworkRole(?ArtworkRole $artworkRole = null) {
+    public function setArtworkRole(?ArtworkRole $artworkRole = null) : self {
         $this->artworkRole = $artworkRole;
 
         return $this;
     }
 
-    /**
-     * Get artworkRole.
-     *
-     * @return ArtworkRole
-     */
-    public function getArtworkRole() {
+    public function getArtworkRole() : ?ArtworkRole {
         return $this->artworkRole;
     }
 }

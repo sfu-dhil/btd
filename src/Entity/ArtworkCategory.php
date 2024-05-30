@@ -2,14 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\ArtworkCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,46 +12,32 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * ArtworkCategory.
- *
- * @ORM\Table(name="artwork_category")
- * @ORM\Entity(repositoryClass="App\Repository\ArtworkCategoryRepository")
  */
+#[ORM\Entity(repositoryClass: ArtworkCategoryRepository::class)]
+#[ORM\Table(name: 'artwork_category')]
 class ArtworkCategory extends AbstractTerm {
     /**
      * @var Artwork[]|Collection
-     * @ORM\OneToMany(targetEntity="Artwork", mappedBy="artworkCategory")
      */
-    private $artworks;
+    #[ORM\OneToMany(targetEntity: Artwork::class, mappedBy: 'artworkCategory')]
+    private Collection $artworks;
 
     public function __construct() {
         parent::__construct();
         $this->artworks = new ArrayCollection();
     }
 
-    /**
-     * Add artwork.
-     *
-     * @return ArtworkCategory
-     */
-    public function addArtwork(Artwork $artwork) {
+    public function addArtwork(Artwork $artwork) : self {
         $this->artworks[] = $artwork;
 
         return $this;
     }
 
-    /**
-     * Remove artwork.
-     */
     public function removeArtwork(Artwork $artwork) : void {
         $this->artworks->removeElement($artwork);
     }
 
-    /**
-     * Get artworks.
-     *
-     * @return Collection
-     */
-    public function getArtworks() {
+    public function getArtworks() : Collection {
         return $this->artworks;
     }
 }

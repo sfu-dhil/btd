@@ -1,29 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>Organization List</h1>
     <p class="count">
         Displaying {{ organizations|length }} organizations of {{ organizations.getTotalItemCount }} total.
     </p>
-{% endblock %} 
+{% endblock %}
+
+{% block action_buttons %}
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('organization_new') }}" class="btn btn-light">
+            <span class="bi bi-plus-lg"></span> New
+        </a>
+    {% endif %}
+    <a href="{{ path('organization_search') }}" class="btn btn-light">
+        <span class="bi bi-search"></span> Search
+    </a>
+{% endblock %}
 
 {% block body %}
-
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('organization_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New
-                </a>
-            {% endif %}
-            <a href="{{ path('organization_search') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search
-            </a>
-        </div>
-    </div>
-
-    <div class='clearfix'></div>
-
     {% for organization in organizations %}
         <h2>
             <a href="{{ path('organization_show', { 'id': organization.id }) }}">
@@ -31,7 +26,7 @@
             </a>
         </h2>
         <p>{{ text_service.trim(organization.description, 100) }}</p>
-        <p class='text-right'>
+        <p class='text-end'>
             Created {{ organization.created|date }}. Most recently updated {{ organization.updated|date }}
         </p>
     {% endfor %}

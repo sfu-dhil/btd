@@ -2,76 +2,49 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
+use App\Repository\OrganizationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * Organization.
- *
- * @ORM\Table(name="organization", indexes={
- *     @ORM\Index(columns={"name", "address", "description", "contact"}, flags={"fulltext"}),
- * })
- * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
- */
+#[ORM\Entity(repositoryClass: OrganizationRepository::class)]
+#[ORM\Table(name: 'organization')]
+#[ORM\Index(columns: ['name', 'address', 'description', 'contact'], flags: ['fulltext'])]
 class Organization extends AbstractEntity {
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $name;
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $name = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $address;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $address = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $description;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="array")
-     */
-    private $urls;
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $urls = [];
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $contact;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $contact = null;
 
-    /**
-     * @var Location
-     * @ORM\ManyToOne(targetEntity="Location", inversedBy="organizations")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $location;
+    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'organizations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $location = null;
 
     /**
      * @var ArtworkContribution[]|Collection
-     * @ORM\OneToMany(targetEntity="ArtworkContribution", mappedBy="organization", cascade={"persist"}, orphanRemoval=true)
      */
-    private $artworkContributions;
+    #[ORM\OneToMany(targetEntity: ArtworkContribution::class, mappedBy: 'organization', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $artworkContributions;
 
     /**
      * @var Collection|ProjectContribution[]
-     * @ORM\OneToMany(targetEntity="ProjectContribution", mappedBy="organization", cascade={"persist"}, orphanRemoval=true)
      */
-    private $projectContributions;
+    #[ORM\OneToMany(targetEntity: ProjectContribution::class, mappedBy: 'organization', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $projectContributions;
 
     public function __construct() {
         parent::__construct();
@@ -83,189 +56,91 @@ class Organization extends AbstractEntity {
         return $this->name;
     }
 
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return Organization
-     */
-    public function setName($name) {
+    public function setName(?string $name) : self {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName() {
+    public function getName() : ?string {
         return $this->name;
     }
 
-    /**
-     * Set address.
-     *
-     * @param string $address
-     *
-     * @return Organization
-     */
-    public function setAddress($address) {
+    public function setAddress(?string $address) : self {
         $this->address = $address;
 
         return $this;
     }
 
-    /**
-     * Get address.
-     *
-     * @return string
-     */
-    public function getAddress() {
+    public function getAddress() : ?string {
         return $this->address;
     }
 
-    /**
-     * Set description.
-     *
-     * @param string $description
-     *
-     * @return Organization
-     */
-    public function setDescription($description) {
+    public function setDescription(?string $description) : self {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * Get description.
-     *
-     * @return string
-     */
-    public function getDescription() {
+    public function getDescription() : ?string {
         return $this->description;
     }
 
-    /**
-     * Set contact.
-     *
-     * @param string $contact
-     *
-     * @return Organization
-     */
-    public function setContact($contact) {
+    public function setContact(?string $contact) : self {
         $this->contact = $contact;
 
         return $this;
     }
 
-    /**
-     * Get contact.
-     *
-     * @return string
-     */
-    public function getContact() {
+    public function getContact() : ?string {
         return $this->contact;
     }
 
-    /**
-     * Set location.
-     *
-     * @param Location $location
-     *
-     * @return Organization
-     */
-    public function setLocation(?Location $location = null) {
+    public function setLocation(?Location $location = null) : self {
         $this->location = $location;
 
         return $this;
     }
 
-    /**
-     * Get location.
-     *
-     * @return Location
-     */
-    public function getLocation() {
+    public function getLocation() : ?Location {
         return $this->location;
     }
 
-    /**
-     * Add artworkContribution.
-     *
-     * @return Organization
-     */
-    public function addArtworkContribution(ArtworkContribution $artworkContribution) {
+    public function addArtworkContribution(ArtworkContribution $artworkContribution) : self {
         $this->artworkContributions[] = $artworkContribution;
 
         return $this;
     }
 
-    /**
-     * Remove artworkContribution.
-     */
     public function removeArtworkContribution(ArtworkContribution $artworkContribution) : void {
         $this->artworkContributions->removeElement($artworkContribution);
     }
 
-    /**
-     * Get artworkContributions.
-     *
-     * @return Collection
-     */
-    public function getArtworkContributions() {
+    public function getArtworkContributions() : Collection {
         return $this->artworkContributions;
     }
 
-    /**
-     * Add projectContribution.
-     *
-     * @return Organization
-     */
-    public function addProjectContribution(ProjectContribution $projectContribution) {
+    public function addProjectContribution(ProjectContribution $projectContribution) : self {
         $this->projectContributions[] = $projectContribution;
 
         return $this;
     }
 
-    /**
-     * Remove projectContribution.
-     */
     public function removeProjectContribution(ProjectContribution $projectContribution) : void {
         $this->projectContributions->removeElement($projectContribution);
     }
 
-    /**
-     * Get projectContributions.
-     *
-     * @return Collection
-     */
-    public function getProjectContributions() {
+    public function getProjectContributions() : Collection {
         return $this->projectContributions;
     }
 
-    /**
-     * Set urls.
-     *
-     * @param array $urls
-     *
-     * @return Organization
-     */
-    public function setUrls($urls) {
+    public function setUrls(array $urls) : self {
         $this->urls = $urls;
 
         return $this;
     }
 
-    /**
-     * Get urls.
-     *
-     * @return array
-     */
-    public function getUrls() {
+    public function getUrls() : array {
         return $this->urls;
     }
 }

@@ -14,35 +14,30 @@
     {%  endif %}
 {% endblock %}
 
+{% block action_buttons %}
+    <a href="{{ path('project_index') }}" class="btn btn-light">
+        <span class="bi bi-arrow-left"></span> Back
+    </a>
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('project_edit', { 'id': project.id }) }}" class="btn btn-light">
+            <span class='bi bi-pencil-square'></span> Edit
+        </a>
+        <a href="{{ path('project_page_new', { 'projectId': project.id }) }}" class="btn btn-light">
+            <span class='bi bi-plus-lg'></span> Add Page
+        </a>
+        <a href="{{ path('project_delete', { 'id': project.id }) }}" class="btn btn-light" data-confirm="Are you sure you want to delete this Project?">
+            <span class='bi bi-trash'></span> Delete
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
-
-    <div class="btn-toolbar">
-        <div class="btn-group pull-right">
-            <a href="{{ path('project_index') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-arrow-left"></span> Back
-            </a>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('project_edit', { 'id': project.id }) }}" class="btn btn-default">
-                    <span class='glyphicon glyphicon-edit'></span> Edit
-                </a>
-                <a href="{{ path('project_page_new', { 'projectId': project.id }) }}" class="btn btn-default">
-                    <span class='glyphicon glyphicon-plus'></span> Add Page
-                </a>
-                <a href="{{ path('project_delete', { 'id': project.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this Project?">
-                    <span class='glyphicon glyphicon-remove'></span> Delete
-                </a>
-            {% endif %}
-        </div>
-    </div>
-
     {% if is_granted('ROLE_USER') %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">
-                    Excerpt
-                </h2>
+        <div class="card my-3">
+            <div class="card-header">
+                Excerpt
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 {{ project.excerpt|raw }}
             </div>
         </div>
@@ -50,7 +45,7 @@
 
     {{ project.content|raw }}
 
-    <div class="text-right">
+    <div class="text-end">
         Created {{ project.created|date('Y-m-d H:i:s') }}. Most recent update {{ project.updated|date }}.
     </div>
 
@@ -61,7 +56,7 @@
             </a>
         </h2>
         {{ projectPage.excerpt|raw }}
-        <div class="text-right">
+        <div class="text-end">
             Created {{ projectPage.created|date('Y-m-d H:i:s') }}. Most recent update {{ projectPage.updated|date }}.
         </div>
     {% endfor %}
@@ -84,17 +79,17 @@
             </div>
             <div class='col-sm-8'>
                 {{ mediaFile.getMetadataFields('dc_title', false) }}
-                <dl class="dl-horizontal">
-                    <dt>Id</dt>
-                    <dd>{{ mediaFile.id }}</dd>
-                    <dt>File type</dt>
-                    <dd>{{ mediaFile.mimetype }}</dd>
-                    <dt>Original name</dt>
-                    <dd>{{ mediaFile.originalName }}</dd>
-                    <dt>Uploaded</dt>
-                    <dd>{{ mediaFile.updated|date }}</dd>
-                    <dt>URL</dt>
-                    <dd>
+                <dl class="row">
+                    <dt class="col-sm-3 text-end">Id</dt>
+                    <dd class="col-sm-9">{{ mediaFile.id }}</dd>
+                    <dt class="col-sm-3 text-end">File type</dt>
+                    <dd class="col-sm-9">{{ mediaFile.mimetype }}</dd>
+                    <dt class="col-sm-3 text-end">Original name</dt>
+                    <dd class="col-sm-9">{{ mediaFile.originalName }}</dd>
+                    <dt class="col-sm-3 text-end">Uploaded</dt>
+                    <dd class="col-sm-9">{{ mediaFile.updated|date }}</dd>
+                    <dt class="col-sm-3 text-end">URL</dt>
+                    <dd class="col-sm-9">
                         <a href="{{ path('media_file_raw', {'id': mediaFile.id}) }}">
                             {{ url('media_file_raw', {'id': mediaFile.id}) }}
                         </a>
