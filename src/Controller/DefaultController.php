@@ -18,8 +18,4 @@ class DefaultController extends AbstractController implements PaginatorAwareInte
     public function index() : array {
         return [];
     }
-
-    #[Route(path: '/privacy', name: 'privacy')]
-    #[Template]
-    public function privacy() : void {}
 }
