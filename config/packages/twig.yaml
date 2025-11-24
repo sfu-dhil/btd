@@ -15,10 +15,6 @@ twig:
         asset_prefix: '%env(default::string:ROUTE_BASE)%'
         text_service: '@Nines\UtilBundle\Services\Text'
         nines_editor_config: js/editor-config.js
-        matomo_enabled: '%dhil.matomo_enabled%'
-        matomo_url: '%dhil.matomo_url%'
-        matomo_siteid: '%dhil.matomo_siteid%'
-        matomo_domain: '%dhil.matomo_domain%'
 
 when@test:
     twig:
