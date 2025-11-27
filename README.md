@@ -1,3 +1,6 @@
+[![Docker Image Latest Badge](https://ghcr-badge.egpl.dev/sfu-dhil/btd/latest_tag?trim=major&label=latest)](https://github.com/sfu-dhil/btd/pkgs/container/btd)
+[![Docker Image Size badge](https://ghcr-badge.egpl.dev/sfu-dhil/btd/size)](https://github.com/sfu-dhil/btd/pkgs/container/btd)
+
 # Between the Digital
 
 [Between the Digital][https://dhil.lib.sfu.ca/btd] (affectionately known as BTD) is a PHP application written using the
@@ -131,7 +134,7 @@ After you update a dependency make sure to rebuild the images
 
 Note: If you are having problems starting/building the application due to php dependencies issues you can also run a standalone php container to help resolve them
 
-    docker run -it -v $(pwd):/var/www/html -w /var/www/html dhilsfu/symfony-base:php-8.2-apache bash
+    docker run -it -v $(pwd):/var/www/html -w /var/www/html ghcr.io/sfu-dhil/symfony-base:php-8.2-apache bash
 
     [check Dockerfile for the 'apt-get update' code piece of btd]
 

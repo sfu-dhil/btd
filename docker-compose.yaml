@@ -22,7 +22,7 @@ services:
 
   app:
     container_name: btd_app
-    # image: dhil/btd
+    # image: ghcr.io/sfu-dhil/btd
     build:
       context: .
       target: btd

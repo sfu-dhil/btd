@@ -24,7 +24,7 @@ COPY public/package.json public/yarn.lock /app/
 RUN yarn --production \
     && yarn cache clean
 
-FROM dhilsfu/symfony-base:php-8.2-apache AS btd
+FROM ghcr.io/sfu-dhil/symfony-base:php-8.2-apache AS btd
 ENV GIT_REPO=https://github.com/sfu-dhil/btd
 
 # basic deps installer (no script/plugings)
