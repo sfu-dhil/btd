@@ -9,7 +9,7 @@ COPY docs /app
 
 RUN sphinx-build source _site
 
-FROM node:21.6-slim AS btd-prod-assets
+FROM node:25.5 AS btd-prod-assets
 WORKDIR /app
 
 RUN apt-get update \
